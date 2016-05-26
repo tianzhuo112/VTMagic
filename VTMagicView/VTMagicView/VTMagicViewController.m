@@ -7,7 +7,6 @@
 //
 
 #import "VTMagicViewController.h"
-#import <MediaPlayer/MediaPlayer.h>
 #import "VTMagicView.h"
 
 #define NOTICENTER [NSNotificationCenter defaultCenter]
@@ -82,7 +81,6 @@
 //    [[UIApplication sharedApplication] setStatusBarHidden:NO];
 }
 
-//#if 0
 - (BOOL)shouldAutorotate NS_AVAILABLE_IOS(6_0)
 {
     return NO;
@@ -97,7 +95,6 @@
 {
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
-//#endif
 
 #pragma mark - magic view delegate & data source
 - (NSArray *)headersForMagicView:(VTMagicView *)magicView

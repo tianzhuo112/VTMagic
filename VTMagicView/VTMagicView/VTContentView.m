@@ -13,7 +13,6 @@
 @property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的控制器
 @property (nonatomic, strong) NSMutableArray *indexList; // 索引集合
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
-@property (nonatomic, strong) NSMutableSet *reusableSet; // 缓存池
 @property (nonatomic, strong) NSMutableArray *frameList; // 控制器的坐标集合
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
 
@@ -25,37 +24,41 @@
 {
     [super layoutSubviews];
     
-    //方案一，有空白页面出现
+    CGRect frame = CGRectZero;
     UIViewController *viewController = nil;
-    for (NSIndexPath *indexPath in _indexList) {
-        CGRect frame = [_frameList[indexPath.row] CGRectValue];
-        if (!viewController) {
-            if ([self isNeedDisplayWithFrame:frame]) {
-                viewController = [_dataSource contentView:self viewControllerForIndex:indexPath.row];
-                if (!viewController) continue;
-                viewController.view.frame = frame;
-                viewController.restorationIdentifier = _identifier;
-                [self addSubview:viewController.view];
-                [_visibleDict setObject:viewController forKey:indexPath];
-                if (NSNotFound == [_visibleList indexOfObject:viewController]) {
-                    [_visibleList addObject:viewController];
-                }
-            }
+    NSArray *pathList = [_visibleDict allKeys];
+    for (NSIndexPath *indexPath in pathList) {
+        viewController = _visibleDict[indexPath];
+        frame = [_frameList[indexPath.row] CGRectValue];
+        // 控制器若移出屏幕则将其视图从父类中移除，并添加到缓存池中
+        if (![self isNeedDisplayWithFrame:frame]) {
+            [viewController.view removeFromSuperview];
+            [_visibleDict removeObjectForKey:indexPath];
+            [_visibleList removeObject:viewController];
+            
+            // 添加到缓存池
+            NSMutableSet *cacheSet = _cacheDict[viewController.restorationIdentifier];
+            if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
+            [cacheSet addObject:viewController];
+            [_cacheDict setValue:cacheSet forKey:viewController.restorationIdentifier];
         } else {
-            // 控制器若移出屏幕则将其视图从父类中移除，并添加到缓存池中
-            if (![self isNeedDisplayWithFrame:frame]) {
-                [viewController.view removeFromSuperview];
-                [_reusableSet addObject:viewController];
-                [_visibleDict removeObjectForKey:indexPath];
-                [_visibleList removeObject:viewController];
-                
-                // 添加到缓存池
-                NSMutableSet *cacheSet = _cacheDict[viewController.restorationIdentifier];
-                if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
-                [cacheSet addObject:viewController];
-                [_cacheDict setValue:cacheSet forKey:viewController.restorationIdentifier];
-            } else {
-                viewController.view.frame = frame;
+            viewController.view.frame = frame;
+        }
+    }
+    
+    NSMutableArray *tempPaths = [_indexList mutableCopy];
+    [tempPaths removeObjectsInArray:pathList];
+    for (NSIndexPath *indexPath in tempPaths) {
+        frame = [_frameList[indexPath.row] CGRectValue];
+        if ([self isNeedDisplayWithFrame:frame]) {
+            viewController = [_dataSource contentView:self viewControllerForIndex:indexPath.row];
+            if (!viewController) continue;
+            viewController.view.frame = frame;
+            viewController.restorationIdentifier = _identifier;
+            [self addSubview:viewController.view];
+            [_visibleDict setObject:viewController forKey:indexPath];
+            if (![_visibleList containsObject:viewController]) {
+                [_visibleList addObject:viewController];
             }
         }
     }
@@ -96,7 +99,6 @@
         [_frameList removeAllObjects];
     }
     
-#warning mark 这个逻辑尚需优化，直接用NSNumber作为key即可
     if (!_indexList) {
         _indexList = [[NSMutableArray alloc] initWithCapacity:_pageCount];
     } else {
@@ -108,10 +110,6 @@
         [_indexList addObject:indexPath];
     }
     
-    if (!_reusableSet) {
-        _reusableSet = [[NSMutableSet alloc] initWithCapacity:_pageCount];
-    }
-    
     if (!_cacheDict) {
         _cacheDict = [[NSMutableDictionary alloc] initWithCapacity:_pageCount];
     }
@@ -119,7 +117,7 @@
     if (!_visibleDict) {
         _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_pageCount];
     } else {
-        // 新增逻辑，reload时清楚页面数据
+        // 新增逻辑，reload时清除页面数据
 //        NSArray *viewControllers = [_visibleDict allValues];
 //        for (UIViewController *viewController in viewControllers) {
 //            [viewController removeFromParentViewController];
@@ -139,13 +137,10 @@
 
 - (void)resetFrames
 {
-    CGFloat viewX = 0;
-    CGFloat height = self.frame.size.height - self.frame.origin.y;
-    CGRect frame = CGRectMake(viewX, 0, self.frame.size.width, height);
     [_frameList removeAllObjects];
+    CGRect frame = self.bounds;
     for (NSIndexPath *indexPath in _indexList) {
-        viewX = indexPath.row * frame.size.width;
-        frame.origin.x = viewX;
+        frame.origin.x = indexPath.row * frame.size.width;
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
     }
     self.contentSize = CGSizeMake(CGRectGetMaxX([[_frameList lastObject] CGRectValue]), 0);

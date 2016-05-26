@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
+@property (nonatomic, strong) NSMutableArray *indexList; // 索引集合
 
 @end
 
@@ -38,58 +39,55 @@
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     if (isLandscape) return;
     
+    BOOL isSelected = NO;
+    UIButton *itemBtn = nil;
     CGRect frame = CGRectZero;
-    NSInteger count = _frameList.count;
-    for (NSInteger index = 0; index < count; index++) {
-        if (!_visibleDict) {
-            _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_headerList.count];
-        }
-        
-        frame = [_frameList[index] CGRectValue];
-        UIButton *itemBtn = _visibleDict[@(index)];
-        if (!itemBtn) {
-            if ([self isNeedDisplayWithFrame:frame]) {
-                if (!itemBtn) {
-                    itemBtn = [_datasource headerView:self headerItemForIndex:index];
-                    if (![itemBtn isKindOfClass:[UIButton class]]) continue;
-                    [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
-                }
-                
-                itemBtn.tag = index;
-                itemBtn.frame = frame;
-                [itemBtn setTitle:_headerList[index] forState:UIControlStateNormal];
-                [_visibleDict setObject:itemBtn forKey:@(index)];
-                [self addSubview:itemBtn];
-                itemBtn.selected = (index == _currentIndex);
-            }
+    NSArray *indexList = [_visibleDict allKeys];
+    for (NSNumber *index in indexList) {
+        itemBtn = _visibleDict[index];
+        frame = [_frameList[[index integerValue]] CGRectValue];
+        if (![self isNeedDisplayWithFrame:frame]) {
+            if (itemBtn.selected) _currentIndex = itemBtn.tag;
+            [itemBtn setSelected:NO];
+            [itemBtn removeFromSuperview];
+            [_visibleDict removeObjectForKey:index];
+            [_cacheSet addObject:itemBtn];
         } else {
-            if (![self isNeedDisplayWithFrame:frame]) {
-                if (itemBtn.selected) _currentIndex = itemBtn.tag;
-                [itemBtn setSelected:NO];
-                [itemBtn removeFromSuperview];
-                [_visibleDict removeObjectForKey:@(index)];
-                if (!_cacheSet) {
-                    _cacheSet = [[NSMutableSet alloc] initWithCapacity:_headerList.count];
-                }
-                [_cacheSet addObject:itemBtn];
-            } else {
-                itemBtn.selected = (index == _currentIndex);
-            }
+            isSelected = [index integerValue] == _currentIndex;
+            itemBtn.selected = isSelected;
         }
-        
     }
+    
+    NSMutableArray *leftIndexList = [_indexList mutableCopy];
+    [leftIndexList removeObjectsInArray:indexList];
+    for (NSNumber *index in leftIndexList) {
+        frame = [_frameList[[index integerValue]] CGRectValue];
+        if ([self isNeedDisplayWithFrame:frame]) {
+            itemBtn = [_datasource headerView:self headerItemForIndex:[index integerValue]];
+            if (![itemBtn isKindOfClass:[UIButton class]]) continue;
+            [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
+            itemBtn.tag = [index integerValue];
+            itemBtn.frame = frame;
+            [_visibleDict setObject:itemBtn forKey:index];
+            [self addSubview:itemBtn];
+            isSelected = [index integerValue] == _currentIndex;
+            itemBtn.selected = isSelected;
+        }
+    }
+    
+    _selectedItem = _visibleDict[@(_currentIndex)];
 }
 
 - (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier
 {
     _identifier = identifier;
     NSMutableSet *cacheSet = _cacheDict[identifier];
-    UIViewController *viewController = [cacheSet anyObject];
-    if (viewController) {
-        [cacheSet removeObject:viewController];
+    UIButton *item = [cacheSet anyObject];
+    if (item) {
+        [cacheSet removeObject:item];
         [_cacheDict setValue:cacheSet forKey:identifier];
     }
-    return viewController;
+    return item;
 }
 
 #pragma mark - 是否需要显示在当前屏幕上
@@ -109,56 +107,80 @@
 - (void)setHeaderList:(NSArray *)headerList
 {
     _headerList = headerList;
-    [self resetFrameList];
-}
-
-- (void)setHeaderItem:(UIButton *)headerItem
-{
-    _headerItem = headerItem;
-    
-    NSArray *itemList = [_visibleDict allValues];
-    [_cacheSet removeAllObjects];
-    [_visibleDict removeAllObjects];
-    for (UIButton *item in itemList) {
-        [item removeFromSuperview];
-    }
-    
-    [self resetFrameList];
+    [self resetFrameForAllItems];
 }
 
 - (void)setItemBorder:(CGFloat)itemBorder
 {
     _itemBorder = itemBorder;
-    [self resetFrameList];
+    [self resetFrameForAllItems];
+}
+
+#pragma mark - 重新加载数据
+- (void)reloadData
+{
+    [self resetCacheData];
+    [self resetFrameForAllItems];
+    [self setNeedsLayout];
+}
+
+-(void)resetCacheData
+{
+    NSInteger pageCount = _headerList.count;
+    if (!_indexList) {
+        _indexList = [[NSMutableArray alloc] initWithCapacity:pageCount];
+    } else {
+        [_indexList removeAllObjects];
+    }
+    
+    for (NSInteger index = 0; index < pageCount; index++) {
+        [_indexList addObject:@(index)];
+    }
+    
+    if (!_cacheSet) {
+        _cacheSet = [[NSMutableSet alloc] initWithCapacity:_headerList.count];
+    }
+    
+    if (!_visibleDict) {
+        _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_headerList.count];
+    } else {
+        NSArray *visibleItems = [_visibleDict allValues];
+        for (UIButton *itemBtn in visibleItems) {
+            [itemBtn setSelected:NO];
+            [itemBtn removeFromSuperview];
+            [_cacheSet addObject:itemBtn];
+        }
+        [_visibleDict removeAllObjects];
+    }
 }
 
 #pragma mark - 重置所有frame
-- (void)resetFrameList
+- (void)resetFrameForAllItems
 {
-    CGSize size = CGSizeZero;
-    UIFont *font = _headerItem.titleLabel.font ?: [UIFont fontWithName:@"Helvetica" size:18];
     if (!_frameList) {
         _frameList = [[NSMutableArray alloc] initWithCapacity:_headerList.count];
     }
     
+    CGFloat itemX = 0;
+    CGSize size = CGSizeZero;
+    CGRect frame = CGRectZero;
     [_frameList removeAllObjects];
     NSInteger count = _headerList.count;
-    CGRect frame = CGRectZero;
-    CGFloat itemX = 0;
+    CGFloat height = self.frame.size.height;
+    _normalFont = _normalFont ?: [UIFont fontWithName:@"Helvetica" size:16];
     for (int index = 0; index < count; index++) {
         if (IOS7_OR_LATER) {
-            size = [_headerList[index] sizeWithAttributes:@{NSFontAttributeName : font}];
+            size = [_headerList[index] sizeWithAttributes:@{NSFontAttributeName : _normalFont}];
         } else {
-            size = [_headerList[index] sizeWithFont:font];
+            size = [_headerList[index] sizeWithFont:_normalFont];
         }
         
-        frame = CGRectMake(itemX, 0, size.width + _itemBorder, 44);
+        frame = CGRectMake(itemX, 0, size.width + _itemBorder, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
     }
     
     self.contentSize = CGSizeMake(itemX, 0);
-    [self setNeedsLayout];
 }
 
 - (UIButton *)itemWithIndex:(NSInteger)index
@@ -180,6 +202,8 @@
 - (void)itemClick:(id)sender
 {
     if ([_headerDelegate respondsToSelector:@selector(headerView:didSelectedItem:)]) {
+        _selectedItem.selected = NO;
+        _currentIndex = [(UIButton *)sender tag];
         [_headerDelegate headerView:self didSelectedItem:sender];
     }
 }

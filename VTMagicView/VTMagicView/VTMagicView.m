@@ -48,7 +48,9 @@
     _navigationView.backgroundColor = [UIColor clearColor];
     [self addSubview:_navigationView];
     
-    UIView *separatorLine_ = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_navigationView.frame) - 1, SCREENWIDTH, 1)];
+    CGFloat separatorH = 0.5;
+    CGRect separatorFrame = CGRectMake(0, CGRectGetHeight(_navigationView.frame) - separatorH, size.width, separatorH);
+    UIView *separatorLine_ = [[UIView alloc] initWithFrame:separatorFrame];
     separatorLine_.backgroundColor = RGBCOLOR(188, 188, 188);
     [_navigationView addSubview:separatorLine_];
     
@@ -65,8 +67,8 @@
     [_headerView addSubview:_shadowView];
     
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
-    _contentView = [[VTContentView alloc] initWithFrame:CGRectMake(0, contentY, 320, size.height - contentY)];
-//    _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    CGFloat contentH = size.height - contentY;
+    _contentView = [[VTContentView alloc] initWithFrame:CGRectMake(0, contentY, size.width, contentH)];
     _contentView.contentSize = CGSizeMake(_headerList.count * size.width, 0);
     _contentView.showsHorizontalScrollIndicator = NO;
     _contentView.pagingEnabled = YES;
@@ -80,6 +82,8 @@
 {
     [super layoutSubviews];
     
+    [self updateHeaderView];
+#if 0
     // 暂不支持旋转
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     if (isLandscape) return;
@@ -94,7 +98,6 @@
     _isRotateAnimating = NO;
 
     CGSize viewSize = CGSizeZero;
-//    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     if (isLandscape) {
         if (0 == _currentIndex) {
             _navigationView.hidden = YES;
@@ -117,14 +120,20 @@
     
     // 横竖屏切换适配
     [_contentView layoutSubviewsWhenRotated];
+#endif
 }
 
 #pragma mark - set 方法
-- (void)setHeaderItem:(UIButton *)headerItem
+- (void)setTabbarShow:(BOOL)tabbarShow
 {
-    if (![headerItem isKindOfClass:[UIButton class]]) return;
-    _headerItem = headerItem;
-    _headerView.headerItem = headerItem;
+    _tabbarShow = tabbarShow;
+    if (tabbarShow) {
+        CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
+        CGRect contentFrame = _contentView.frame;
+        contentFrame.size.height = self.frame.size.height - contentY - TABBAR_HEIGHT;
+        _contentView.frame = contentFrame;
+        [_contentView reloadData];
+    }
 }
 
 - (void)setLeftHeaderView:(UIView *)leftHeaderView
@@ -145,7 +154,7 @@
     
     CGRect rightFrame = rightHeaderView.bounds;
     rightFrame.origin.x = _navigationView.frame.size.width - rightFrame.size.width;
-    rightFrame.size.height = _navigationView.frame.size.height;
+    rightFrame.origin.y = (_navigationView.frame.size.height - rightFrame.size.height) * 0.5;
     rightHeaderView.frame = rightFrame;
     rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [_navigationView addSubview:rightHeaderView];
@@ -156,7 +165,7 @@
 {
     CGRect headerFrame = _headerView.frame;
     headerFrame.origin.x = CGRectGetMaxX(_leftHeaderView.frame);
-    headerFrame.size.width = _navigationView.frame.size.width - _leftHeaderView.frame.size.width - _rightHeaderView.frame.size.width;
+    headerFrame.size.width = CGRectGetMinX(_rightHeaderView.frame) - CGRectGetMaxX(_leftHeaderView.frame);
     _headerView.frame = headerFrame;
 }
 
@@ -199,9 +208,23 @@
         _currentIndex = _headerList.count;
     }
     
+    _originalButton = nil;
     _contentView.pageCount = _headerList.count;
     [_contentView reloadData];
+    [_headerView reloadData];
     [self setNeedsLayout];
+}
+
+- (void)setNormalFont:(UIFont *)normalFont
+{
+    _normalFont = normalFont;
+    _headerView.normalFont = normalFont;
+}
+
+- (void)setSelectedFont:(UIFont *)selectedFont
+{
+    _selectedFont = selectedFont;
+    _headerView.selectedFont = selectedFont;
 }
 
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
@@ -223,7 +246,6 @@
     }
     
     _headerView.currentIndex = currentIndex;
-//    [appearViewController.view.superview bringSubviewToFront:appearViewController.view];
     if (appearViewController && [_delegate respondsToSelector:@selector(currentIndex)]) {
         [(VTMagicViewController *)_delegate setCurrentIndex:currentIndex];
     }
@@ -298,6 +320,7 @@
         sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
     }
     
+    NSInteger disIndex = _currentIndex;
     NSInteger newIndex = [(UIButton *)sender tag];
     if (abs((int)(_currentIndex - newIndex)) > 1) {// 当前按钮与选中按钮不相邻时
         [self subviewWillAppeareWithIndex:newIndex];
@@ -311,6 +334,7 @@
         }];
     }
     
+    _currentIndex = newIndex;
     [UIView animateWithDuration:0.25 animations:^{
         [_originalButton setSelected:NO];
         [sender setSelected:YES];
@@ -318,11 +342,11 @@
         [self updateHeaderView];
         _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * newIndex, 0);
     } completion:^(BOOL finished) {
-        self.currentIndex = newIndex;
+//        self.currentIndex = newIndex;
+        [self displayViewControllerDidChangedWithIndex:_currentIndex disIndex:disIndex];
     }];
 }
 
-#pragma mark 更新顶部header的位置
 - (void)updateHeaderView
 {
     if (!_originalButton) {
@@ -361,7 +385,7 @@
         _headerView.contentOffset = CGPointMake(itemMinX, 0);
     }
     
-// 原始逻辑，暂时废弃
+    // 原始逻辑，暂时废弃
 //    if (headerWidth + headerOffsetX <= itemMinX + itemSize.width * 0.5) {
 //        CGFloat totleWidth = _headerView.contentSize.width;
 //        headerOffsetX += itemSize.width;
@@ -438,22 +462,21 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
-        NSLog(@"scrollViewDidEndDragging");
+//        NSLog(@"scrollViewDidEndDragging");
     }
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 
 {
-    NSLog(@"scrollViewDidEndScrollingAnimation ");
+//    NSLog(@"scrollViewDidEndScrollingAnimation ");
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     _isUserSliding = NO;
-//    NSLog(@"scrollViewDidEndDecelerating");
     if (0 != (int)scrollView.contentOffset.x%320) {
-        NSLog(@"scrollViewDidEndDecelerating ERROR: %d",(int)scrollView.contentOffset.x%320);
+//        NSLog(@"scrollViewDidEndDecelerating ERROR: %d",(int)scrollView.contentOffset.x%320);
     }
 }
 

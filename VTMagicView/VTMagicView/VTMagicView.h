@@ -69,9 +69,13 @@
 
 @interface VTMagicView : UIView
 /**
- *  顶部导航栏item
+ *  顶部正常item的字体
  */
-@property (nonatomic, strong) UIButton *headerItem;
+@property (nonatomic, strong) UIFont *normalFont;
+/**
+ *  顶部被选中的item的字体
+ */
+@property (nonatomic, strong) UIFont *selectedFont;
 /**
  *  顶部导航栏左侧视图
  */
@@ -85,6 +89,10 @@
  */
 @property (nonatomic, strong) UIColor *navigationColor;
 /**
+ *  顶部导航条的高度，默认是44
+ */
+@property (nonatomic, assign) CGFloat navigationHeight;
+/**
  *  顶部导航栏下划线颜色
  */
 @property (nonatomic, strong) UIColor *slideColor;
@@ -92,6 +100,10 @@
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemBorder;
+/**
+ *  底部tabbar是否显示，默认NO
+ */
+@property (nonatomic, assign) BOOL tabbarShow;
 /**
  *  代理
  */

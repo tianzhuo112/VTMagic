@@ -41,13 +41,21 @@
  */
 @property (nonatomic, strong) NSArray *headerList;
 /**
- *  单个item
+ *  顶部正常item的字体
  */
-@property (nonatomic, strong) UIButton *headerItem;
+@property (nonatomic, strong) UIFont *normalFont;
+/**
+ *  被选中的item的字体
+ */
+@property (nonatomic, strong) UIFont *selectedFont;
 /**
  *  当前选中item对应的索引
  */
 @property (nonatomic, assign) NSInteger currentIndex;
+/**
+ *  当前被选中的item
+ */
+@property (nonatomic, strong) UIButton *selectedItem;
 /**
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
@@ -60,6 +68,11 @@
  *  代理
  */
 @property (nonatomic, weak) id <VTHeaderDelegate> headerDelegate;
+
+/**
+ *  刷新数据
+ */
+- (void)reloadData;
 /**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
  *
@@ -76,13 +89,5 @@
  *  @return 缓存池中取出的headerItem
  */
 - (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier;
-/**
- *  <#Description#>
- *
- *  @param frame <#frame description#>
- *
- *  @return <#return value description#>
- */
-- (BOOL)isNeedDisplayWithFrame:(CGRect)frame;
 
 @end
