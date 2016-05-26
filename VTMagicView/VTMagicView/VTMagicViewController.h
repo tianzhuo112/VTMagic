@@ -8,18 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "VTMagicView.h"
+#import "VTCommon.h"
 
 @interface VTMagicViewController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource>
-
+/**
+ *  magic view，等同于self.view
+ */
 @property (nonatomic, strong) VTMagicView *magicView;
-/**
- *  顶部标签栏左侧视图
- */
-@property (nonatomic, strong) UIView *leftHeaderView;
-/**
- *  顶部标签栏右侧视图
- */
-@property (nonatomic, strong) UIView *rightHeaderView;
 /**
  *  当前页面对应的索引
  */

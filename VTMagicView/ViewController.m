@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "RecomViewController.h"
 #import "ListViewController.h"
-#import "Common.h"
+#import "VTCommon.h"
 
 @interface ViewController ()
 
@@ -23,41 +23,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
     [button setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
     button.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
     self.magicView.headerItem = button;
+    self.magicView.navigationColor = RGBCOLOR(239, 239, 239);
+    self.view.backgroundColor = [UIColor whiteColor];
     
+    [self integrateComponents];
     [self generateTempData];
     [self generateColors];
-    
-    self.magicView.navigationColor = RGBCOLOR(239, 239, 239);
-    
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-    leftButton.center = self.view.center;
-    [leftButton setTitle:@"左侧" forState:UIControlStateNormal];
-    [leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    self.magicView.leftHeaderView = leftButton;
-    
-    UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-    rightButton.center = self.view.center;
-    [rightButton setTitle:@"右侧" forState:UIControlStateNormal];
-    [rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    self.magicView.rightHeaderView = rightButton;
+    [self.magicView reloadData];
 }
 
 #pragma mark - magic view delegate & data source
 - (NSArray *)headersForMagicView:(VTMagicView *)magicView
 {
     return _headerList;
-}
-
-- (NSInteger)numberOfViewControllersInMagicView:(VTMagicView *)magicView
-{
-    return _headerList.count;
 }
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index
@@ -78,8 +61,7 @@
     }
     
     viewController.view.backgroundColor = _colorList[index];
-    UIButton *button = [viewController.view.subviews firstObject];
-    [button setTitle:[NSString stringWithFormat:@"测试按钮%ld",index] forState:UIControlStateNormal];
+    [viewController updatePageInfo:index];
     return viewController;
 }
 
@@ -101,7 +83,6 @@
     for (int index = 0; index < 20; index++) {
         [headerList addObject:[NSString stringWithFormat:@"%@%d",header,index]];
     }
-    self.magicView.headerList = headerList;
     _headerList = headerList;
 }
 
@@ -114,6 +95,21 @@
         backgroundColor = RGBCOLOR(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255));
         [_colorList addObject:backgroundColor];
     }
+}
+
+- (void)integrateComponents
+{
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    leftButton.center = self.view.center;
+    [leftButton setTitle:@"左侧" forState:UIControlStateNormal];
+    [leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.magicView.leftHeaderView = leftButton;
+    
+    UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    rightButton.center = self.view.center;
+    [rightButton setTitle:@"右侧" forState:UIControlStateNormal];
+    [rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    self.magicView.rightHeaderView = rightButton;
 }
 
 @end

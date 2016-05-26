@@ -14,15 +14,16 @@
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTHeaderDelegate>
 
 @property (nonatomic, strong) UIView *navigationView;// 顶部导航视图
-@property (nonatomic, strong) UIScrollView *headerView; // 顶部导航视图内的滚动视图
+@property (nonatomic, strong) VTHeaderView *headerView; // 顶部导航视图内的滚动视图
 @property (nonatomic, strong) VTContentView *contentView; // 容器视图
 @property (nonatomic, strong) UIView *shadowView; // 顶部下划线
+@property (nonatomic, strong) UIButton *originalButton;
+@property (nonatomic, strong) NSArray *headerList; //顶部item内容数组
 @property (nonatomic, assign) NSInteger nextIndex; // 下一个页面的索引
 @property (nonatomic, assign) NSInteger currentIndex; //当前页面的索引
 @property (nonatomic, assign) BOOL isViewWillAppeare;
 @property (nonatomic, assign) BOOL isRotateAnimating;
 @property (nonatomic, assign) BOOL isUserSliding; // 是否是用户手动滑动
-@property (nonatomic, strong) UIButton *originalButton;
 
 @end
 
@@ -37,6 +38,26 @@
     return self;
 }
 
+//- (instancetype)init
+//{
+//    self = [super init];
+//    if (self) {
+//        [self addSubviews];
+//        
+//    }
+//    return self;
+//}
+
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    
+    // 在控制器的viewDidLoad中处理更合理
+//    if (!self.superview) return;
+//    [self reloadData];
+//    self.currentIndex = 0;
+}
+
 #pragma mark - layout subviews
 - (void)addSubviews
 {
@@ -47,10 +68,11 @@
     _navigationView.backgroundColor = [UIColor redColor];
     [self addSubview:_navigationView];
     
-    _headerView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, size.width, 44)];
+    _headerView = [[VTHeaderView alloc] initWithFrame:CGRectMake(0, 0, size.width, 44)];
     _headerView.backgroundColor = RGBCOLOR(255, 255, 255);
     _headerView.showsHorizontalScrollIndicator = NO;
     _headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _headerView.headerDelegate = self;
     [_navigationView addSubview:_headerView];
     
     _shadowView = [[UIView alloc] init];
@@ -59,6 +81,7 @@
     
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
     _contentView = [[VTContentView alloc] initWithFrame:CGRectMake(0, contentY, 320, size.height - contentY)];
+//    _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _contentView.contentSize = CGSizeMake(_headerList.count * size.width, 0);
     _contentView.showsHorizontalScrollIndicator = NO;
     _contentView.pagingEnabled = YES;
@@ -71,9 +94,12 @@
 {
     [super layoutSubviews];
     
+    // 暂不支持旋转
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    if (isLandscape) return;
+    
     self.frame = self.window.bounds;
     CGSize size = [UIScreen mainScreen].bounds.size;
-    if (_originalButton) _currentIndex = -(_originalButton.tag + 1);
     _isRotateAnimating = YES;
     _contentView.contentOffset = CGPointMake(size.width * _currentIndex, 0);
     _contentView.contentSize = CGSizeMake(_headerList.count * size.width, 0);
@@ -82,7 +108,7 @@
     _isRotateAnimating = NO;
 
     CGSize viewSize = CGSizeZero;
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+//    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     if (isLandscape) {
         if (0 == _currentIndex) {
             _navigationView.hidden = YES;
@@ -107,98 +133,12 @@
     [_contentView layoutSubviewsWhenRotated];
 }
 
-#pragma mark - 加载数据
-- (void)reloadData
-{
-    if ([_dataSource respondsToSelector:@selector(headersForMagicView:)]) {
-#warning mark 待优化，每次reloadData都会走这里
-//        self.headerList = [_dataSource headersForMagicView:self];
-    }
-    
-    NSInteger count = _headerList.count;//[_dataSource numberOfViewControllersInMagicView:self];
-    _contentView.dataCount = count;
-    [_contentView reloadData];
-}
-
-#pragma mark - 查询可重用单元格
-- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
-{
-    return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
-}
-
 #pragma mark - set 方法
 - (void)setHeaderItem:(UIButton *)headerItem
 {
+    if (![headerItem isKindOfClass:[UIButton class]]) return;
     _headerItem = headerItem;
-    
-    UIButton *headerBtn = nil;
-    NSInteger maxCount = _headerList.count;
-    for (NSInteger index = -1; index >= -maxCount; index--) {
-        headerBtn = (UIButton *)[_headerView viewWithTag:index];
-        [headerBtn setTitleColor:[_headerItem titleColorForState:UIControlStateNormal] forState:UIControlStateNormal];
-        [headerBtn setTitleColor:[_headerItem titleColorForState:UIControlStateSelected] forState:UIControlStateSelected];
-        headerBtn.titleLabel.font = _headerItem.titleLabel.font;
-    }
-}
-
-- (void)setHeaderList:(NSArray *)headerList
-{
-    _headerList = headerList;
-    
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    _contentView.contentSize = CGSizeMake(headerList.count * size.width, 0);
-    
-    CGFloat headerX = 0;
-    UIButton *headerBtn;
-    NSInteger index = -1;
-    for (NSString *aHeader in headerList) {
-        headerBtn = [self buttonItemWithTitle:aHeader];
-        headerBtn.frame = (CGRect){CGPointMake(headerX, 0),headerBtn.frame.size};
-        headerBtn.tag = index;
-        [headerBtn addTarget:self action:@selector(headerItemClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_headerView addSubview:headerBtn];
-        headerX += headerBtn.frame.size.width;
-        index--;
-        
-        if ([aHeader isEqualToString:[headerList firstObject]]) {
-            headerBtn.selected = YES;
-        }
-        
-        if ([aHeader isEqual:[headerList lastObject]]) {
-            CGFloat contentWidth = CGRectGetMaxX(headerBtn.frame);
-            _headerView.contentSize = CGSizeMake(contentWidth, 0);
-            CGSize size = headerBtn.frame.size;
-            if (!_originalButton) _originalButton = (UIButton *)[_headerView viewWithTag:-1];
-            _shadowView.frame = CGRectMake(_originalButton.frame.origin.x, size.height - 2, size.width, 2);
-        }
-    }
-    
-    [self reloadData];
-}
-
-- (UIButton *)buttonItemWithTitle:(NSString *)title
-{
-    CGSize size = CGSizeZero;
-    UIFont *font = _headerItem ? _headerItem.titleLabel.font : [UIFont fontWithName:@"Helvetica" size:18];
-    if (IOS7_OR_LATER) {
-        size = [title sizeWithAttributes:@{NSFontAttributeName : font}];
-    } else {
-        size = [title sizeWithFont:font];
-    }
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (_headerItem) {
-        [button setTitleColor:[_headerItem titleColorForState:UIControlStateNormal] forState:UIControlStateNormal];
-        [button setTitleColor:[_headerItem titleColorForState:UIControlStateSelected] forState:UIControlStateSelected];
-    } else {
-        [button setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
-        [button setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
-    }
-    
-    button.titleLabel.font = font;
-    [button setTitle:title forState:UIControlStateNormal];
-    button.bounds = (CGRect){CGPointZero,CGSizeMake(size.width + 25, 44)};
-    return button;
+    _headerView.headerItem = headerItem;
 }
 
 - (void)setLeftHeaderView:(UIView *)leftHeaderView
@@ -240,6 +180,12 @@
     _navigationView.backgroundColor = navigationColor;
 }
 
+- (void)setItemBorder:(CGFloat)itemBorder
+{
+    _itemBorder = itemBorder;
+    _headerView.itemBorder = itemBorder;
+}
+
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
 //    if (_currentIndex == _nextIndex) return;
@@ -254,8 +200,11 @@
 {
     _isUserSliding = NO;
     if ([_originalButton isEqual:sender]) return;
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
+        sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
+    }
     
-    NSInteger newIndex = -([sender tag] + 1);
+    NSInteger newIndex = [(UIButton *)sender tag];//-([sender tag] + 1);
     if (abs((int)(_currentIndex - newIndex)) > 1) {// 当前按钮与选中按钮不相邻时
         [self subviewWillAppeareWithIndex:newIndex];
         [self displayViewControllerDidChangedWithIndex:newIndex disIndex:_currentIndex];
@@ -282,7 +231,13 @@
 #pragma mark 更新顶部header的位置
 - (void)updateHeaderView
 {
+    if (!_originalButton) {
+        _originalButton = [_headerView itemWithIndex:_currentIndex];
+        _originalButton.selected = YES;
+    }
+    
     CGSize size = [_originalButton frame].size;
+    CGFloat shadownX = _originalButton.frame.origin.x;
     _shadowView.frame = CGRectMake(_originalButton.frame.origin.x, size.height - 2, size.width, 2);
     CGFloat headerMinX = [_originalButton frame].origin.x;
     CGFloat headerWidth = _headerView.frame.size.width;
@@ -306,6 +261,22 @@
     }
 }
 
+#pragma mark - 重新加载数据
+- (void)reloadData
+{
+    if ([_delegate respondsToSelector:@selector(currentViewController)]) {
+        [(VTMagicViewController *)_delegate setCurrentViewController:nil];
+    }
+    
+    if ([_dataSource respondsToSelector:@selector(headersForMagicView:)]) {
+        _headerList = [_dataSource headersForMagicView:self];
+        _headerView.headerList = _headerList;
+    }
+    
+    _contentView.dataCount = _headerList.count;
+    [_contentView reloadData];
+}
+
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
 - (void)displayViewControllerDidChangedWithIndex:(NSInteger)currentIndex disIndex:(NSInteger)disIndex
 {
@@ -324,6 +295,8 @@
         }
     }
     
+    _headerView.currentIndex = currentIndex;
+//    [appearViewController.view.superview bringSubviewToFront:appearViewController.view];
     if (appearViewController && [_delegate respondsToSelector:@selector(currentIndex)]) {
         [(VTMagicViewController *)_delegate setCurrentIndex:currentIndex];
     }
@@ -347,6 +320,12 @@
     [self headerItemClick:itemBtn];
 }
 
+#pragma mark - 查询可重用单元格
+- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
+{
+    return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
+}
+
 #pragma mark - contentView data source
 - (UIViewController *)contentView:(VTContentView *)content viewControllerForIndex:(NSInteger)index
 {
@@ -354,9 +333,12 @@
         UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
         if (viewController && ![viewController.parentViewController isEqual:_delegate]) {
             [(UIViewController *)_delegate addChildViewController:viewController];
-            if ([_delegate respondsToSelector:@selector(currentViewController)] && ![(VTMagicViewController *)_delegate currentViewController]) {
-                // 设置默认的currentViewController
+            // 设置默认的currentViewController，并触发viewControllerDidAppeare
+            if (index == _currentIndex && [_delegate respondsToSelector:@selector(currentViewController)] && ![(VTMagicViewController *)_delegate currentViewController]) {
                 [(VTMagicViewController *)_delegate setCurrentViewController:viewController];
+                if ([_delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)]) {
+                    [_delegate magicView:self viewControllerDidAppeare:viewController index:_currentIndex];
+                }
             }
         }
         return viewController;
@@ -395,7 +377,7 @@
     
     if (_isUserSliding && newIndex != _currentIndex) {
         self.currentIndex = newIndex;
-        UIButton *headerButton = (UIButton *)[_headerView viewWithTag:-(newIndex + 1)];
+        UIButton *headerButton = [_headerView itemWithIndex:newIndex];
         [UIView animateWithDuration:0.25 animations:^{
             [_originalButton setSelected:NO];
             [headerButton setSelected:YES];

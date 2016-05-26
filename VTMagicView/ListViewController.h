@@ -10,4 +10,6 @@
 
 @interface ListViewController : UIViewController
 
+- (void)updatePageInfo:(NSInteger)page;
+
 @end

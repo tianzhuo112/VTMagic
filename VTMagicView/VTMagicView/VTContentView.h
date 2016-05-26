@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Common.h"
+#import "VTCommon.h"
 
 #define APP_DELEGATE ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
@@ -17,12 +17,12 @@
  */
 @protocol VTContentViewDataSource <NSObject>
 /**
- *  <#Description#>
+ *  根据索引获取对应的控制器
  *
- *  @param content <#content description#>
- *  @param index   <#index description#>
+ *  @param content self
+ *  @param index   索引
  *
- *  @return <#return value description#>
+ *  @return 当前索引对应的控制器
  */
 - (UIViewController *)contentView:(VTContentView *)content viewControllerForIndex:(NSInteger)index;
 
@@ -41,6 +41,7 @@
  *  屏幕上可见的控制器
  */
 @property (nonatomic, strong) NSMutableArray *visibleList;
+
 /**
  *  刷新数据
  */
@@ -54,11 +55,11 @@
  */
 - (void)resetFrames;
 /**
- *  根据缓存标识获取可重用的tableViewController
+ *  根据缓存标识查询可重用的视图控制器
  *
  *  @param identifier 缓存重用标识
  *
- *  @return 可重用的tableViewController
+ *  @return 可重用的视图控制器
  */
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
 

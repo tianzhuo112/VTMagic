@@ -45,12 +45,6 @@
  */
 - (NSArray *)headersForMagicView:(VTMagicView *)magicView;
 /**
- *  页面控制器的总数量
- *
- *  @return 控制器数量
- */
-- (NSInteger)numberOfViewControllersInMagicView:(VTMagicView *)magicView;
-/**
  *  当前索引对应的控制器
  *
  *  @param magicView self
@@ -65,15 +59,10 @@
 @end
 
 @interface VTMagicView : UIView
-
 /**
  *  顶部导航栏item
  */
 @property (nonatomic, strong) UIButton *headerItem;
-/**
- *  顶部item内容数组
- */
-@property (nonatomic, strong) NSArray *headerList;
 /**
  *  顶部导航栏左侧视图
  */
@@ -90,6 +79,10 @@
  *  顶部导航栏下划线颜色
  */
 @property (nonatomic, strong) UIColor *slideColor;
+/**
+ *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
+ */
+@property (nonatomic, assign) CGFloat itemBorder;
 /**
  *  代理
  */

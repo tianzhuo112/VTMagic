@@ -32,7 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7E8317721CF74DCC00436604 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		7E8317721CF74DCC00436604 /* VTCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCommon.h; sourceTree = "<group>"; };
 		7E8317731CF74DCC00436604 /* VTHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTHeaderView.h; sourceTree = "<group>"; };
 		7E8317741CF74DCC00436604 /* VTHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTHeaderView.m; sourceTree = "<group>"; };
 		7E8317781CF74E6B00436604 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		AED72D1E1A5264CE008E13B7 /* VTMagicView */ = {
 			isa = PBXGroup;
 			children = (
-				7E8317721CF74DCC00436604 /* Common.h */,
+				7E8317721CF74DCC00436604 /* VTCommon.h */,
 				7E8317731CF74DCC00436604 /* VTHeaderView.h */,
 				7E8317741CF74DCC00436604 /* VTHeaderView.m */,
 				AED72D1F1A5264CE008E13B7 /* VTContentView.h */,

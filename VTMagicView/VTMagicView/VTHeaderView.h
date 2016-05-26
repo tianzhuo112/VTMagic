@@ -23,7 +23,6 @@
 @end
 
 @interface VTHeaderView : UIScrollView
-
 /**
  *  header字符串数组
  */
@@ -32,6 +31,14 @@
  *  单个item
  */
 @property (nonatomic, strong) UIButton *headerItem;
+/**
+ *  当前选中item对应的索引
+ */
+@property (nonatomic, assign) NSInteger currentIndex;
+/**
+ *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
+ */
+@property (nonatomic, assign) CGFloat itemBorder;
 /**
  *  代理
  */

@@ -7,7 +7,7 @@
 //
 
 #import "VTHeaderView.h"
-#import "Common.h"
+#import "VTCommon.h"
 
 @interface VTHeaderView()
 
@@ -19,9 +19,22 @@
 
 @implementation VTHeaderView
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        _itemBorder = 25.f;
+    }
+    return self;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    // 暂不支持旋转
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    if (isLandscape) return;
     
     CGRect frame = CGRectZero;
     NSInteger count = _frameList.count;
@@ -41,23 +54,31 @@
                     [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
                     if (_headerItem) {
                         itemBtn.titleLabel.font = _headerItem.titleLabel.font;
-                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateNormal] forState:UIControlStateNormal];
-                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateSelected] forState:UIControlStateSelected];
+                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateNormal]
+                                      forState:UIControlStateNormal];
+                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateSelected]
+                                      forState:UIControlStateSelected];
+                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateHighlighted]
+                                      forState:UIControlStateHighlighted];
                     } else {
                         itemBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18];;
                         [itemBtn setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
                         [itemBtn setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
+                        [itemBtn setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateHighlighted];
                     }
                 }
                 
                 itemBtn.tag = index;
-                [itemBtn setTitle:_headerList[index] forState:UIControlStateNormal];
                 itemBtn.frame = frame;
+                if (_currentIndex == index) itemBtn.selected = YES;
+                [itemBtn setTitle:_headerList[index] forState:UIControlStateNormal];
                 [self addSubview:itemBtn];
                 [_visibleDict setObject:itemBtn forKey:@(index)];
             }
         } else {
             if (![self isNeedDisplayWithFrame:frame]) {
+                if (itemBtn.selected) _currentIndex = itemBtn.tag;
+                [itemBtn setSelected:NO];
                 [itemBtn removeFromSuperview];
                 [_visibleDict removeObjectForKey:@(index)];
                 if (!_cacheSet) {
@@ -70,6 +91,7 @@
     }
 }
 
+#pragma mark - 是否需要显示在当前屏幕上
 - (BOOL)isNeedDisplayWithFrame:(CGRect)frame
 {
     CGFloat referenceMinX = self.contentOffset.x;
@@ -82,24 +104,34 @@
     return isInScreen;
 }
 
+#pragma mark - set 方法
 - (void)setHeaderList:(NSArray *)headerList
 {
     _headerList = headerList;
-    
     [self resetFrameList];
-    [self setNeedsLayout];
 }
 
 - (void)setHeaderItem:(UIButton *)headerItem
 {
     _headerItem = headerItem;
     
-    [_visibleDict removeAllObjects];
+    NSArray *itemList = [_visibleDict allValues];
     [_cacheSet removeAllObjects];
+    [_visibleDict removeAllObjects];
+    for (UIButton *item in itemList) {
+        [item removeFromSuperview];
+    }
+    
     [self resetFrameList];
-    [self setNeedsLayout];
 }
 
+- (void)setItemBorder:(CGFloat)itemBorder
+{
+    _itemBorder = itemBorder;
+    [self resetFrameList];
+}
+
+#pragma mark - 重置所有frame
 - (void)resetFrameList
 {
     CGSize size = CGSizeZero;
@@ -119,12 +151,13 @@
             size = [_headerList[index] sizeWithFont:font];
         }
         
-        frame = CGRectMake(itemX, 0, size.width + 25, 44);
+        frame = CGRectMake(itemX, 0, size.width + _itemBorder, 44);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
     }
     
     self.contentSize = CGSizeMake(itemX, 0);
+    [self setNeedsLayout];
 }
 
 - (UIButton *)itemWithIndex:(NSInteger)index
@@ -132,6 +165,7 @@
     return _visibleDict[@(index)];
 }
 
+#pragma mark - item 点击事件
 - (void)itemClick:(id)sender
 {
     if ([_headerDelegate respondsToSelector:@selector(headerView:didSelectedItem:)]) {
