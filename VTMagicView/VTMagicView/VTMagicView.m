@@ -11,7 +11,7 @@
 #import "VTContentView.h"
 #import "VTMagicViewController.h"
 
-@interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTHeaderDelegate>
+@interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTHeaderDatasource,VTHeaderDelegate>
 
 @property (nonatomic, strong) UIView *navigationView;// 顶部导航视图
 @property (nonatomic, strong) VTHeaderView *headerView; // 顶部导航视图内的滚动视图
@@ -38,26 +38,6 @@
     return self;
 }
 
-//- (instancetype)init
-//{
-//    self = [super init];
-//    if (self) {
-//        [self addSubviews];
-//        
-//    }
-//    return self;
-//}
-
-- (void)didMoveToSuperview
-{
-    [super didMoveToSuperview];
-    
-    // 在控制器的viewDidLoad中处理更合理
-//    if (!self.superview) return;
-//    [self reloadData];
-//    self.currentIndex = 0;
-}
-
 #pragma mark - layout subviews
 - (void)addSubviews
 {
@@ -65,17 +45,22 @@
     CGSize size = [UIScreen mainScreen].bounds.size;
     _navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, topY, size.width, 44)];
     _navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _navigationView.backgroundColor = [UIColor redColor];
+    _navigationView.backgroundColor = [UIColor clearColor];
     [self addSubview:_navigationView];
     
+    UIView *separatorLine_ = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_navigationView.frame) - 1, SCREENWIDTH, 1)];
+    separatorLine_.backgroundColor = RGBCOLOR(188, 188, 188);
+    [_navigationView addSubview:separatorLine_];
+    
     _headerView = [[VTHeaderView alloc] initWithFrame:CGRectMake(0, 0, size.width, 44)];
-    _headerView.backgroundColor = RGBCOLOR(255, 255, 255);
+    _headerView.backgroundColor = [UIColor clearColor];
     _headerView.showsHorizontalScrollIndicator = NO;
     _headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _headerView.headerDelegate = self;
+    _headerView.datasource = self;
     [_navigationView addSubview:_headerView];
     
-    _shadowView = [[UIView alloc] init];
+    _shadowView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_headerView.frame) - 2, 0, 2)];
     _shadowView.backgroundColor = RGBCOLOR(194, 39, 39);
     [_headerView addSubview:_shadowView];
     
@@ -88,7 +73,8 @@
     _contentView.delegate = self;
     _contentView.dataSource = self;
     _contentView.bounces = NO;
-    [self addSubview:_contentView];}
+    [self addSubview:_contentView];
+}
 
 - (void)layoutSubviews
 {
@@ -195,86 +181,27 @@
     [self displayViewControllerDidChangedWithIndex:currentIndex disIndex:disIndex];
 }
 
-#pragma mark - header切换动画
-- (void)headerItemClick:(id)sender
-{
-    _isUserSliding = NO;
-    if ([_originalButton isEqual:sender]) return;
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
-        sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
-    }
-    
-    NSInteger newIndex = [(UIButton *)sender tag];//-([sender tag] + 1);
-    if (abs((int)(_currentIndex - newIndex)) > 1) {// 当前按钮与选中按钮不相邻时
-        [self subviewWillAppeareWithIndex:newIndex];
-        [self displayViewControllerDidChangedWithIndex:newIndex disIndex:_currentIndex];
-        [UIView animateWithDuration:0 animations:^{
-            NSInteger tempIndex = _currentIndex < newIndex ? newIndex - 1 : newIndex + 1;
-            _isViewWillAppeare = YES;
-            _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * tempIndex, 0);
-        } completion:^(BOOL finished) {
-            _isViewWillAppeare = NO;
-        }];
-    }
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        [_originalButton setSelected:NO];
-        [sender setSelected:YES];
-        _originalButton = sender;
-        [self updateHeaderView];
-        _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * newIndex, 0);
-    } completion:^(BOOL finished) {
-        self.currentIndex = newIndex;
-    }];
-}
-
-#pragma mark 更新顶部header的位置
-- (void)updateHeaderView
-{
-    if (!_originalButton) {
-        _originalButton = [_headerView itemWithIndex:_currentIndex];
-        _originalButton.selected = YES;
-    }
-    
-    CGSize size = [_originalButton frame].size;
-    CGFloat shadownX = _originalButton.frame.origin.x;
-    _shadowView.frame = CGRectMake(_originalButton.frame.origin.x, size.height - 2, size.width, 2);
-    CGFloat headerMinX = [_originalButton frame].origin.x;
-    CGFloat headerWidth = _headerView.frame.size.width;
-    CGFloat headerOffsetX = _headerView.contentOffset.x;
-    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
-        CGFloat diffX = (CGRectGetMaxX(_originalButton.frame) - headerWidth);
-        headerOffsetX = (diffX < 0 || headerOffsetX > diffX) ? headerOffsetX : diffX;
-    }
-    
-    if (headerWidth + headerOffsetX <= headerMinX + size.width * 1.5) {
-        CGFloat totleWidth = _headerView.contentSize.width;
-        headerOffsetX += size.width;
-        if (headerWidth + headerOffsetX > totleWidth) {
-            headerOffsetX = (totleWidth - headerWidth);
-        }
-        _headerView.contentOffset = CGPointMake(headerOffsetX, 0);
-    } else if ((headerMinX - size.width * 0.5) <= headerOffsetX) {
-        headerOffsetX -= size.width;
-        if (headerOffsetX < 0) headerOffsetX = 0;
-        _headerView.contentOffset = CGPointMake(headerOffsetX, 0);
-    }
-}
-
 #pragma mark - 重新加载数据
 - (void)reloadData
 {
-    if ([_delegate respondsToSelector:@selector(currentViewController)]) {
-        [(VTMagicViewController *)_delegate setCurrentViewController:nil];
-    }
-    
+#warning mark 每次刷新都调一次viewDidAppeare
     if ([_dataSource respondsToSelector:@selector(headersForMagicView:)]) {
         _headerList = [_dataSource headersForMagicView:self];
         _headerView.headerList = _headerList;
     }
     
-    _contentView.dataCount = _headerList.count;
+    BOOL needReset = _headerList.count <= _currentIndex || !_headerList.count;
+    if (needReset && [_delegate respondsToSelector:@selector(currentViewController)]) {
+        [(VTMagicViewController *)_delegate setCurrentViewController:nil];
+    }
+    
+    if (needReset) {
+        _currentIndex = _headerList.count;
+    }
+    
+    _contentView.pageCount = _headerList.count;
     [_contentView reloadData];
+    [self setNeedsLayout];
 }
 
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
@@ -314,20 +241,35 @@
     }
 }
 
-#pragma mark - headerView deleagte
+#pragma mark - headerView datasource & deleagte
+- (UIButton *)headerView:(VTHeaderView *)headerView headerItemForIndex:(NSInteger)index
+{
+    if ([_dataSource respondsToSelector:@selector(magicView:headerItemForIndex:)]) {
+        UIButton *headerItem = [_dataSource magicView:self headerItemForIndex:index];
+        if (!_originalButton) _originalButton = headerItem;
+        return headerItem;
+    }
+    return nil;
+}
+
 - (void)headerView:(VTHeaderView *)headerView didSelectedItem:(UIButton *)itemBtn
 {
     [self headerItemClick:itemBtn];
 }
 
-#pragma mark - 查询可重用单元格
+#pragma mark - 查询可重用header item
+- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier
+{
+    return [_headerView dequeueReusableHeaderItemWithIdentifier:identifier];
+}
+
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
 {
     return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
 }
 
 #pragma mark - contentView data source
-- (UIViewController *)contentView:(VTContentView *)content viewControllerForIndex:(NSInteger)index
+- (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSInteger)index
 {
     if ([_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) {
         UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
@@ -344,6 +286,108 @@
         return viewController;
     }
     return nil;
+}
+
+
+#pragma mark - header切换动画
+- (void)headerItemClick:(id)sender
+{
+    _isUserSliding = NO;
+    if ([_originalButton isEqual:sender]) return;
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
+        sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
+    }
+    
+    NSInteger newIndex = [(UIButton *)sender tag];
+    if (abs((int)(_currentIndex - newIndex)) > 1) {// 当前按钮与选中按钮不相邻时
+        [self subviewWillAppeareWithIndex:newIndex];
+        [self displayViewControllerDidChangedWithIndex:newIndex disIndex:_currentIndex];
+        [UIView animateWithDuration:0 animations:^{
+            NSInteger tempIndex = _currentIndex < newIndex ? newIndex - 1 : newIndex + 1;
+            _isViewWillAppeare = YES;
+            _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * tempIndex, 0);
+        } completion:^(BOOL finished) {
+            _isViewWillAppeare = NO;
+        }];
+    }
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        [_originalButton setSelected:NO];
+        [sender setSelected:YES];
+        _originalButton = sender;
+        [self updateHeaderView];
+        _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * newIndex, 0);
+    } completion:^(BOOL finished) {
+        self.currentIndex = newIndex;
+    }];
+}
+
+#pragma mark 更新顶部header的位置
+- (void)updateHeaderView
+{
+    if (!_originalButton) {
+        _originalButton = [_headerView itemWithIndex:_currentIndex];
+        _originalButton.selected = YES;
+    }
+    
+    CGFloat offsetX = 0;
+    CGFloat headerWidth = _headerView.frame.size.width;
+    CGFloat itemMinX = _originalButton.frame.origin.x;
+    CGFloat itemMaxX = CGRectGetMaxX(_originalButton.frame);
+    CGFloat headerOffsetX = _headerView.contentOffset.x;
+    if (itemMaxX < headerOffsetX) {// 位于屏幕左侧
+        offsetX = itemMinX - headerWidth;
+        offsetX = offsetX < 0 ?: 0;
+        _headerView.contentOffset = CGPointMake(offsetX, 0);
+    } else if (headerOffsetX + headerWidth < itemMinX) {// 位于屏幕右侧
+        offsetX = itemMaxX - headerWidth;
+        _headerView.contentOffset = CGPointMake(offsetX, 0);
+    }
+    
+    CGSize itemSize = _originalButton.frame.size;
+    CGRect shadowFrame = _shadowView.frame;
+    shadowFrame.origin.x = itemMinX;
+    shadowFrame.size.width = itemSize.width;
+    _shadowView.frame = shadowFrame;//CGRectMake(headerItemMinX, size.height - 2, size.width, 2);
+    
+    if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
+        CGFloat diffX = (CGRectGetMaxX(_originalButton.frame) - headerWidth);
+        headerOffsetX = (diffX < 0 || headerOffsetX > diffX) ? headerOffsetX : diffX;
+    }
+    
+    if (headerWidth + headerOffsetX <= itemMaxX) {
+        _headerView.contentOffset = CGPointMake(itemMaxX - headerWidth, 0);
+    } else if (itemMinX < headerOffsetX) {
+        _headerView.contentOffset = CGPointMake(itemMinX, 0);
+    }
+    
+// 原始逻辑，暂时废弃
+//    if (headerWidth + headerOffsetX <= itemMinX + itemSize.width * 0.5) {
+//        CGFloat totleWidth = _headerView.contentSize.width;
+//        headerOffsetX += itemSize.width;
+//        if (headerWidth + headerOffsetX > totleWidth) {
+//            headerOffsetX = (totleWidth - headerWidth);
+//        }
+//        _headerView.contentOffset = CGPointMake(headerOffsetX, 0);
+//    } else if ((itemMinX - itemSize.width * 0.5) <= headerOffsetX) {
+//        headerOffsetX -= itemSize.width;
+//        if (headerOffsetX < 0) headerOffsetX = 0;
+//        _headerView.contentOffset = CGPointMake(headerOffsetX, 0);
+//    }
+}
+
+- (void)updateHeaderViewWhenUserScrolled
+{
+    [self canPerformAction:@selector(updateHeaderViewWhenUserScrolled) withSender:nil];
+    UIButton *headerButton = [_headerView itemWithIndex:_currentIndex];
+    [UIView animateWithDuration:0.25 animations:^{
+        [_originalButton setSelected:NO];
+        [headerButton setSelected:YES];
+        _originalButton = headerButton;
+        [self updateHeaderView];
+//            CGSize size = headerButton.frame.size;
+//            _shadowView.frame = CGRectMake(headerButton.frame.origin.x, size.height - 2, size.width, 2);
+    }];
 }
 
 #pragma mark - UIScrollView delegate
@@ -377,13 +421,7 @@
     
     if (_isUserSliding && newIndex != _currentIndex) {
         self.currentIndex = newIndex;
-        UIButton *headerButton = [_headerView itemWithIndex:newIndex];
-        [UIView animateWithDuration:0.25 animations:^{
-            [_originalButton setSelected:NO];
-            [headerButton setSelected:YES];
-            _originalButton = headerButton;
-            [self updateHeaderView];
-        }];
+        [self updateHeaderViewWhenUserScrolled];
     }
     
     if (tempIndex == _currentIndex) { // 重置_nextIndex

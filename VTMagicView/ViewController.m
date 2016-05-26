@@ -23,11 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
-    [button setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
-    button.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
-    self.magicView.headerItem = button;
     self.magicView.navigationColor = RGBCOLOR(239, 239, 239);
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -41,6 +36,22 @@
 - (NSArray *)headersForMagicView:(VTMagicView *)magicView
 {
     return _headerList;
+}
+
+- (UIButton *)magicView:(VTMagicView *)magicView headerItemForIndex:(NSInteger)index
+{
+    static NSString *itemIdentifier = @"itemIdentifier";
+    UIButton *headerItem = [magicView dequeueReusableViewControllerWithIdentifier:itemIdentifier];
+    if (!headerItem) {
+        headerItem = [UIButton buttonWithType:UIButtonTypeCustom];
+        [headerItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
+        [headerItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
+        headerItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
+    }
+    
+    NSString *title = _headerList[index];
+    [headerItem setTitle:title forState:UIControlStateNormal];
+    return headerItem;
 }
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index
@@ -75,6 +86,12 @@
     NSLog(@"index:%ld viewControllerDidDisappeare:%@",index, viewController.view);
 }
 
+#pragma mark - actions
+- (void)subscribeAction
+{
+    NSLog(@"subscribeAction");
+}
+
 #pragma mark - functional methods
 - (void)generateTempData
 {
@@ -100,15 +117,21 @@
 - (void)integrateComponents
 {
     UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-    leftButton.center = self.view.center;
-    [leftButton setTitle:@"左侧" forState:UIControlStateNormal];
     [leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [leftButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateHighlighted];
+    [leftButton setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateNormal];
+    [leftButton setTitle:@"左侧" forState:UIControlStateNormal];
+    leftButton.titleLabel.font = [UIFont systemFontOfSize:20];
+    leftButton.center = self.view.center;
     self.magicView.leftHeaderView = leftButton;
     
     UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    [rightButton addTarget:self action:@selector(subscribeAction) forControlEvents:UIControlEventTouchUpInside];
+    [rightButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateHighlighted];
+    [rightButton setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateNormal];
+    [rightButton setTitle:@"+" forState:UIControlStateNormal];
+    rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:28];
     rightButton.center = self.view.center;
-    [rightButton setTitle:@"右侧" forState:UIControlStateNormal];
-    [rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     self.magicView.rightHeaderView = rightButton;
 }
 

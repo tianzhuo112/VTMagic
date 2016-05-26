@@ -28,20 +28,11 @@
     //方案一，有空白页面出现
     UIViewController *viewController = nil;
     for (NSIndexPath *indexPath in _indexList) {
-        viewController = _visibleDict[indexPath];
-//        for (UIViewController *aViewController in _visibleList) {
-//            if (aViewController.view.frame.origin.x/self.frame.size.width == indexPath.row) {
-//                viewController = aViewController;
-//                break;
-//            }
-//        }
-        
         CGRect frame = [_frameList[indexPath.row] CGRectValue];
         if (!viewController) {
             if ([self isNeedDisplayWithFrame:frame]) {
                 viewController = [_dataSource contentView:self viewControllerForIndex:indexPath.row];
                 if (!viewController) continue;
-//                if ([viewController.view.superview isEqual:self]) continue;
                 viewController.view.frame = frame;
                 viewController.restorationIdentifier = _identifier;
                 [self addSubview:viewController.view];
@@ -100,37 +91,49 @@
 -(void)resetCacheData
 {
     if (!_frameList) {
-        _frameList = [[NSMutableArray alloc] initWithCapacity:_dataCount];
+        _frameList = [[NSMutableArray alloc] initWithCapacity:_pageCount];
     } else {
         [_frameList removeAllObjects];
     }
     
 #warning mark 这个逻辑尚需优化，直接用NSNumber作为key即可
     if (!_indexList) {
-        _indexList = [[NSMutableArray alloc] initWithCapacity:_dataCount];
+        _indexList = [[NSMutableArray alloc] initWithCapacity:_pageCount];
     } else {
         [_indexList removeAllObjects];
     }
     
-    for (NSInteger i = 0; i < _dataCount; i++) {
+    for (NSInteger i = 0; i < _pageCount; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         [_indexList addObject:indexPath];
     }
     
     if (!_reusableSet) {
-        _reusableSet = [[NSMutableSet alloc] initWithCapacity:_dataCount];
+        _reusableSet = [[NSMutableSet alloc] initWithCapacity:_pageCount];
     }
     
     if (!_cacheDict) {
-        _cacheDict = [[NSMutableDictionary alloc] initWithCapacity:_dataCount];
+        _cacheDict = [[NSMutableDictionary alloc] initWithCapacity:_pageCount];
     }
     
     if (!_visibleDict) {
-        _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_dataCount];
+        _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_pageCount];
+    } else {
+        // 新增逻辑，reload时清楚页面数据
+//        NSArray *viewControllers = [_visibleDict allValues];
+//        for (UIViewController *viewController in viewControllers) {
+//            [viewController removeFromParentViewController];
+////            [viewController.view removeFromSuperview];
+//            NSMutableSet *cacheSet = _cacheDict[viewController.restorationIdentifier];
+//            if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
+//            [cacheSet addObject:viewController];
+//            [_cacheDict setValue:cacheSet forKey:viewController.restorationIdentifier];
+//        }
+//        [_visibleDict removeAllObjects];
     }
     
     if (!_visibleList) {
-        _visibleList = [[NSMutableArray alloc] initWithCapacity:_dataCount];
+        _visibleList = [[NSMutableArray alloc] initWithCapacity:_pageCount];
     }
 }
 
@@ -139,13 +142,13 @@
     CGFloat viewX = 0;
     CGFloat height = self.frame.size.height - self.frame.origin.y;
     CGRect frame = CGRectMake(viewX, 0, self.frame.size.width, height);
-#warning mark 这个地方有问题x、y设置有误
     [_frameList removeAllObjects];
     for (NSIndexPath *indexPath in _indexList) {
         viewX = indexPath.row * frame.size.width;
         frame.origin.x = viewX;
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
     }
+    self.contentSize = CGSizeMake(CGRectGetMaxX([[_frameList lastObject] CGRectValue]), 0);
 }
 
 #pragma mark - 根据缓存标识查询可重用的视图控制器

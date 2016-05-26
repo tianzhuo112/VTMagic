@@ -37,6 +37,15 @@
 
 @protocol VTMagicViewDataSource <NSObject>
 /**
+ *  根据index获取对应索引的header item
+ *
+ *  @param magicView self
+ *  @param index     当前索引
+ *
+ *  @return 当前索引对应的按钮
+ */
+- (UIButton *)magicView:(VTMagicView *)magicView headerItemForIndex:(NSInteger)index;
+/**
  *  顶部header字符串数组
  *
  *  @param magicView self
@@ -97,6 +106,14 @@
  */
 - (void)reloadData;
 /**
+ *  查询可重用header item
+ *
+ *  @param identifier 重用标识
+ *
+ *  @return 可重用的header item
+ */
+- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier;
+/**
  *  根据缓存标识获取可重用的tableViewController
  *
  *  @param identifier 缓存重用标识
@@ -104,5 +121,4 @@
  *  @return 可重用的tableViewController
  */
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
-
 @end

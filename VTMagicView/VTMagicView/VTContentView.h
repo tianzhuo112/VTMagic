@@ -24,7 +24,7 @@
  *
  *  @return 当前索引对应的控制器
  */
-- (UIViewController *)contentView:(VTContentView *)content viewControllerForIndex:(NSInteger)index;
+- (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSInteger)index;
 
 @end
 
@@ -36,7 +36,7 @@
 /**
  *  页面数量
  */
-@property (nonatomic, assign) NSInteger dataCount;
+@property (nonatomic, assign) NSInteger pageCount;
 /**
  *  屏幕上可见的控制器
  */

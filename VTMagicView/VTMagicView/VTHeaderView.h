@@ -9,6 +9,19 @@
 #import <UIKit/UIKit.h>
 
 @class VTHeaderView;
+@protocol VTHeaderDatasource <NSObject>
+/**
+ *  根据index获取对应索引的header item
+ *
+ *  @param headerView self
+ *  @param index      当前索引
+ *
+ *  @return 当前按钮
+ */
+- (UIButton *)headerView:(VTHeaderView *)headerView headerItemForIndex:(NSInteger)index;
+
+@end
+
 @protocol VTHeaderDelegate <NSObject>
 
 @optional
@@ -40,10 +53,13 @@
  */
 @property (nonatomic, assign) CGFloat itemBorder;
 /**
+ *  数据源
+ */
+@property (nonatomic, weak) id <VTHeaderDatasource> datasource;
+/**
  *  代理
  */
 @property (nonatomic, weak) id <VTHeaderDelegate> headerDelegate;
-
 /**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
  *
@@ -52,5 +68,21 @@
  *  @return 当前索引对应的item
  */
 - (UIButton *)itemWithIndex:(NSInteger)index;
+/**
+ *  根据重用标识查询可重用的headerItem
+ *
+ *  @param identifier 重用标识
+ *
+ *  @return 缓存池中取出的headerItem
+ */
+- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier;
+/**
+ *  <#Description#>
+ *
+ *  @param frame <#frame description#>
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL)isNeedDisplayWithFrame:(CGRect)frame;
 
 @end

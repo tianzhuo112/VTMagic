@@ -14,6 +14,8 @@
 @property (nonatomic, strong) NSMutableArray *frameList; // frame数组
 @property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的header item
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
+@property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
+@property (nonatomic, strong) NSString *identifier; // 重用标识符
 
 @end
 
@@ -47,33 +49,18 @@
         UIButton *itemBtn = _visibleDict[@(index)];
         if (!itemBtn) {
             if ([self isNeedDisplayWithFrame:frame]) {
-                itemBtn = [_cacheSet anyObject];
-                if (itemBtn) [_cacheSet removeObject:itemBtn];
                 if (!itemBtn) {
-                    itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                    itemBtn = [_datasource headerView:self headerItemForIndex:index];
+                    if (![itemBtn isKindOfClass:[UIButton class]]) continue;
                     [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
-                    if (_headerItem) {
-                        itemBtn.titleLabel.font = _headerItem.titleLabel.font;
-                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateNormal]
-                                      forState:UIControlStateNormal];
-                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateSelected]
-                                      forState:UIControlStateSelected];
-                        [itemBtn setTitleColor:[_headerItem titleColorForState:UIControlStateHighlighted]
-                                      forState:UIControlStateHighlighted];
-                    } else {
-                        itemBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18];;
-                        [itemBtn setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
-                        [itemBtn setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
-                        [itemBtn setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateHighlighted];
-                    }
                 }
                 
                 itemBtn.tag = index;
                 itemBtn.frame = frame;
-                if (_currentIndex == index) itemBtn.selected = YES;
                 [itemBtn setTitle:_headerList[index] forState:UIControlStateNormal];
-                [self addSubview:itemBtn];
                 [_visibleDict setObject:itemBtn forKey:@(index)];
+                [self addSubview:itemBtn];
+                itemBtn.selected = (index == _currentIndex);
             }
         } else {
             if (![self isNeedDisplayWithFrame:frame]) {
@@ -85,10 +72,24 @@
                     _cacheSet = [[NSMutableSet alloc] initWithCapacity:_headerList.count];
                 }
                 [_cacheSet addObject:itemBtn];
+            } else {
+                itemBtn.selected = (index == _currentIndex);
             }
         }
         
     }
+}
+
+- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier
+{
+    _identifier = identifier;
+    NSMutableSet *cacheSet = _cacheDict[identifier];
+    UIViewController *viewController = [cacheSet anyObject];
+    if (viewController) {
+        [cacheSet removeObject:viewController];
+        [_cacheDict setValue:cacheSet forKey:identifier];
+    }
+    return viewController;
 }
 
 #pragma mark - 是否需要显示在当前屏幕上
@@ -162,7 +163,17 @@
 
 - (UIButton *)itemWithIndex:(NSInteger)index
 {
-    return _visibleDict[@(index)];
+    if (!_headerList.count) return nil;
+    UIButton *headerItem = _visibleDict[@(index)];
+    if (!headerItem) {
+        headerItem = [_datasource headerView:self headerItemForIndex:index];
+    }
+    headerItem.tag = index;
+    [self addSubview:headerItem];
+    [_visibleDict setObject:headerItem forKey:@(index)];
+    headerItem.frame = [_frameList[index] CGRectValue];
+    [headerItem addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
+    return headerItem;
 }
 
 #pragma mark - item 点击事件

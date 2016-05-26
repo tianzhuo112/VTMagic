@@ -25,4 +25,13 @@
 #define IOS7_OR_LATER SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")
 #define IOS8_OR_LATER SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")
 
+/**
+ *  屏幕的高度
+ */
+#define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height > [UIScreen mainScreen].bounds.size.width?[UIScreen mainScreen].bounds.size.height:[UIScreen mainScreen].bounds.size.width)
+/**
+ *  屏幕的宽度
+ */
+#define SCREENWIDTH ([UIScreen mainScreen].bounds.size.height > [UIScreen mainScreen].bounds.size.width?[UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
+
 #endif

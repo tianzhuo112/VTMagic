@@ -105,6 +105,11 @@
     return nil;
 }
 
+- (UIButton *)magicView:(VTMagicView *)magicView headerItemForIndex:(NSInteger)index
+{
+    return nil;
+}
+
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index
 {
     return nil;
