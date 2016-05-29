@@ -20,10 +20,13 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
+//    self.magicView.headerHidden = NO;
     self.magicView.navigationHeight = 40;
+//    self.magicView.forbiddenSwitching = YES;
     self.magicView.navigationColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
     
@@ -34,12 +37,12 @@
 }
 
 #pragma mark - magic view delegate & data source
-- (NSArray *)headersForMagicView:(VTMagicView *)magicView
+- (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView
 {
     return _headerList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView headerItemForIndex:(NSInteger)index
+- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index
 {
     static NSString *itemIdentifier = @"itemIdentifier";
     UIButton *headerItem = [magicView dequeueReusableViewControllerWithIdentifier:itemIdentifier];
@@ -49,7 +52,6 @@
         [headerItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
         headerItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
     }
-    
     NSString *title = _headerList[index];
     [headerItem setTitle:title forState:UIControlStateNormal];
     return headerItem;

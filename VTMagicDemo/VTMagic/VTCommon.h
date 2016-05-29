@@ -44,7 +44,7 @@
 /**
  *  tabbar高度
  */
-#define TABBAR_HEIGHT (IPHONE6PLUS?50:44)
+#define TABBAR_HEIGHT (IPHONE6PLUS?50:49)
 /**
  *  屏幕的高度
  */

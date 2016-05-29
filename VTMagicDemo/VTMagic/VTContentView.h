@@ -4,12 +4,10 @@
 //
 //  Created by tianzhuo on 14/12/29.
 //  Copyright (c) 2014年 tianzhuo. All rights reserved.
-//
+//  内容页
 
 #import <UIKit/UIKit.h>
 #import "VTCommon.h"
-
-#define APP_DELEGATE ((AppDelegate *)[[UIApplication sharedApplication] delegate])
 
 @class VTContentView;
 /**

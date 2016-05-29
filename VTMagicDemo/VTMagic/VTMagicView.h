@@ -34,25 +34,24 @@
 @end
 
 /****************************************data source****************************************/
-
 @protocol VTMagicViewDataSource <NSObject>
 /**
- *  根据index获取对应索引的header item
+ *  根据index获取对应索引的category item
  *
  *  @param magicView self
  *  @param index     当前索引
  *
  *  @return 当前索引对应的按钮
  */
-- (UIButton *)magicView:(VTMagicView *)magicView headerItemForIndex:(NSInteger)index;
+- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index;
 /**
- *  顶部header字符串数组
+ *  获取所有分类名，数组中存放字符串类型对象
  *
  *  @param magicView self
  *
  *  @return header数组
  */
-- (NSArray *)headersForMagicView:(VTMagicView *)magicView;
+- (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView;
 /**
  *  当前索引对应的控制器
  *
@@ -68,14 +67,11 @@
 @end
 
 @interface VTMagicView : UIView
+/****************************************sub views****************************************/
 /**
- *  顶部正常item的字体
+ *  最顶部的头部组件，默认隐藏
  */
-@property (nonatomic, strong) UIFont *normalFont;
-/**
- *  顶部被选中的item的字体
- */
-@property (nonatomic, strong) UIFont *selectedFont;
+@property (nonatomic, strong, readonly) UIView *headerView;
 /**
  *  顶部导航视图
  */
@@ -88,10 +84,28 @@
  *  顶部导航栏右侧视图
  */
 @property (nonatomic, strong) UIView *rightHeaderView;
+
+/**************************************configurations**************************************/
+/**
+ *  顶部正常item的字体
+ */
+@property (nonatomic, strong) UIFont *normalFont;
+/**
+ *  顶部被选中的item的字体
+ */
+@property (nonatomic, strong) UIFont *selectedFont;
 /**
  *  顶部导航栏背景色
  */
 @property (nonatomic, strong) UIColor *navigationColor;
+/**
+ *  顶部导航栏下划线颜色
+ */
+@property (nonatomic, strong) UIColor *slideColor;
+/**
+ *  头部组件的高度，默认64
+ */
+@property (nonatomic, assign) CGFloat headerHeight;
 /**
  *  顶部导航条的高度，默认是44
  *  默认情况下修改导航高度会同步修改item的高度
@@ -103,28 +117,46 @@
  */
 @property (nonatomic, assign) CGFloat itemHeight;
 /**
- *  顶部导航栏下划线颜色
- */
-@property (nonatomic, strong) UIColor *slideColor;
-/**
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemBorder;
 /**
- *  底部是否需要扩展一个tabbar的高度，默认NO
+ *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
 @property (nonatomic, assign) BOOL needExtendedBottom;
 /**
- *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认YES
+ *  禁止切换，默认NO
  */
-@property (nonatomic, assign) BOOL dependStatusBar;
+@property (nonatomic, assign) BOOL forbiddenSwitching;
 /**
- *  动画显示或隐藏顶部导航20点的区域
+ *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认YES
+ *  若需修改，请在VTMagicViewController子类的初始化或viewDidLoad方法中设置
+ *  如果在其它方法中修改，请使用后一个方法：setDependStatusBar:animated:
+ */
+@property (nonatomic, assign, getter=isDependStatusBar) BOOL dependStatusBar;
+/**
+ *  是否动画显示或隐藏顶部导航20点的区域
+ *  任意地方调用后立即执行，并触发页面重新布局
  *
  *  @param dependStatusBar 隐藏或显示
  *  @param animated        是否动画执行
  */
 - (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated;
+/**
+ *  是否隐藏头部组件，默认YES
+ *  若需修改，请在VTMagicViewController子类的初始化或viewDidLoad方法中设置
+ *  如果在其它方法中修改，请使用后一个方法：setHeaderHidden:animated:
+ */
+@property (nonatomic, assign, getter=isHeaderHidden) BOOL headerHidden;
+/**
+ *  是否动画显示或隐藏头部组件
+ *  任意地方调用后立即执行，并触发页面重新布局
+ *
+ *  @param dependStatusBar 隐藏或显示
+ *  @param animated        是否动画执行
+ */
+- (void)setHeaderHidden:(BOOL)headerHidden animated:(BOOL)animated;
+
 /**
  *  代理
  */
@@ -139,13 +171,13 @@
  */
 - (void)reloadData;
 /**
- *  查询可重用header item
+ *  查询可重用category item
  *
  *  @param identifier 重用标识
  *
- *  @return 可重用的header item
+ *  @return 可重用的category item
  */
-- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier;
+- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 /**
  *  根据缓存标识获取可重用的tableViewController
  *
@@ -154,4 +186,5 @@
  *  @return 可重用的tableViewController
  */
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
+
 @end

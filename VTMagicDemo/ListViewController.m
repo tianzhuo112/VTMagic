@@ -76,7 +76,8 @@ static NSString *reuseIdentifier = @"list.reuse.identifier";
     cell.backgroundColor = [UIColor whiteColor];
     NSString *imageName = [NSString stringWithFormat:@"image_%ld", indexPath.row%13];
     [cell.imageView setImage:[UIImage imageNamed:imageName]];
-    cell.titleLabel.text = @"景点介绍，景点介绍。。";
+    cell.commentLabel.text = [NSString stringWithFormat:@"%d人出游", arc4random_uniform(9999)];
+    cell.titleLabel.text = @"景点介绍，景点介绍，景点介绍。。";
     return cell;
 }
 

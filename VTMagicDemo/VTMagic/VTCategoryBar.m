@@ -1,18 +1,18 @@
 //
-//  VTHeaderView.m
+//  VTCategoryBar.m
 //  VTMagicView
 //
 //  Created by tianzhuo on 15/1/6.
 //  Copyright (c) 2015年 tianzhuo. All rights reserved.
 //
 
-#import "VTHeaderView.h"
+#import "VTCategoryBar.h"
 #import "VTCommon.h"
 
-@interface VTHeaderView()
+@interface VTCategoryBar()
 
 @property (nonatomic, strong) NSMutableArray *frameList; // frame数组
-@property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的header item
+@property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的cat item
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation VTHeaderView
+@implementation VTCategoryBar
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -63,7 +63,7 @@
     for (NSNumber *index in leftIndexList) {
         frame = [_frameList[[index integerValue]] CGRectValue];
         if ([self isNeedDisplayWithFrame:frame]) {
-            itemBtn = [_datasource headerView:self headerItemForIndex:[index integerValue]];
+            itemBtn = [_datasource categoryBar:self categoryItemForIndex:[index integerValue]];
             if (![itemBtn isKindOfClass:[UIButton class]]) continue;
             [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
             itemBtn.tag = [index integerValue];
@@ -78,7 +78,7 @@
     _selectedItem = _visibleDict[@(_currentIndex)];
 }
 
-- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier
+- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
 {
     _identifier = identifier;
     NSMutableSet *cacheSet = _cacheDict[identifier];
@@ -104,9 +104,9 @@
 }
 
 #pragma mark - set 方法
-- (void)setHeaderList:(NSArray *)headerList
+- (void)setCatNames:(NSArray *)catNames
 {
-    _headerList = headerList;
+    _catNames = catNames;
     [self resetFrameForAllItems];
 }
 
@@ -126,7 +126,7 @@
 
 -(void)resetCacheData
 {
-    NSInteger pageCount = _headerList.count;
+    NSInteger pageCount = _catNames.count;
     if (!_indexList) {
         _indexList = [[NSMutableArray alloc] initWithCapacity:pageCount];
     } else {
@@ -138,11 +138,11 @@
     }
     
     if (!_cacheSet) {
-        _cacheSet = [[NSMutableSet alloc] initWithCapacity:_headerList.count];
+        _cacheSet = [[NSMutableSet alloc] initWithCapacity:_catNames.count];
     }
     
     if (!_visibleDict) {
-        _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_headerList.count];
+        _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_catNames.count];
     } else {
         NSArray *visibleItems = [_visibleDict allValues];
         for (UIButton *itemBtn in visibleItems) {
@@ -158,21 +158,21 @@
 - (void)resetFrameForAllItems
 {
     if (!_frameList) {
-        _frameList = [[NSMutableArray alloc] initWithCapacity:_headerList.count];
+        _frameList = [[NSMutableArray alloc] initWithCapacity:_catNames.count];
     }
     
     CGFloat itemX = 0;
     CGSize size = CGSizeZero;
     CGRect frame = CGRectZero;
     [_frameList removeAllObjects];
-    NSInteger count = _headerList.count;
+    NSInteger count = _catNames.count;
     CGFloat height = self.frame.size.height;
     _normalFont = _normalFont ?: [UIFont fontWithName:@"Helvetica" size:16];
     for (int index = 0; index < count; index++) {
         if (IOS7_OR_LATER) {
-            size = [_headerList[index] sizeWithAttributes:@{NSFontAttributeName : _normalFont}];
+            size = [_catNames[index] sizeWithAttributes:@{NSFontAttributeName : _normalFont}];
         } else {
-            size = [_headerList[index] sizeWithFont:_normalFont];
+            size = [_catNames[index] sizeWithFont:_normalFont];
         }
         
         frame = CGRectMake(itemX, 0, size.width + _itemBorder, height);
@@ -185,26 +185,32 @@
 
 - (UIButton *)itemWithIndex:(NSInteger)index
 {
-    if (!_headerList.count) return nil;
-    UIButton *headerItem = _visibleDict[@(index)];
-    if (!headerItem) {
-        headerItem = [_datasource headerView:self headerItemForIndex:index];
+    if (!_catNames.count) return nil;
+    UIButton *catItem = _visibleDict[@(index)];
+    if (!catItem && [_datasource respondsToSelector:@selector(categoryBar:categoryItemForIndex:)]) {
+        catItem = [_datasource categoryBar:self categoryItemForIndex:index];
     }
-    headerItem.tag = index;
-    [self addSubview:headerItem];
-    [_visibleDict setObject:headerItem forKey:@(index)];
-    headerItem.frame = [_frameList[index] CGRectValue];
-    [headerItem addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
-    return headerItem;
+    
+    catItem.tag = index;
+    if (!catItem) return nil;
+    [self addSubview:catItem];
+    [_visibleDict setObject:catItem forKey:@(index)];
+    catItem.frame = [_frameList[index] CGRectValue];
+    [catItem addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
+    return catItem;
 }
 
 #pragma mark - item 点击事件
 - (void)itemClick:(id)sender
 {
-    if ([_headerDelegate respondsToSelector:@selector(headerView:didSelectedItem:)]) {
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
+        sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
+    }
+    
+    if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItem:)]) {
         _selectedItem.selected = NO;
         _currentIndex = [(UIButton *)sender tag];
-        [_headerDelegate headerView:self didSelectedItem:sender];
+        [_catDelegate categoryBar:self didSelectedItem:sender];
     }
 }
 

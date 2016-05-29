@@ -1,45 +1,45 @@
 //
-//  VTHeaderView.h
+//  VTCategoryBar.h
 //  VTMagicView
 //
 //  Created by tianzhuo on 15/1/6.
 //  Copyright (c) 2015年 tianzhuo. All rights reserved.
-//
+//  分类栏
 
 #import <UIKit/UIKit.h>
 
-@class VTHeaderView;
-@protocol VTHeaderDatasource <NSObject>
+@class VTCategoryBar;
+@protocol VTCategoryBarDatasource <NSObject>
 /**
- *  根据index获取对应索引的header item
+ *  根据index获取对应索引的category item
  *
- *  @param headerView self
+ *  @param catBar self
  *  @param index      当前索引
  *
  *  @return 当前按钮
  */
-- (UIButton *)headerView:(VTHeaderView *)headerView headerItemForIndex:(NSInteger)index;
+- (UIButton *)categoryBar:(VTCategoryBar *)catBar categoryItemForIndex:(NSInteger)index;
 
 @end
 
-@protocol VTHeaderDelegate <NSObject>
+@protocol VTCagetoryBarDelegate <NSObject>
 
 @optional
 /**
  *  item被点击时触发
  *
- *  @param headerView self
+ *  @param categoryBar self
  *  @param itemBtn    被选中的按钮
  */
-- (void)headerView:(VTHeaderView *)headerView didSelectedItem:(UIButton *)itemBtn;
+- (void)categoryBar:(VTCategoryBar *)catBar didSelectedItem:(UIButton *)itemBtn;
 
 @end
 
-@interface VTHeaderView : UIScrollView
+@interface VTCategoryBar : UIScrollView
 /**
- *  header字符串数组
+ *  分类名数组，字符串类型
  */
-@property (nonatomic, strong) NSArray *headerList;
+@property (nonatomic, strong) NSArray *catNames;
 /**
  *  顶部正常item的字体
  */
@@ -63,11 +63,11 @@
 /**
  *  数据源
  */
-@property (nonatomic, weak) id <VTHeaderDatasource> datasource;
+@property (nonatomic, weak) id <VTCategoryBarDatasource> datasource;
 /**
  *  代理
  */
-@property (nonatomic, weak) id <VTHeaderDelegate> headerDelegate;
+@property (nonatomic, weak) id <VTCagetoryBarDelegate> catDelegate;
 
 /**
  *  刷新数据
@@ -82,12 +82,12 @@
  */
 - (UIButton *)itemWithIndex:(NSInteger)index;
 /**
- *  根据重用标识查询可重用的headerItem
+ *  根据重用标识查询可重用的category item
  *
  *  @param identifier 重用标识
  *
- *  @return 缓存池中取出的headerItem
+ *  @return 缓存池中取出的category item
  */
-- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier;
+- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 
 @end

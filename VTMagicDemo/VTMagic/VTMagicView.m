@@ -7,13 +7,13 @@
 //
 
 #import "VTMagicView.h"
-#import "VTHeaderView.h"
+#import "VTCategoryBar.h"
 #import "VTContentView.h"
 #import "VTMagicViewController.h"
 
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTHeaderDatasource,VTHeaderDelegate>
 
-@property (nonatomic, strong) VTHeaderView *headerView; // 顶部导航视图内的滚动视图
+@property (nonatomic, strong) VTCategoryBar *headerView; // 顶部导航视图内的滚动视图
 @property (nonatomic, strong) VTContentView *contentView; // 容器视图
 @property (nonatomic, strong) UIView *shadowView; // 顶部下划线
 @property (nonatomic, strong) UIView *separatorLine; // 导航模块底部分割线
@@ -143,7 +143,7 @@
 }
 
 #pragma mark - headerView datasource & deleagte
-- (UIButton *)headerView:(VTHeaderView *)headerView headerItemForIndex:(NSInteger)index
+- (UIButton *)headerView:(VTCategoryBar *)headerView headerItemForIndex:(NSInteger)index
 {
     if ([_dataSource respondsToSelector:@selector(magicView:headerItemForIndex:)]) {
         UIButton *headerItem = [_dataSource magicView:self headerItemForIndex:index];
@@ -153,7 +153,7 @@
     return nil;
 }
 
-- (void)headerView:(VTHeaderView *)headerView didSelectedItem:(UIButton *)itemBtn
+- (void)headerView:(VTCategoryBar *)headerView didSelectedItem:(UIButton *)itemBtn
 {
     [self headerItemClick:itemBtn];
 }
@@ -394,10 +394,10 @@
     return _shadowView;
 }
 
-- (VTHeaderView *)headerView
+- (VTCategoryBar *)headerView
 {
     if (!_headerView) {
-        _headerView = [[VTHeaderView alloc] init];
+        _headerView = [[VTCategoryBar alloc] init];
         _headerView.backgroundColor = [UIColor clearColor];
         _headerView.showsHorizontalScrollIndicator = NO;
         _headerView.headerDelegate = self;

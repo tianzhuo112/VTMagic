@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E8317751CF74DCC00436604 /* VTHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E8317741CF74DCC00436604 /* VTHeaderView.m */; };
+		7E8317751CF74DCC00436604 /* VTCategoryBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E8317741CF74DCC00436604 /* VTCategoryBar.m */; };
 		7E83177E1CF7684300436604 /* RecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E83177D1CF7684300436604 /* RecomViewController.m */; };
 		7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */; };
 		7EF0684D1CF8191B00EDFC41 /* VTListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */; };
@@ -35,8 +35,8 @@
 
 /* Begin PBXFileReference section */
 		7E8317721CF74DCC00436604 /* VTCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCommon.h; sourceTree = "<group>"; };
-		7E8317731CF74DCC00436604 /* VTHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTHeaderView.h; sourceTree = "<group>"; };
-		7E8317741CF74DCC00436604 /* VTHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTHeaderView.m; sourceTree = "<group>"; };
+		7E8317731CF74DCC00436604 /* VTCategoryBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCategoryBar.h; sourceTree = "<group>"; };
+		7E8317741CF74DCC00436604 /* VTCategoryBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCategoryBar.m; sourceTree = "<group>"; };
 		7E8317781CF74E6B00436604 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7E83177C1CF7684300436604 /* RecomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecomViewController.h; sourceTree = "<group>"; };
 		7E83177D1CF7684300436604 /* RecomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecomViewController.m; sourceTree = "<group>"; };
@@ -158,8 +158,8 @@
 			isa = PBXGroup;
 			children = (
 				7E8317721CF74DCC00436604 /* VTCommon.h */,
-				7E8317731CF74DCC00436604 /* VTHeaderView.h */,
-				7E8317741CF74DCC00436604 /* VTHeaderView.m */,
+				7E8317731CF74DCC00436604 /* VTCategoryBar.h */,
+				7E8317741CF74DCC00436604 /* VTCategoryBar.m */,
 				AED72D1F1A5264CE008E13B7 /* VTContentView.h */,
 				AED72D201A5264CE008E13B7 /* VTContentView.m */,
 				AED72D211A5264CE008E13B7 /* VTMagicView.h */,
@@ -279,7 +279,7 @@
 				AED72D271A5264CE008E13B7 /* VTMagicViewController.m in Sources */,
 				7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */,
 				AED72D261A5264CE008E13B7 /* VTMagicView.m in Sources */,
-				7E8317751CF74DCC00436604 /* VTHeaderView.m in Sources */,
+				7E8317751CF74DCC00436604 /* VTCategoryBar.m in Sources */,
 				AED72D251A5264CE008E13B7 /* VTContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

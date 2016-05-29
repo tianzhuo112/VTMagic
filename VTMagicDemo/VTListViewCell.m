@@ -29,6 +29,12 @@
         _titleLabel.numberOfLines = 0;
         [self.contentView addSubview:_titleLabel];
         
+        _commentLabel = [[UILabel alloc] init];
+        _commentLabel.textAlignment = NSTextAlignmentRight;
+        _commentLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _commentLabel.font = [UIFont systemFontOfSize:10];
+        [self.contentView addSubview:_commentLabel];
+        
         [self setNeedsUpdateConstraints];
     }
     return self;
@@ -41,6 +47,9 @@
     
     [self addContraints:@"H:|-0-[_titleLabel]-0-|" forViews:NSDictionaryOfVariableBindings(_titleLabel)];
     [self addContraints:@"V:[_imageView]-5-[_titleLabel(45)]" forViews:NSDictionaryOfVariableBindings(_imageView, _titleLabel)];
+    
+    [self addContraints:@"H:|-0-[_commentLabel]-5-|" forViews:NSDictionaryOfVariableBindings(_commentLabel)];
+    [self addContraints:@"V:[_commentLabel]-10-|" forViews:NSDictionaryOfVariableBindings(_commentLabel)];
     
     [super updateConstraints];
 }

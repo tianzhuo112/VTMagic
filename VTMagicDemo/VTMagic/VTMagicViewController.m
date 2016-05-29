@@ -53,13 +53,35 @@
     [_magicView reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+}
+
+#pragma mark - UIViewControllerRotation
+- (BOOL)shouldAutorotate NS_AVAILABLE_IOS(6_0)
+{
+    return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations NS_AVAILABLE_IOS(6_0)
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation NS_DEPRECATED_IOS(2_0, 6_0)
+{
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+}
+
 #pragma mark - VTMagicViewDataSource & VTMagicViewDelegate
-- (NSArray *)headersForMagicView:(VTMagicView *)magicView
+- (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView
 {
     return nil;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView headerItemForIndex:(NSInteger)index
+- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index
 {
     return nil;
 }
