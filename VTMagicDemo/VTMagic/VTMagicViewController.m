@@ -66,22 +66,6 @@
     
 }
 
-#pragma mark - UIViewControllerRotation
-- (BOOL)shouldAutorotate NS_AVAILABLE_IOS(6_0)
-{
-    return NO;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations NS_AVAILABLE_IOS(6_0)
-{
-    return UIInterfaceOrientationMaskPortrait;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation NS_DEPRECATED_IOS(2_0, 6_0)
-{
-    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
-}
-
 #pragma mark - 私有协议VTExtensionProtocal
 - (void)displayViewControllerDidChanged:(UIViewController *)viewController index:(NSUInteger)index
 {

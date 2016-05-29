@@ -29,6 +29,10 @@
     self = [super initWithFrame:frame];
     if (self) {
         _itemBorder = 25.f;
+        _indexList = [[NSMutableArray alloc] init];
+        _frameList = [[NSMutableArray alloc] init];
+        _visibleDict = [[NSMutableDictionary alloc] init];
+        _cacheSet = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -36,10 +40,6 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    // 暂不支持旋转
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    if (isLandscape) return;
     
     UIButton *itemBtn = nil;
     CGRect frame = CGRectZero;
@@ -54,6 +54,7 @@
             [_cacheSet addObject:itemBtn];
         } else {
             itemBtn.selected = NO;
+            itemBtn.frame = frame;
         }
     }
     
@@ -64,12 +65,12 @@
         if ([self vtm_isNeedDisplayWithFrame:frame]) {
             itemBtn = [_datasource categoryBar:self categoryItemForIndex:[index integerValue]];
             if (![itemBtn isKindOfClass:[UIButton class]]) continue;
-            [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
+            [itemBtn addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
             itemBtn.tag = [index integerValue];
             itemBtn.frame = frame;
-            [_visibleDict setObject:itemBtn forKey:index];
-            [self addSubview:itemBtn];
             itemBtn.selected = NO;
+            [self addSubview:itemBtn];
+            [_visibleDict setObject:itemBtn forKey:index];
         }
     }
     
@@ -80,82 +81,75 @@
 - (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
 {
     _identifier = identifier;
-    NSMutableSet *cacheSet = _cacheDict[identifier];
-    UIButton *item = [cacheSet anyObject];
-    if (item) {
-        [cacheSet removeObject:item];
-        [_cacheDict setValue:cacheSet forKey:identifier];
+    UIButton *catItem = [_cacheSet anyObject];
+    if (catItem) {
+        [_cacheSet removeObject:catItem];
     }
-    return item;
+    return catItem;
 }
 
-#pragma mark - set 方法
-- (void)setCatNames:(NSArray *)catNames
+#pragma mark - 更新选中按钮
+- (void)updateSelectedItem
 {
-    _catNames = catNames;
-}
-
-- (void)setItemBorder:(CGFloat)itemBorder
-{
-    _itemBorder = itemBorder;
-    [self resetFrameForAllItems];
+    _selectedItem.selected = NO;
+    _selectedItem = _visibleDict[@(_currentIndex)];
+    _selectedItem.selected = YES;
 }
 
 #pragma mark - 重新加载数据
 - (void)reloadData
 {
     [self resetCacheData];
-    [self resetFrameForAllItems];
+    [self resetFrames];
     [self setNeedsLayout];
 }
 
 -(void)resetCacheData
 {
+    [_indexList removeAllObjects];
     NSInteger pageCount = _catNames.count;
-    if (!_indexList) {
-        _indexList = [[NSMutableArray alloc] initWithCapacity:pageCount];
-    } else {
-        [_indexList removeAllObjects];
-    }
-    
     for (NSInteger index = 0; index < pageCount; index++) {
         [_indexList addObject:@(index)];
     }
     
-    if (!_cacheSet) {
-        _cacheSet = [[NSMutableSet alloc] initWithCapacity:_catNames.count];
+    NSArray *visibleItems = [_visibleDict allValues];
+    for (UIButton *itemBtn in visibleItems) {
+        [itemBtn setSelected:NO];
+        [itemBtn removeFromSuperview];
+        [_cacheSet addObject:itemBtn];
     }
-    
-    if (!_visibleDict) {
-        _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_catNames.count];
-    } else {
-        NSArray *visibleItems = [_visibleDict allValues];
-        for (UIButton *itemBtn in visibleItems) {
-            [itemBtn setSelected:NO];
-            [itemBtn removeFromSuperview];
-            [_cacheSet addObject:itemBtn];
-        }
-        [_visibleDict removeAllObjects];
-    }
+    [_visibleDict removeAllObjects];
 }
 
 #pragma mark - 重置所有frame
-- (void)resetFrameForAllItems
+- (void)resetFrames
 {
-    if (!_frameList) {
-        _frameList = [[NSMutableArray alloc] initWithCapacity:_catNames.count];
-    }
+    [_frameList removeAllObjects];
     
     UIButton *catItem = nil;
     if (!_itemFont && _catNames.count) {
-        catItem = [self itemWithIndex:_currentIndex];
+        catItem = [self createItemWithIndex:_currentIndex];
         _itemFont = catItem.titleLabel.font;
     }
     
+    if (_autoResizing) {
+        [self autoResizingMode];
+    } else {
+        [self defaultResetMode];
+    }
+    
+    CGFloat contentWidth = CGRectGetMaxX([[_frameList lastObject] CGRectValue]);
+    self.contentSize = CGSizeMake(contentWidth, 0);
+    if (catItem && _currentIndex < _frameList.count) {
+        catItem.frame = [_frameList[_currentIndex] CGRectValue];
+    }
+}
+
+- (void)defaultResetMode
+{
     CGFloat itemX = 0;
     CGSize size = CGSizeZero;
     CGRect frame = CGRectZero;
-    [_frameList removeAllObjects];
     NSInteger count = _catNames.count;
     CGFloat height = self.frame.size.height;
     for (int index = 0; index < count; index++) {
@@ -164,48 +158,73 @@
         } else {
             size = [_catNames[index] sizeWithFont:_itemFont];
         }
-        
         frame = CGRectMake(itemX, 0, size.width + _itemBorder, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
     }
-    
-    self.contentSize = CGSizeMake(itemX, 0);
-    if (catItem && CGRectIsEmpty(catItem.frame)) {
-        catItem.frame = [_frameList[_currentIndex] CGRectValue];
+}
+
+- (void)autoResizingMode
+{
+    CGRect frame = CGRectZero;
+    NSInteger count = _catNames.count;
+    CGFloat height = self.frame.size.height;
+    CGFloat itemWidth = CGRectGetWidth(self.frame)/count;
+    for (int index = 0; index < count; index++) {
+        frame = CGRectMake(itemWidth * index, 0, itemWidth, height);
+        [_frameList addObject:[NSValue valueWithCGRect:frame]];
     }
+}
+
+#pragma mark - 查询
+- (CGRect)itemFrameWithIndex:(NSInteger)index
+{
+    if (index < 0 || _frameList.count <= index) return CGRectNull;
+    return [_frameList[index] CGRectValue];
 }
 
 - (UIButton *)itemWithIndex:(NSInteger)index
 {
-    if (!_catNames.count) return nil;
+    return [self itemWithIndex:index autoCreateForNil:NO];
+}
+
+- (UIButton *)createItemWithIndex:(NSInteger)index
+{
+    return [self itemWithIndex:index autoCreateForNil:YES];
+}
+
+- (UIButton *)itemWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate
+{
+    if (index < 0 || _catNames.count <= index) return nil;
     UIButton *catItem = _visibleDict[@(index)];
-    if (!catItem && [_datasource respondsToSelector:@selector(categoryBar:categoryItemForIndex:)]) {
+    if (autoCreate && !catItem) {
         catItem = [_datasource categoryBar:self categoryItemForIndex:index];
+        if (!catItem) return nil;
+        catItem.tag = index;
+        [self addSubview:catItem];
+        [_visibleDict setObject:catItem forKey:@(index)];
+        if (index < _frameList.count) catItem.frame = [_frameList[index] CGRectValue];
+        [catItem addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-    catItem.tag = index;
-    if (!catItem) return nil;
-    [self addSubview:catItem];
-    [_visibleDict setObject:catItem forKey:@(index)];
-    if (index < _frameList.count) catItem.frame = [_frameList[index] CGRectValue];
-    [catItem addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
     return catItem;
 }
 
 #pragma mark - item 点击事件
-- (void)itemClick:(id)sender
+- (void)catItemClick:(id)sender
 {
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
-        sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
-    }
-    
     NSInteger newIndex = [(UIButton *)sender tag];
     if (newIndex == _currentIndex) return;
     if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItem:)]) {
-        _currentIndex = newIndex;
-        _selectedItem.selected = NO;
         [_catDelegate categoryBar:self didSelectedItem:sender];
+    }
+}
+
+#pragma mark - accessor
+- (void)setItemBorder:(CGFloat)itemBorder
+{
+    _itemBorder = itemBorder;
+    if (_catNames.count) {
+        [self resetFrames];
     }
 }
 

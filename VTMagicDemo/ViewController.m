@@ -24,8 +24,8 @@
 {
     [super viewDidLoad];
     
+    self.magicView.navHeight = 40;
 //    self.magicView.headerHidden = NO;
-    self.magicView.navigationHeight = 40;
 //    self.magicView.forbiddenSwitching = YES;
 //    self.magicView.style = VTSwitchStyleStiff;
     self.magicView.navigationColor = [UIColor whiteColor];
@@ -98,6 +98,7 @@
 - (void)generateTempData
 {
     NSMutableArray *headerList = [[NSMutableArray alloc] initWithCapacity:24];
+    [headerList addObject:@"推荐"];
     NSString *header = @"测试";
     for (int index = 0; index < 20; index++) {
         [headerList addObject:[NSString stringWithFormat:@"%@%d",header,index]];

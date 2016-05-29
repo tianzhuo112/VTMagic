@@ -53,6 +53,11 @@
 @property (nonatomic, strong) NSArray *catNames;
 
 /**
+ *  导航分类的item是否需要自适应宽度，默认NO
+ */
+@property (nonatomic, assign) BOOL autoResizing;
+
+/**
  *  当前选中item对应的索引
  */
 @property (nonatomic, assign) NSInteger currentIndex;
@@ -73,6 +78,25 @@
 - (void)reloadData;
 
 /**
+ *  重置所有item的frame
+ */
+- (void)resetFrames;
+
+/**
+ *  更新选中按钮
+ */
+- (void)updateSelectedItem;
+
+/**
+ *  根据索引获取对应item对应的frame
+ *
+ *  @param index 索引
+ *
+ *  @return 当前索引对应item的frame
+ */
+- (CGRect)itemFrameWithIndex:(NSInteger)index;
+
+/**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
  *
  *  @param index 索引
@@ -80,6 +104,15 @@
  *  @return 当前索引对应的item
  */
 - (UIButton *)itemWithIndex:(NSInteger)index;
+
+/**
+ *  根据索引生成对应的item，若对应item已经存在，则直接返回
+ *
+ *  @param index 索引
+ *
+ *  @return 当前索引对应的item
+ */
+- (UIButton *)createItemWithIndex:(NSInteger)index;
 
 /**
  *  根据重用标识查询可重用的category item

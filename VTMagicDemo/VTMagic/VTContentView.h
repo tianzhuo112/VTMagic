@@ -39,6 +39,11 @@
 @property (nonatomic, assign) NSInteger pageCount;
 
 /**
+ *  当前页面索引
+ */
+@property (nonatomic, assign) NSInteger currentIndex;
+
+/**
  *  屏幕上可见的控制器
  */
 @property (nonatomic, strong, readonly) NSArray *visibleList;
@@ -49,17 +54,13 @@
 - (void)reloadData;
 
 /**
- *  横竖屏切换适配，设备旋转时调用
- */
-- (void)layoutSubviewsWhenRotated;
-
-/**
- *  重置frame，横竖屏切换时调用
+ *  重置所有内容页的frame
  */
 - (void)resetFrames;
 
 /**
  *  获取索引对应的ViewController
+ *  若index超出范围或对应控制器不可见，则返回nil
  *
  *  @param index 索引
  *

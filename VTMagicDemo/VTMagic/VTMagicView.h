@@ -125,9 +125,14 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) UIColor *separatorColor;
 
 /**
- *  顶部导航栏下划线颜色
+ *  顶部导航栏滑块颜色
  */
-@property (nonatomic, strong) UIColor *slideColor;
+@property (nonatomic, strong) UIColor *sliderColor;
+
+/**
+ *  顶部导航栏滑块宽度
+ */
+@property (nonatomic, assign) CGFloat sliderWidth;
 
 /**
  *  头部组件的高度，默认64
@@ -139,7 +144,7 @@ typedef enum : NSUInteger {
  *  默认情况下修改导航高度会同步修改item的高度
  *  若不希望两者高度保持一致，建议item的高度在导航之后修改
  */
-@property (nonatomic, assign) CGFloat navigationHeight;
+@property (nonatomic, assign) CGFloat navHeight;
 
 /**
  *  导航分类item的高度，默认与导航高度相等
@@ -150,6 +155,12 @@ typedef enum : NSUInteger {
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemBorder;
+
+/**
+ *  导航分类的item是否需要自适应宽度，默认NO
+ *  需要注意的是，当autoResizing为YES时，itemBorder会失效
+ */
+@property (nonatomic, assign) BOOL autoResizing;
 
 /**
  *  左右两侧是否需要反弹效果，默认NO
@@ -200,13 +211,6 @@ typedef enum : NSUInteger {
 - (void)reloadData;
 
 /**
- *  切换到指定页面，一般情况下不建议直接调用该方法
- *
- *  @param index 页面索引
- */
-- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
-
-/**
  *  查询可重用category item
  *
  *  @param identifier 重用标识
@@ -223,5 +227,23 @@ typedef enum : NSUInteger {
  *  @return 可重用的tableViewController
  */
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
+
+/**
+ *  获取索引对应的ViewController
+ *  若index超出范围或对应控制器不可见，则返回nil
+ *
+ *  @param index 索引
+ *
+ *  @return UIViewController对象
+ */
+- (UIViewController *)viewControllerWithIndex:(NSInteger)index;
+
+/**
+ *  切换到指定页面
+ *
+ *  @param pageIndex 页面索引
+ *  @param animated  是否需要动画执行
+ */
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
 
 @end
