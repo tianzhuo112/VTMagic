@@ -170,7 +170,7 @@ typedef struct {
 {
     if ([_dataSource respondsToSelector:@selector(magicView:categoryItemForIndex:)]) {
         UIButton *catItem = [_dataSource magicView:self categoryItemForIndex:index];
-        if (!_originalButton) _originalButton = catItem;
+        if (index == _currentIndex) _originalButton = catItem;
         return catItem;
     }
     return nil;
@@ -230,7 +230,23 @@ typedef struct {
     return viewController;
 }
 
-#pragma mark - 分类切换动画
+#pragma mark - 频道分类切换
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated
+{
+    if (pageIndex == _currentIndex) return;
+    if (_catNames.count < pageIndex) pageIndex = _catNames.count - 1;
+    if (animated) {
+        UIButton *catItem = [_categoryBar itemWithIndex:pageIndex];
+        [self categoryBar:_categoryBar didSelectedItem:catItem];
+    } else {
+        _currentIndex = pageIndex;
+        _categoryBar.currentIndex = pageIndex;
+        CGPoint offset = CGPointMake(_contentView.frame.size.width * pageIndex, 0);
+        _contentView.contentOffset = offset;
+        [self updateCategoryBar];
+    }
+}
+
 - (void)updateCategoryBar
 {
     if (!_originalButton) {
@@ -238,25 +254,23 @@ typedef struct {
         _originalButton.selected = YES;
     }
     
-    CGFloat offsetX = 0;
-    CGFloat catWidth = _categoryBar.frame.size.width;
     CGFloat itemMinX = _originalButton.frame.origin.x;
     CGFloat itemMaxX = CGRectGetMaxX(_originalButton.frame);
-    CGFloat catOffsetX = _categoryBar.contentOffset.x;
+    CGFloat catWidth = _categoryBar.frame.size.width;
+    CGFloat offsetX = _categoryBar.contentOffset.x;
+    CGFloat catOffsetX = offsetX;
     if (itemMaxX < catOffsetX) {// 位于屏幕左侧
         offsetX = itemMinX - catWidth;
         offsetX = offsetX < 0 ?: 0;
-        _categoryBar.contentOffset = CGPointMake(offsetX, 0);
     } else if (catOffsetX + catWidth < itemMinX) {// 位于屏幕右侧
         offsetX = itemMaxX - catWidth;
-        _categoryBar.contentOffset = CGPointMake(offsetX, 0);
     }
     
     CGSize itemSize = _originalButton.frame.size;
     CGRect shadowFrame = _shadowView.frame;
     shadowFrame.origin.x = itemMinX;
     shadowFrame.size.width = itemSize.width;
-    _shadowView.frame = shadowFrame;//CGRectMake(headerItemMinX, size.height - 2, size.width, 2);
+    _shadowView.frame = shadowFrame;
     
     if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
         CGFloat diffX = (CGRectGetMaxX(_originalButton.frame) - catWidth);
@@ -264,24 +278,12 @@ typedef struct {
     }
     
     if (catWidth + catOffsetX <= itemMaxX) {
-        _categoryBar.contentOffset = CGPointMake(itemMaxX - catWidth, 0);
+        offsetX = itemMaxX - catWidth;
     } else if (itemMinX < catOffsetX) {
-        _categoryBar.contentOffset = CGPointMake(itemMinX, 0);
+        offsetX = itemMinX;
     }
     
-    // 原始逻辑，暂时废弃
-//    if (catWidth + catOffsetX <= itemMinX + itemSize.width * 0.5) {
-//        CGFloat totleWidth = _categoryBar.contentSize.width;
-//        catOffsetX += itemSize.width;
-//        if (catWidth + catOffsetX > totleWidth) {
-//            catOffsetX = (totleWidth - catWidth);
-//        }
-//        _categoryBar.contentOffset = CGPointMake(catOffsetX, 0);
-//    } else if ((itemMinX - itemSize.width * 0.5) <= catOffsetX) {
-//        catOffsetX -= itemSize.width;
-//        if (catOffsetX < 0) catOffsetX = 0;
-//        _categoryBar.contentOffset = CGPointMake(catOffsetX, 0);
-//    }
+    _categoryBar.contentOffset = CGPointMake(offsetX, 0);
 }
 
 - (void)updateCategoryBarWhenUserScrolled
@@ -292,8 +294,6 @@ typedef struct {
         [catItem setSelected:YES];
         _originalButton = catItem;
         [self updateCategoryBar];
-//        CGSize size = catItem.frame.size;
-//        _shadowView.frame = CGRectMake(catItem.frame.origin.x, size.height - 2, size.width, 2);
     }];
 }
 

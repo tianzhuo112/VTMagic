@@ -34,6 +34,7 @@
     [self generateTempData];
     [self generateColors];
     [self.magicView reloadData];
+    [self.magicView switchToPage:2 animated:YES];
 }
 
 #pragma mark - magic view delegate & data source

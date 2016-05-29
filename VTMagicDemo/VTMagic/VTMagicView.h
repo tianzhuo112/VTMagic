@@ -177,6 +177,12 @@
  */
 - (void)reloadData;
 /**
+ *  手动切换到指定页面
+ *
+ *  @param index 页面索引
+ */
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
+/**
  *  查询可重用category item
  *
  *  @param identifier 重用标识
