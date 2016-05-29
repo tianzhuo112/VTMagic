@@ -19,6 +19,6 @@
 /**
  *  主控制器
  */
-@property (nonatomic, weak, readonly) UIViewController<VTExtensionProtocal> *magicViewController;
+@property (nonatomic, weak, readonly) UIViewController<VTExtensionProtocal> *magicController;
 
 @end

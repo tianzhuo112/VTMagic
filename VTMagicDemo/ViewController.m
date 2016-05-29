@@ -44,7 +44,7 @@
     return _headerList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index
+- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSUInteger)index
 {
     static NSString *itemIdentifier = @"itemIdentifier";
     UIButton *headerItem = [magicView dequeueReusableViewControllerWithIdentifier:itemIdentifier];

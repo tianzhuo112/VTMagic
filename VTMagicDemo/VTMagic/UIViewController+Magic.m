@@ -94,7 +94,7 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
     return objc_getAssociatedObject(self, kVTReuseIdentifier);
 }
 
-- (UIViewController<VTExtensionProtocal> *)magicViewController
+- (UIViewController<VTExtensionProtocal> *)magicController
 {
     UIViewController *viewController = self.parentViewController;
     while (viewController) {

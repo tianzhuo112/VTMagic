@@ -7,7 +7,6 @@
 //
 
 #import "VTMagicViewController.h"
-#import "VTMagicView.h"
 
 #define NOTICENTER [NSNotificationCenter defaultCenter]
 #define USERDEFAULTS [NSUserDefaults standardUserDefaults]
