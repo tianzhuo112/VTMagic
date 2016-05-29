@@ -44,6 +44,7 @@
 		7E83177C1CF7684300436604 /* RecomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecomViewController.h; sourceTree = "<group>"; };
 		7E83177D1CF7684300436604 /* RecomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecomViewController.m; sourceTree = "<group>"; };
 		7E83177F1CF8AC4500436604 /* VTMagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMagic.h; sourceTree = "<group>"; };
+		7ED622781CFA8FB700976514 /* VTEnumType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTEnumType.h; sourceTree = "<group>"; };
 		7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRecomCell.h; sourceTree = "<group>"; };
 		7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomCell.m; sourceTree = "<group>"; };
 		7EF0684B1CF8191B00EDFC41 /* VTGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTGridViewCell.h; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 			children = (
 				7E83177F1CF8AC4500436604 /* VTMagic.h */,
 				7E8317721CF74DCC00436604 /* VTCommon.h */,
+				7ED622781CFA8FB700976514 /* VTEnumType.h */,
 				7E8317731CF74DCC00436604 /* VTCategoryBar.h */,
 				7E8317741CF74DCC00436604 /* VTCategoryBar.m */,
 				AED72D1F1A5264CE008E13B7 /* VTContentView.h */,

@@ -7,6 +7,7 @@
 //  分类栏
 
 #import <UIKit/UIKit.h>
+#import "VTEnumType.h"
 
 @class VTCategoryBar;
 @protocol VTCategoryBarDatasource <NSObject>
@@ -104,6 +105,11 @@
 @property (nonatomic, strong) NSArray<__kindof NSString *> *catNames;
 
 /**
+ *  导航菜单布局样式
+ */
+@property (nonatomic, assign) VTLayoutStyle layoutStyle;
+
+/**
  *  导航分类的item是否需要自适应宽度，默认NO
  */
 @property (nonatomic, assign) BOOL autoResizing;
@@ -116,11 +122,21 @@
 /**
  *  当前被选中的item
  */
-@property (nonatomic, strong) UIButton *selectedItem;
+@property (nonatomic, strong, readonly) UIButton *selectedItem;
+
+/**
+ *  自定义item宽度，仅VTLayoutStyleCustom样式下有效
+ */
+@property (nonatomic, assign) CGFloat itemWidth;
 
 /**
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemBorder;
+
+/**
+ *  导航分类的inset，对leftHeaderView和rightHeaderView无效
+ */
+@property (nonatomic, assign) UIEdgeInsets navigationInset;
 
 @end

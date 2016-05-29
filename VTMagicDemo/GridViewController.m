@@ -8,6 +8,7 @@
 
 #import "GridViewController.h"
 #import "VTGridViewCell.h"
+#import "VTMagic.h"
 
 #define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
 static NSString *reuseIdentifier = @"grid.reuse.identifier";
@@ -93,6 +94,12 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"didSelectItemAtIndexPath%@", indexPath);
+}
+
+#pragma mark - VTMagicReuseProtocal
+- (void)vtm_prepareForReuse
+{
+    NSLog(@"clear old data if needed:%@", self);
 }
 
 #pragma functional methods

@@ -69,7 +69,6 @@ static const void *kVTMagicView = &kVTMagicView;
     self = [super initWithFrame:frame];
     if (self) {
         _naviHeight = 44;
-        _itemHeight = 44;
         _previewItems = 1;
         _sliderHeight = 2;
         _headerHeight = 64;
@@ -134,15 +133,15 @@ static const void *kVTMagicView = &kVTMagicView;
     
     CGRect sliderFrame = _sliderView.frame;
     sliderFrame.size.height = _sliderHeight;
-    sliderFrame.origin.y = (_naviHeight + _itemHeight) * 0.5 - _sliderHeight;
+    sliderFrame.origin.y = _naviHeight  - _sliderHeight + _sliderOffset;
     CGRect itemFrame = [_categoryBar itemFrameWithIndex:_currentIndex];
     if (!_sliderWidth) sliderFrame.size.width = itemFrame.size.width;
     _sliderView.frame = sliderFrame;
     
     self.needSkipUpdate = YES;
+    CGRect originalContentFrame = _contentView.frame;
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
     CGFloat contentH = size.height - contentY + (_needExtendedBottom ? VTTABBAR_HEIGHT : 0);
-    CGRect originalContentFrame = _contentView.frame;
     _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
     if (!CGRectEqualToRect(_contentView.frame, originalContentFrame)) {
         [_contentView resetFrames];
@@ -361,7 +360,11 @@ static const void *kVTMagicView = &kVTMagicView;
 
 - (UIViewController *)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
 {
-    return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
+    UIViewController *viewController = [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
+    if ([viewController respondsToSelector:@selector(vtm_prepareForReuse)]) {
+        [(id<VTMagicReuseProtocal>)viewController vtm_prepareForReuse];
+    }
+    return viewController;
 }
 
 - (UIButton *)categoryItemWithIndex:(NSUInteger)index
@@ -379,7 +382,7 @@ static const void *kVTMagicView = &kVTMagicView;
 {
     if (pageIndex == _currentIndex || _catNames.count <= pageIndex) return;
     _contentView.currentIndex = pageIndex;
-    _switchEvent = VTSwitchEventSroll;
+    _switchEvent = VTSwitchEventScroll;
     if (animated) {
         [self switchAnimation:pageIndex];
     } else {
@@ -452,6 +455,7 @@ static const void *kVTMagicView = &kVTMagicView;
         itemMaxX = CGRectGetMaxX(itemFrame);
     };
     
+    // update slider frame
     updateBlock(_currentIndex);
     CGRect sliderFrame = _sliderView.frame;
     if (_sliderWidth) {
@@ -492,6 +496,14 @@ static const void *kVTMagicView = &kVTMagicView;
         offsetX = itemMaxX - catWidth;
     } else if (itemMinX < catOffsetX) {
         offsetX = itemMinX;
+    }
+    
+    if (0 == _currentIndex) {
+        offsetX = 0;
+    } else if (_catNames.count - 1 == _currentIndex) {
+        if (CGRectGetWidth(_categoryBar.frame) < _categoryBar.contentSize.width) {
+            offsetX = _categoryBar.contentSize.width - CGRectGetWidth(_categoryBar.frame);
+        }
     }
     _categoryBar.contentOffset = CGPointMake(offsetX, 0);
 }
@@ -567,6 +579,7 @@ static const void *kVTMagicView = &kVTMagicView;
             _isPanValid = YES;
             offset.x -= translation.x;
             if (maxOffset < offset.x) offset.x = maxOffset;
+            if (offset.x < 0) offset.x = 0;
             _contentView.contentOffset = offset;
         } else if (UIGestureRecognizerStateFailed == recognizer.state ||
                    UIGestureRecognizerStateEnded == recognizer.state) {
@@ -596,6 +609,7 @@ static const void *kVTMagicView = &kVTMagicView;
     index += isNextPage ? 1 : -1;
     NSInteger totalCount = _catNames.count;
     if (totalCount <= index) index = totalCount - 1;
+    if (index < 0) index = 0;
     CGPoint offset = CGPointMake(contentWidth*index, 0);
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.001 * NSEC_PER_SEC));
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
@@ -637,7 +651,7 @@ static const void *kVTMagicView = &kVTMagicView;
     }
     
     if (!_needSkipUpdate && newIndex != _currentIndex) {
-        _switchEvent = VTSwitchEventSroll;
+        _switchEvent = VTSwitchEventScroll;
         self.currentIndex = newIndex;
         switch (_switchStyle) {
             case VTSwitchStyleDefault:
@@ -678,22 +692,11 @@ static const void *kVTMagicView = &kVTMagicView;
     }
 }
 
-- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-//    _isViewWillAppeare = NO;
-//    _nextIndex = _currentIndex; // 左右来回滑动有问题，只发送一次subviewWillAppeareWithIndex:
-}
-
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
 //        VTLog(@"scrollViewDidEndDragging");
     }
-}
-
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-//    VTLog(@"scrollViewDidEndScrollingAnimation ");
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -727,30 +730,35 @@ static const void *kVTMagicView = &kVTMagicView;
 #pragma mark - the life cycle of view controller
 - (void)viewControllerWillAppear:(NSUInteger)pageIndex
 {
-    if (!_magicFlags.shouldManualForwardAppearanceMethods) return;
+    if (![self shouldForwardAppearanceMethods]) return;
     UIViewController *viewController = [_contentView viewControllerWithIndex:pageIndex autoCreateForNil:YES];
     [viewController beginAppearanceTransition:YES animated:YES];
 }
 
 - (void)viewControllerDidAppear:(NSUInteger)pageIndex
 {
-    if (!_magicFlags.shouldManualForwardAppearanceMethods) return;
+    if (![self shouldForwardAppearanceMethods]) return;
     UIViewController *viewController = [self viewControllerWithIndex:pageIndex];
     [viewController endAppearanceTransition];
 }
 
 - (void)viewControllerWillDisappear:(NSUInteger)pageIndex
 {
-    if (!_magicFlags.shouldManualForwardAppearanceMethods) return;
+    if (![self shouldForwardAppearanceMethods]) return;
     UIViewController *viewController = [self viewControllerWithIndex:pageIndex];
     [viewController beginAppearanceTransition:NO animated:YES];
 }
 
 - (void)viewControllerDidDisappear:(NSUInteger)pageIndex
 {
-    if (!_magicFlags.shouldManualForwardAppearanceMethods) return;
+    if (![self shouldForwardAppearanceMethods]) return;
     UIViewController *viewController = [self viewControllerWithIndex:pageIndex];
     [viewController endAppearanceTransition];
+}
+
+- (BOOL)shouldForwardAppearanceMethods
+{
+    return _magicFlags.shouldManualForwardAppearanceMethods;// && [_magicViewController magicHasAppeared];
 }
 
 #pragma mark - accessors
@@ -759,6 +767,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (!_headerView) {
         _headerView = [[UIView alloc] init];
         _headerView.backgroundColor = [UIColor clearColor];
+        _headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _headerView.hidden = _headerHidden = YES;
     }
     return _headerView;
@@ -769,6 +778,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (!_navigationView) {
         _navigationView = [[UIView alloc] init];
         _navigationView.backgroundColor = [UIColor clearColor];
+        _navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _navigationView.clipsToBounds = YES;
     }
     return _navigationView;
@@ -779,6 +789,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (!_separatorLine) {
         _separatorLine = [[UIView alloc] init];
         _separatorLine.backgroundColor = RGBCOLOR(188, 188, 188);
+        _separatorLine.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _separatorLine;
 }
@@ -797,6 +808,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (!_categoryBar) {
         _categoryBar = [[VTCategoryBar alloc] init];
         _categoryBar.backgroundColor = [UIColor clearColor];
+        _categoryBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _categoryBar.showsHorizontalScrollIndicator = NO;
         _categoryBar.clipsToBounds = YES;
         _categoryBar.scrollsToTop = NO;
@@ -811,6 +823,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (!_contentView) {
         _contentView = [[VTContentView alloc] init];
         _contentView.showsHorizontalScrollIndicator = NO;
+//        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _contentView.pagingEnabled = YES;
         _contentView.delegate = self;
         _contentView.dataSource = self;
@@ -850,6 +863,12 @@ static const void *kVTMagicView = &kVTMagicView;
     if ([magicViewController respondsToSelector:@selector(shouldAutomaticallyForwardAppearanceMethods)]) {
         _magicFlags.shouldManualForwardAppearanceMethods = ![magicViewController shouldAutomaticallyForwardAppearanceMethods];
     }
+}
+
+- (void)setLayoutStyle:(VTLayoutStyle)layoutStyle
+{
+    _layoutStyle = layoutStyle;
+    _categoryBar.layoutStyle = layoutStyle;
 }
 
 - (void)setAutoResizing:(BOOL)autoResizing
@@ -936,7 +955,6 @@ static const void *kVTMagicView = &kVTMagicView;
     _rightHeaderView = rightHeaderView;
     [_navigationView addSubview:rightHeaderView];
     [_navigationView bringSubviewToFront:_separatorLine];
-    [_navigationView bringSubviewToFront:_categoryBar];
     rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self updateFrameForRightHeader];
     [self updateFrameForCategoryBar];
@@ -963,15 +981,13 @@ static const void *kVTMagicView = &kVTMagicView;
 - (void)setNaviHeight:(CGFloat)naviHeight
 {
     _naviHeight = naviHeight;
-    _itemHeight = naviHeight;
     [self updateFrameForSubviews];
 }
 
-- (void)setItemHeight:(CGFloat)itemHeight
+- (void)setItemWidth:(CGFloat)itemWidth
 {
-    _itemHeight = itemHeight;
-    [self updateFrameForSubviews];
-    [_categoryBar reloadData];
+    _itemWidth = itemWidth;
+    _categoryBar.itemWidth = itemWidth;
 }
 
 - (void)setItemBorder:(CGFloat)itemBorder
@@ -980,19 +996,16 @@ static const void *kVTMagicView = &kVTMagicView;
     _categoryBar.itemBorder = itemBorder;
 }
 
-- (UIEdgeInsets)navigationInset
-{
-    return _categoryBar.contentInset;
-}
-
 - (void)setNavigationInset:(UIEdgeInsets)navigationInset
 {
-    _categoryBar.contentInset = navigationInset;
+    _navigationInset = navigationInset;
+    _categoryBar.navigationInset = navigationInset;
 }
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
 {
 //    if (_currentIndex == _nextIndex) return;
+    if (currentIndex < 0) return;
     NSInteger disIndex = _currentIndex;
     _currentIndex = currentIndex;
     _previousIndex = disIndex;

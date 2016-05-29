@@ -131,56 +131,85 @@ static NSInteger const kVTCategoryBarTag = 1000;
     if (!_catNames.count) return;
     
     UIButton *catItem = nil;
-    if (!_itemFont && _catNames.count) {
+    if (!_itemFont) {
         catItem = [self createItemWithIndex:_currentIndex];
         _itemFont = catItem.titleLabel.font;
+        NSAssert(_itemFont != nil, @"item shouldn't be nil, you must conform VTMagicViewDataSource");
     }
     
-    NSAssert(_itemFont != nil, @"you must conform VTMagicViewDataSource");
     if (_autoResizing) {
-        [self autoResizingMode];
+        [self resetFramesForAutoDivide];
     } else {
-        [self defaultResetMode];
+        switch (_layoutStyle) {
+            case VTLayoutStyleAutoDivide:
+                [self resetFramesForAutoDivide];
+                break;
+            case VTLayoutStyleCustom:
+                [self resetFramesForCustom];
+                break;
+            default:
+                [self resetFramesForDefault];
+                break;
+        }
     }
     
     CGFloat contentWidth = CGRectGetMaxX([[_frameList lastObject] CGRectValue]);
+    contentWidth += _navigationInset.right;
     self.contentSize = CGSizeMake(contentWidth, 0);
     if (catItem && _currentIndex < _frameList.count) {
         catItem.frame = [_frameList[_currentIndex] CGRectValue];
     }
 }
 
-- (void)defaultResetMode
+- (void)resetFramesForDefault
 {
-    CGFloat itemX = 0;
     CGSize size = CGSizeZero;
     CGRect frame = CGRectZero;
-    NSInteger count = _catNames.count;
+    CGFloat itemX = _navigationInset.left;
     CGFloat height = self.frame.size.height;
-    for (int index = 0; index < count; index++) {
-        if (iOS7_OR_LATER) {
-            size = [_catNames[index] sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
+    height -= _navigationInset.top + _navigationInset.bottom;
+    for (NSString *title in _catNames) {
+        if ([title respondsToSelector:@selector(sizeWithAttributes:)]) {
+            size = [title sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
         } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            size = [_catNames[index] sizeWithFont:_itemFont];
+            size = [title sizeWithFont:_itemFont];
 #pragma clang diagnostic pop
         }
-        frame = CGRectMake(itemX, 0, size.width + _itemBorder, height);
+        frame = CGRectMake(itemX, _navigationInset.top, size.width + _itemBorder, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
     }
 }
 
-- (void)autoResizingMode
+- (void)resetFramesForAutoDivide
 {
     CGRect frame = CGRectZero;
     NSInteger count = _catNames.count;
     CGFloat height = self.frame.size.height;
-    CGFloat itemWidth = CGRectGetWidth(self.frame)/count;
+    height -= _navigationInset.top + _navigationInset.bottom;
+    CGFloat totalSpace = _navigationInset.left + _navigationInset.right;
+    CGFloat itemWidth = (CGRectGetWidth(self.frame) - totalSpace)/count;
+    frame.origin = CGPointMake(_navigationInset.left, _navigationInset.top);
+    frame.size = CGSizeMake(itemWidth, height);
     for (int index = 0; index < count; index++) {
-        frame = CGRectMake(itemWidth * index, 0, itemWidth, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
+        frame.origin.x += itemWidth;
+    }
+}
+
+- (void)resetFramesForCustom
+{
+    CGRect frame = CGRectZero;
+    NSInteger count = _catNames.count;
+    CGFloat height = self.frame.size.height;
+    height -= _navigationInset.top + _navigationInset.bottom;
+    frame.origin = CGPointMake(_navigationInset.left, _navigationInset.top);
+    frame.size = CGSizeMake(_itemWidth, height);
+    for (int index = 0; index < count; index++) {
+        [_frameList addObject:[NSValue valueWithCGRect:frame]];
+        frame.origin.x += _itemWidth;
     }
 }
 

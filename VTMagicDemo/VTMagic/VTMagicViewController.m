@@ -23,7 +23,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
         } else if ([self respondsToSelector:@selector(setWantsFullScreenLayout:)]) {
             [self setValue:@YES forKey:@"wantsFullScreenLayout"];
@@ -56,12 +56,6 @@
 
     // 刷新数据
 //    [_magicView reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
 }
 
 #pragma mark - 禁止自动触发appearance methods

@@ -11,6 +11,7 @@
 
 static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
 static const void *kVTMagicWillAppear = &kVTMagicWillAppear;
+static const void *kVTMagicAppeared = &kVTMagicAppeared;
 
 @implementation UIViewController (Magic)
 
@@ -62,6 +63,7 @@ static const void *kVTMagicWillAppear = &kVTMagicWillAppear;
 {
     [self magic_viewDidAppear:animated];
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
+        [(UIViewController<VTExtensionProtocal> *)self setMagicHasAppeared:YES];
         if (![self magic_willAppear]) return;
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController endAppearanceTransition];
@@ -83,6 +85,7 @@ static const void *kVTMagicWillAppear = &kVTMagicWillAppear;
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController endAppearanceTransition];
+        [(UIViewController<VTExtensionProtocal> *)self setMagicHasAppeared:NO];
     }
 }
 
@@ -105,6 +108,16 @@ static const void *kVTMagicWillAppear = &kVTMagicWillAppear;
 - (BOOL)magic_willAppear
 {
     return [objc_getAssociatedObject(self, kVTMagicWillAppear) boolValue];
+}
+
+- (void)setMagicHasAppeared:(BOOL)magicHasAppeared
+{
+    objc_setAssociatedObject(self, kVTMagicAppeared, @(magicHasAppeared), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)magicHasAppeared
+{
+    return [objc_getAssociatedObject(self, kVTMagicAppeared) boolValue];
 }
 
 - (UIViewController<VTExtensionProtocal> *)magicController

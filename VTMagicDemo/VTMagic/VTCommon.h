@@ -10,7 +10,7 @@
 #define VTMagicView_VTCommon_h
 
 /** 自定义Log，日志开关 0-关闭 1-开启 */
-#define __LOGDEBUG__ (1)
+#define __LOGDEBUG__ (0)
 
 #if defined(__LOGDEBUG__) && __LOGDEBUG__ && DEBUG
 #define VTLog(...) NSLog(__VA_ARGS__)

@@ -8,42 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VTExtensionProtocal.h"
-
-/** 页面滑动切换样式 */
-typedef enum : NSUInteger {
-    /** 默认样式，切换时有颜色渐变效果 */
-    VTSwitchStyleDefault,
-    /** 延迟响应切换 */
-    VTSwitchStyleStiff,
-    /** ？？？ */
-    VTSwitchStyleUnknown,
-} VTSwitchStyle;
-
-/** 页面切换事件 */
-typedef enum : NSUInteger {
-    /** 加载 */
-    VTSwitchEventLoad,
-    /** 滑动 */
-    VTSwitchEventSroll,
-    /** 点击 */
-    VTSwitchEventClick,
-    /** 未知 */
-    VTSwitchEventUnkown,
-} VTSwitchEvent;
-
-typedef struct {
-    CGFloat left;
-    CGFloat right;
-} VTMargin;
-
-CG_INLINE VTMargin
-VTMarginMake(CGFloat left, CGFloat right)
-{
-    VTMargin margin;
-    margin.left = left;
-    margin.right = right;
-    return margin;
-}
+#import "VTEnumType.h"
 
 @class VTMagicView;
 
@@ -115,7 +80,7 @@ VTMarginMake(CGFloat left, CGFloat right)
 @interface VTMagicView : UIView
 
 #pragma mark - public method
-/**************************************method**************************************/
+/**************************************public method**************************************/
 
 /**
  *  重新加载所有数据
@@ -132,11 +97,11 @@ VTMarginMake(CGFloat left, CGFloat right)
 - (__kindof UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 
 /**
- *  根据缓存标识获取可重用的UIViewController
+ *  根据缓存标识获取可重用的tableViewController
  *
  *  @param identifier 缓存重用标识
  *
- *  @return 可重用的UIViewController
+ *  @return 可重用的tableViewController
  */
 - (__kindof UIViewController *)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
 
@@ -185,11 +150,6 @@ VTMarginMake(CGFloat left, CGFloat right)
 /****************************************basic configurations****************************************/
 
 /**
- *  切换样式，默认是VTSwitchStyleDefault
- */
-@property (nonatomic, assign) VTSwitchStyle switchStyle;
-
-/**
  *  数据源
  */
 @property (nonatomic, weak) id<VTMagicViewDataSource> dataSource;
@@ -207,8 +167,18 @@ VTMarginMake(CGFloat left, CGFloat right)
  */
 @property (nonatomic, weak) UIViewController<VTExtensionProtocal> *magicViewController;
 
-#pragma mark - sub views
-/****************************************sub views****************************************/
+/**
+ *  切换样式，默认是VTSwitchStyleDefault
+ */
+@property (nonatomic, assign) VTSwitchStyle switchStyle;
+
+/**
+ *  导航菜单布局样式
+ */
+@property (nonatomic, assign) VTLayoutStyle layoutStyle;
+
+#pragma mark - subviews
+/****************************************subviews****************************************/
 
 /**
  *  最顶部的头部组件，默认隐藏
@@ -346,6 +316,11 @@ VTMarginMake(CGFloat left, CGFloat right)
 @property (nonatomic, assign) CGFloat sliderWidth;
 
 /**
+ *  顶部导航栏滑块相对导航底部的偏移量，默认0，上偏为负
+ */
+@property (nonatomic, assign) CGFloat sliderOffset;
+
+/**
  *  头部组件的高度，默认64
  */
 @property (nonatomic, assign) CGFloat headerHeight;
@@ -358,9 +333,9 @@ VTMarginMake(CGFloat left, CGFloat right)
 @property (nonatomic, assign) CGFloat naviHeight;
 
 /**
- *  导航分类item的高度，默认与导航高度相等
+ *  自定义item宽度，仅VTLayoutStyleCustom样式下有效
  */
-@property (nonatomic, assign) CGFloat itemHeight;
+@property (nonatomic, assign) CGFloat itemWidth;
 
 /**
  *  两个导航分类item文本之间的间距，默认是25
@@ -369,9 +344,9 @@ VTMarginMake(CGFloat left, CGFloat right)
 @property (nonatomic, assign) CGFloat itemBorder;
 
 /**
- *  导航分类的inset，对leftHeaderView和rightHeaderView无效
+ *  导航分类条的inset，对leftHeaderView和rightHeaderView无效
  */
-@property (nonatomic) UIEdgeInsets navigationInset;
+@property (nonatomic, assign) UIEdgeInsets navigationInset;
 
 #pragma mark - other properties
 /**************************************other properties**************************************/

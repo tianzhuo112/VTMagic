@@ -141,12 +141,13 @@
     self.contentOffset = CGPointMake(CGRectGetWidth(frame)*_currentIndex, 0);
 }
 
-#pragma mark - accessors
-- (NSArray *)visibleList
+#pragma mark - 清除缓存
+- (void)clearMemoryCache
 {
-    return [_visibleDict allValues];
+    [_pageCache removeAllObjects];
 }
 
+#pragma mark - 根据索引获取页面控制器
 - (UIViewController *)viewControllerWithIndex:(NSUInteger)index
 {
     return [self viewControllerWithIndex:index autoCreateForNil:NO];
@@ -165,7 +166,7 @@
     if (!viewController && autoCreate) {
         viewController = [_dataSource contentView:self viewControllerForIndex:index];
         viewController.reuseIdentifier = _identifier;
-        if (!viewController) return viewController;
+        if (!viewController) return nil;
         viewController.view.frame = [_frameList[index] CGRectValue];
         [self addSubview:viewController.view];
         [_visibleDict setObject:viewController forKey:indexPath];
@@ -187,10 +188,10 @@
     return viewController;
 }
 
-#pragma mark - 清除缓存
-- (void)clearMemoryCache
+#pragma mark - accessors
+- (NSArray *)visibleList
 {
-    [_pageCache removeAllObjects];
+    return [_visibleDict allValues];
 }
 
 @end
