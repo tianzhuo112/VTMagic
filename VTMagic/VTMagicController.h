@@ -11,25 +11,7 @@
 #import "VTMagicView.h"
 #import "VTCommon.h"
 
-@interface VTMagicViewController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource,VTExtensionProtocal>
-
-/**
- *  获取索引对应的ViewController
- *  若index超出范围或对应控制器不可见，则返回nil
- *
- *  @param index 索引
- *
- *  @return UIViewController对象
- */
-- (UIViewController *)viewControllerWithIndex:(NSUInteger)index;
-
-/**
- *  切换到指定页面
- *
- *  @param pageIndex 页面索引
- *  @param animated  是否需要动画执行
- */
-- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
+@interface VTMagicController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource,VTExtensionProtocal>
 
 /**
  *  magic view，等同于self.view
@@ -50,5 +32,23 @@
  *  屏幕上可见的控制器
  */
 @property (nonatomic, strong, readonly) NSArray<__kindof UIViewController *> *viewControllers;
+
+/**
+ *  获取索引对应的ViewController
+ *  若index超出范围或对应控制器不可见，则返回nil
+ *
+ *  @param index 索引
+ *
+ *  @return UIViewController对象
+ */
+- (__kindof UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex;
+
+/**
+ *  切换到指定页面
+ *
+ *  @param pageIndex 页面索引
+ *  @param animated  是否需要动画执行
+ */
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
 
 @end

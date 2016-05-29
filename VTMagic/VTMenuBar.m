@@ -1,21 +1,21 @@
 //
-//  VTCategoryBar.m
+//  VTMenuBar.m
 //  VTMagicView
 //
 //  Created by tianzhuo on 15/1/6.
 //  Copyright (c) 2015年 tianzhuo. All rights reserved.
 //
 
-#import "VTCategoryBar.h"
+#import "VTMenuBar.h"
 #import "UIScrollView+Magic.h"
 #import "VTCommon.h"
 
-static NSInteger const kVTCategoryBarTag = 1000;
+static NSInteger const kVTMenuBarTag = 1000;
 
-@interface VTCategoryBar()
+@interface VTMenuBar()
 
 @property (nonatomic, strong) NSMutableArray *frameList; // frame数组
-@property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的cat item
+@property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的items
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
@@ -24,13 +24,13 @@ static NSInteger const kVTCategoryBarTag = 1000;
 
 @end
 
-@implementation VTCategoryBar
+@implementation VTMenuBar
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _itemBorder = 25.f;
+        _itemSpacing = 25.f;
         _indexList = [[NSMutableArray alloc] init];
         _frameList = [[NSMutableArray alloc] init];
         _visibleDict = [[NSMutableDictionary alloc] init];
@@ -73,17 +73,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
     _selectedItem.selected = _deselected ? NO : YES;
 }
 
-- (UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
-{
-    _identifier = identifier;
-    UIButton *catItem = [_cacheSet anyObject];
-    if (catItem) {
-        [_cacheSet removeObject:catItem];
-    }
-    return catItem;
-}
-
-#pragma mark - 更新选中按钮
+#pragma mark - update menuItem state
 - (void)updateSelectedItem
 {
     _selectedItem.selected = NO;
@@ -91,23 +81,23 @@ static NSInteger const kVTCategoryBarTag = 1000;
     _selectedItem.selected = _deselected ? NO : YES;
 }
 
-- (void)deselectCategoryItem
+- (void)deselectMenuItem
 {
     self.deselected = YES;
     _selectedItem.selected = NO;
 }
 
-- (void)reselectCategoryItem
+- (void)reselectMenuItem
 {
     self.deselected = NO;
     _selectedItem.selected = YES;
 }
 
-#pragma mark - 重新加载数据
+#pragma mark - functional methods
 - (void)reloadData
 {
     [self resetCacheData];
-    [self resetFrames];
+    [self resetItemFrames];
     [self setNeedsLayout];
     [self layoutIfNeeded];
 }
@@ -115,7 +105,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
 -(void)resetCacheData
 {
     [_indexList removeAllObjects];
-    NSInteger pageCount = _catNames.count;
+    NSInteger pageCount = _menuTitles.count;
     for (NSInteger index = 0; index < pageCount; index++) {
         [_indexList addObject:@(index)];
     }
@@ -129,40 +119,35 @@ static NSInteger const kVTCategoryBarTag = 1000;
     [_visibleDict removeAllObjects];
 }
 
-#pragma mark - 重置所有frame
-- (void)resetFrames
+- (void)resetItemFrames
 {
     [_frameList removeAllObjects];
-    if (!_catNames.count) return;
+    if (!_menuTitles.count) return;
     
-    UIButton *catItem = nil;
+    UIButton *menuItem = nil;
     if (!_itemFont) {
-        catItem = [self createItemWithIndex:_currentIndex];
-        _itemFont = catItem.titleLabel.font;
+        menuItem = [self createItemAtIndex:_currentIndex];
+        _itemFont = menuItem.titleLabel.font;
         NSAssert(_itemFont != nil, @"item shouldn't be nil, you must conform VTMagicViewDataSource");
     }
     
-    if (_autoResizing) {
-        [self resetFramesForAutoDivide];
-    } else {
-        switch (_layoutStyle) {
-            case VTLayoutStyleAutoDivide:
-                [self resetFramesForAutoDivide];
-                break;
-            case VTLayoutStyleCustom:
-                [self resetFramesForCustom];
-                break;
-            default:
-                [self resetFramesForDefault];
-                break;
-        }
+    switch (_layoutStyle) {
+        case VTLayoutStyleDivide:
+            [self resetFramesForAutoDivide];
+            break;
+        case VTLayoutStyleCustom:
+            [self resetFramesForCustom];
+            break;
+        default:
+            [self resetFramesForDefault];
+            break;
     }
     
     CGFloat contentWidth = CGRectGetMaxX([[_frameList lastObject] CGRectValue]);
-    contentWidth += _navigationInset.right;
+    contentWidth += _menuInset.right;
     self.contentSize = CGSizeMake(contentWidth, 0);
-    if (catItem && _currentIndex < _frameList.count) {
-        catItem.frame = [_frameList[_currentIndex] CGRectValue];
+    if (menuItem && _currentIndex < _frameList.count) {
+        menuItem.frame = [_frameList[_currentIndex] CGRectValue];
     }
 }
 
@@ -170,10 +155,10 @@ static NSInteger const kVTCategoryBarTag = 1000;
 {
     CGSize size = CGSizeZero;
     CGRect frame = CGRectZero;
-    CGFloat itemX = _navigationInset.left;
+    CGFloat itemX = _menuInset.left;
     CGFloat height = self.frame.size.height;
-    height -= _navigationInset.top + _navigationInset.bottom;
-    for (NSString *title in _catNames) {
+    height -= _menuInset.top + _menuInset.bottom;
+    for (NSString *title in _menuTitles) {
         if ([title respondsToSelector:@selector(sizeWithAttributes:)]) {
             size = [title sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
         } else {
@@ -182,7 +167,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
             size = [title sizeWithFont:_itemFont];
 #pragma clang diagnostic pop
         }
-        frame = CGRectMake(itemX, _navigationInset.top, size.width + _itemBorder, height);
+        frame = CGRectMake(itemX, _menuInset.top, size.width + _itemSpacing, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
     }
@@ -191,12 +176,12 @@ static NSInteger const kVTCategoryBarTag = 1000;
 - (void)resetFramesForAutoDivide
 {
     CGRect frame = CGRectZero;
-    NSInteger count = _catNames.count;
+    NSInteger count = _menuTitles.count;
     CGFloat height = self.frame.size.height;
-    height -= _navigationInset.top + _navigationInset.bottom;
-    CGFloat totalSpace = _navigationInset.left + _navigationInset.right;
+    height -= _menuInset.top + _menuInset.bottom;
+    CGFloat totalSpace = _menuInset.left + _menuInset.right;
     CGFloat itemWidth = (CGRectGetWidth(self.frame) - totalSpace)/count;
-    frame.origin = CGPointMake(_navigationInset.left, _navigationInset.top);
+    frame.origin = CGPointMake(_menuInset.left, _menuInset.top);
     frame.size = CGSizeMake(itemWidth, height);
     for (int index = 0; index < count; index++) {
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
@@ -207,10 +192,10 @@ static NSInteger const kVTCategoryBarTag = 1000;
 - (void)resetFramesForCustom
 {
     CGRect frame = CGRectZero;
-    NSInteger count = _catNames.count;
+    NSInteger count = _menuTitles.count;
     CGFloat height = self.frame.size.height;
-    height -= _navigationInset.top + _navigationInset.bottom;
-    frame.origin = CGPointMake(_navigationInset.left, _navigationInset.top);
+    height -= _menuInset.top + _menuInset.bottom;
+    frame.origin = CGPointMake(_menuInset.left, _menuInset.top);
     frame.size = CGSizeMake(_itemWidth, height);
     for (int index = 0; index < count; index++) {
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
@@ -219,39 +204,39 @@ static NSInteger const kVTCategoryBarTag = 1000;
 }
 
 #pragma mark - 查询
-- (CGRect)itemFrameWithIndex:(NSUInteger)index
+- (CGRect)itemFrameAtIndex:(NSUInteger)index
 {
     if (_frameList.count <= index) return CGRectZero;
     return [_frameList[index] CGRectValue];
 }
 
-- (UIButton *)itemWithIndex:(NSUInteger)index
+- (UIButton *)itemAtIndex:(NSUInteger)index
 {
-    return [self itemWithIndex:index autoCreateForNil:NO];
+    return [self itemAtIndex:index autoCreate:NO];
 }
 
-- (UIButton *)createItemWithIndex:(NSUInteger)index
+- (UIButton *)createItemAtIndex:(NSUInteger)index
 {
-    return [self itemWithIndex:index autoCreateForNil:YES];
+    return [self itemAtIndex:index autoCreate:YES];
 }
 
-- (UIButton *)itemWithIndex:(NSUInteger)index autoCreateForNil:(BOOL)autoCreate
+- (UIButton *)itemAtIndex:(NSUInteger)index autoCreate:(BOOL)autoCreate
 {
-    if (_catNames.count <= index) return nil;
-    UIButton *catItem = _visibleDict[@(index)];
-    if (autoCreate && !catItem) {
-        catItem = [self loadItemAtIndex:index];
+    if (_menuTitles.count <= index) return nil;
+    UIButton *menuItem = _visibleDict[@(index)];
+    if (autoCreate && !menuItem) {
+        menuItem = [self loadItemAtIndex:index];
     }
-    return catItem;
+    return menuItem;
 }
 
 - (UIButton *)loadItemAtIndex:(NSInteger)index
 {
-    UIButton *itemBtn = [_datasource categoryBar:self categoryItemForIndex:index];
+    UIButton *itemBtn = [_datasource menuBar:self menuItemAtIndex:index];
     NSAssert([itemBtn isKindOfClass:[UIButton class]], @"item:%@ must be a kind of UIButton", itemBtn);
     if (itemBtn) {
-        [itemBtn addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
-        itemBtn.tag = index + kVTCategoryBarTag;
+        [itemBtn addTarget:self action:@selector(menuItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        itemBtn.tag = index + kVTMenuBarTag;
         if (index < _frameList.count) {
             itemBtn.frame = [_frameList[index] CGRectValue];
         }
@@ -262,21 +247,22 @@ static NSInteger const kVTCategoryBarTag = 1000;
     return itemBtn;
 }
 
-#pragma mark - item 点击事件
-- (void)catItemClick:(id)sender
+- (UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier
 {
-    NSInteger itemIndex = [(UIButton *)sender tag] - kVTCategoryBarTag;
-    if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItemAtIndex:)]) {
-        [_catDelegate categoryBar:self didSelectedItemAtIndex:itemIndex];
+    _identifier = identifier;
+    UIButton *menuItem = [_cacheSet anyObject];
+    if (menuItem) {
+        [_cacheSet removeObject:menuItem];
     }
+    return menuItem;
 }
 
-#pragma mark - accessors
-- (void)setItemBorder:(CGFloat)itemBorder
+#pragma mark - item 点击事件
+- (void)menuItemClick:(id)sender
 {
-    _itemBorder = itemBorder;
-    if (_catNames.count) {
-        [self resetFrames];
+    NSInteger itemIndex = [(UIButton *)sender tag] - kVTMenuBarTag;
+    if ([_menuDelegate respondsToSelector:@selector(menuBar:didSelectItemAtIndex:)]) {
+        [_menuDelegate menuBar:self didSelectItemAtIndex:itemIndex];
     }
 }
 

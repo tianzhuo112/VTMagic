@@ -13,58 +13,87 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong)  NSArray *headerList;
-@property (nonatomic, strong) NSMutableArray *colorList; // temp
+@property (nonatomic, strong)  NSArray *menuList;
 
 @end
 
 @implementation ViewController
 
+#pragma mark - Lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.magicView.naviHeight = 40;
+//    self.magicView.bounces = YES;
 //    self.magicView.headerHidden = NO;
+//    self.magicView.itemSpacing = 10.f;
 //    self.magicView.switchEnabled = YES;
-    self.magicView.dependStatusBar = YES;
+    self.magicView.navigationHeight = 40;
+    self.magicView.againstStatusBar = YES;
 //    self.magicView.style = VTSwitchStyleStiff;
+//    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 50);
+    self.magicView.layoutStyle = kiPhoneDevice ? VTLayoutStyleDefault : VTLayoutStyleDivide;
     self.magicView.navigationColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
-    
     [self integrateComponents];
+    
+    [self addNotification];
     [self generateTempData];
-    [self generateColors];
     [self.magicView reloadData];
     [self.magicView switchToPage:2 animated:YES];
 }
 
-#pragma mark - VTMagicViewDataSource
-- (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView
+- (void)dealloc
 {
-    return _headerList;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSUInteger)index
+#pragma mark - NSNotification
+- (void)addNotification
+{
+    [self removeNotification];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(statusBarOrientationChange:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
+}
+
+- (void)removeNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+}
+
+- (void)statusBarOrientationChange:(NSNotification *)notification
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
+}
+
+#pragma mark - VTMagicViewDataSource
+-(NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
+{
+    return _menuList;
+}
+
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
 {
     static NSString *itemIdentifier = @"itemIdentifier";
-    UIButton *headerItem = [magicView dequeueReusableCatItemWithIdentifier:itemIdentifier];
+    UIButton *headerItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!headerItem) {
         headerItem = [UIButton buttonWithType:UIButtonTypeCustom];
         [headerItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
         [headerItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
         headerItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
     }
-    NSString *title = _headerList[index];
-    [headerItem setTitle:title forState:UIControlStateNormal];
+//    NSString *title = _menuList[itemIndex];
+//    [headerItem setTitle:title forState:UIControlStateNormal];
     return headerItem;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
 {
-    if (0 == index) {
+    if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
-        RecomViewController *playerViewController = [magicView dequeueReusableViewControllerWithIdentifier:recomId];
+        RecomViewController *playerViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
         if (!playerViewController) {
             playerViewController = [[RecomViewController alloc] init];
         }
@@ -72,7 +101,7 @@
     }
     
     static NSString *gridId = @"grid.identifier";
-    GridViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:gridId];
+    GridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
     if (!viewController) {
         viewController = [[GridViewController alloc] init];
     }
@@ -80,55 +109,51 @@
 }
 
 #pragma mark - VTMagicViewDelegate
-- (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSUInteger)index
+- (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-//    NSLog(@"index:%ld viewControllerDidAppeare:%@",index, viewController.view);
+//    NSLog(@"index:%ld viewDidAppeare:%@",pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewControllerDidDisappeare:(UIViewController *)viewController index:(NSUInteger)index
+- (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-//    NSLog(@"index:%ld viewControllerDidDisappeare:%@",index, viewController.view);
+//    NSLog(@"index:%ld viewDidDisappeare:%@",pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView didSelectedItemAtIndex:(NSUInteger)itemIndex
+- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
 {
-//    NSLog(@"didSelectedItemAtIndex:%ld", (long)itemIndex);
+//    NSLog(@"didSelectItemAtIndex:%ld", (long)itemIndex);
 }
 
 #pragma mark - actions
 - (void)subscribeAction
 {
     NSLog(@"subscribeAction");
+    // select/deselect menu item
     if (self.magicView.isDeselected) {
-        [self.magicView reselectCategoryItem];
-        self.magicView.hideSlider = NO;
+        [self.magicView reselectMenuItem];
+        self.magicView.sliderHidden = NO;
     } else {
-        [self.magicView deselectCategoryItem];
-        self.magicView.hideSlider = YES;
+        [self.magicView deselectMenuItem];
+        self.magicView.sliderHidden = YES;
     }
+    
+    // against status bar or not
+    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
+    [UIView animateWithDuration:0.35 animations:^{
+        [self.magicView layoutIfNeeded];
+    }];
 }
 
 #pragma mark - functional methods
 - (void)generateTempData
 {
-    NSMutableArray *headerList = [[NSMutableArray alloc] initWithCapacity:24];
-    [headerList addObject:@"推荐"];
+    NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
+    [menuList addObject:@"推荐"];
     NSString *header = @"测试";
-    for (int index = 0; index < 20; index++) {
-        [headerList addObject:[NSString stringWithFormat:@"%@%d",header,index]];
+    for (int index = 0; index < 10; index++) {
+        [menuList addObject:[NSString stringWithFormat:@"%@%d",header,index]];
     }
-    _headerList = headerList;
-}
-
-- (void)generateColors
-{
-    if (_colorList.count) return;
-    UIColor *backgroundColor = nil;
-    _colorList = [[NSMutableArray alloc] initWithCapacity:_headerList.count];
-    for (NSInteger i = 0; i < _headerList.count; i++) {
-        backgroundColor = RGBCOLOR(arc4random_uniform(255), arc4random_uniform(255), arc4random_uniform(255));
-        [_colorList addObject:backgroundColor];
-    }
+    _menuList = menuList;
 }
 
 - (void)integrateComponents
@@ -140,7 +165,7 @@
     [rightButton setTitle:@"+" forState:UIControlStateNormal];
     rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:28];
     rightButton.center = self.view.center;
-    self.magicView.rightHeaderView = rightButton;
+    self.magicView.rightNavigatoinItem = rightButton;
 }
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014年 tianzhuo. All rights reserved.
 //
 
-#import "VTMagicViewController.h"
+#import "VTMagicController.h"
 
-@interface ViewController : VTMagicViewController
+@interface ViewController : VTMagicController
 
 
 @end

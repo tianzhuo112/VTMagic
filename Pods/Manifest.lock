@@ -1,0 +1,16 @@
+PODS:
+  - VTMagic (1.0.0)
+
+DEPENDENCIES:
+  - VTMagic (from `./`)
+
+EXTERNAL SOURCES:
+  VTMagic:
+    :path: ./
+
+SPEC CHECKSUMS:
+  VTMagic: 2c30c6da28227fa08882fa81e0e3194da41e6cf5
+
+PODFILE CHECKSUM: 9904a30729e9a4e8ceff7f85b5976ad299be7ee4
+
+COCOAPODS: 1.0.0
