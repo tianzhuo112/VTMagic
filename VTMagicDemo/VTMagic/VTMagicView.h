@@ -146,6 +146,17 @@
  */
 - (void)updateCategoryNames;
 
+/**
+ *  取消导航分类item的选中状态，可通过属性deselected获取当前状态
+ *  取消选中后须调用方法reSelectCategoryItem以恢复
+ */
+- (void)deselectCategoryItem;
+
+/**
+ *  恢复导航分类item的选中状态
+ */
+- (void)reselectCategoryItem;
+
 #pragma mark - basic configurations
 /****************************************basic configurations****************************************/
 
@@ -255,6 +266,11 @@
  *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
 @property (nonatomic, assign) BOOL needExtendedBottom;
+
+/**
+ *  导航栏item选中状态是否被取消，默认NO
+ */
+@property (nonatomic, assign, readonly, getter=isDeselected) BOOL deselected;
 
 /**
  *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认NO

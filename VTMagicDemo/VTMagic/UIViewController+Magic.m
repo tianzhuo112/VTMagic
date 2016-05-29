@@ -19,15 +19,15 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self magic_swizzle:@selector(magic_viewWillAppear:) selector:@selector(viewWillAppear:)];
-        [self magic_swizzle:@selector(magic_viewDidAppear:) selector:@selector(viewDidAppear:)];
-        [self magic_swizzle:@selector(magic_viewWillDisappear:) selector:@selector(viewWillDisappear:)];
-        [self magic_swizzle:@selector(magic_viewDidDisappear:) selector:@selector(viewDidDisappear:)];
+        [self vtm_swizzle:@selector(vtm_viewWillAppear:) selector:@selector(viewWillAppear:)];
+        [self vtm_swizzle:@selector(vtm_viewDidAppear:) selector:@selector(viewDidAppear:)];
+        [self vtm_swizzle:@selector(vtm_viewWillDisappear:) selector:@selector(viewWillDisappear:)];
+        [self vtm_swizzle:@selector(vtm_viewDidDisappear:) selector:@selector(viewDidDisappear:)];
     });
 }
 
 #pragma mark - Method Swizzle
-+ (void)magic_swizzle:(SEL)swizzledSelector selector:(SEL)originalSelector
++ (void)vtm_swizzle:(SEL)swizzledSelector selector:(SEL)originalSelector
 {
     Class class = [self class];
     Method originalMethod = class_getInstanceMethod(class, originalSelector);
@@ -49,39 +49,39 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
     }
 }
 
-- (void)magic_viewWillAppear:(BOOL)animated
+- (void)vtm_viewWillAppear:(BOOL)animated
 {
-    [self magic_viewWillAppear:animated];
+    [self vtm_viewWillAppear:animated];
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController beginAppearanceTransition:YES animated:animated];
-        [self setMagic_willAppear:currentViewController ? YES : NO];
+        [self setMagicWillAppear:currentViewController ? YES : NO];
     }
 }
 
-- (void)magic_viewDidAppear:(BOOL)animated
+- (void)vtm_viewDidAppear:(BOOL)animated
 {
-    [self magic_viewDidAppear:animated];
+    [self vtm_viewDidAppear:animated];
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
         [(UIViewController<VTExtensionProtocal> *)self setMagicHasAppeared:YES];
-        if (![self magic_willAppear]) return;
+        if (![self magicWillAppear]) return;
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController endAppearanceTransition];
     }
 }
 
-- (void)magic_viewWillDisappear:(BOOL)animated
+- (void)vtm_viewWillDisappear:(BOOL)animated
 {
-    [self magic_viewWillDisappear:animated];
+    [self vtm_viewWillDisappear:animated];
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController beginAppearanceTransition:NO animated:animated];
     }
 }
 
-- (void)magic_viewDidDisappear:(BOOL)animated
+- (void)vtm_viewDidDisappear:(BOOL)animated
 {
-    [self magic_viewDidDisappear:animated];
+    [self vtm_viewDidDisappear:animated];
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController endAppearanceTransition];
@@ -100,12 +100,12 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
     return objc_getAssociatedObject(self, kVTReuseIdentifier);
 }
 
-- (void)setMagic_willAppear:(BOOL)magic_willAppear
+- (void)setMagicWillAppear:(BOOL)magicWillAppear
 {
-    objc_setAssociatedObject(self, kVTMagicWillAppear, @(magic_willAppear), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, kVTMagicWillAppear, @(magicWillAppear), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)magic_willAppear
+- (BOOL)magicWillAppear
 {
     return [objc_getAssociatedObject(self, kVTMagicWillAppear) boolValue];
 }

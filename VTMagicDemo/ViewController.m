@@ -39,7 +39,7 @@
     [self.magicView switchToPage:2 animated:YES];
 }
 
-#pragma mark - magic view delegate & data source
+#pragma mark - VTMagicViewDataSource
 - (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView
 {
     return _headerList;
@@ -63,22 +63,23 @@
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index
 {
     if (0 == index) {
-        static NSString *playerId = @"playerIdentifier";
-        RecomViewController *playerViewController = [magicView dequeueReusableViewControllerWithIdentifier:playerId];
+        static NSString *recomId = @"recom.identifier";
+        RecomViewController *playerViewController = [magicView dequeueReusableViewControllerWithIdentifier:recomId];
         if (!playerViewController) {
             playerViewController = [[RecomViewController alloc] init];
         }
         return playerViewController;
     }
     
-    static NSString *listId = @"magicIdentifier";
-    GridViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:listId];
+    static NSString *gridId = @"grid.identifier";
+    GridViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:gridId];
     if (!viewController) {
         viewController = [[GridViewController alloc] init];
     }
     return viewController;
 }
 
+#pragma mark - VTMagicViewDelegate
 - (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSUInteger)index
 {
 //    NSLog(@"index:%ld viewControllerDidAppeare:%@",index, viewController.view);
@@ -89,10 +90,22 @@
 //    NSLog(@"index:%ld viewControllerDidDisappeare:%@",index, viewController.view);
 }
 
+- (void)magicView:(VTMagicView *)magicView didSelectedItemAtIndex:(NSUInteger)itemIndex
+{
+//    NSLog(@"didSelectedItemAtIndex:%ld", (long)itemIndex);
+}
+
 #pragma mark - actions
 - (void)subscribeAction
 {
     NSLog(@"subscribeAction");
+    if (self.magicView.isDeselected) {
+        [self.magicView reselectCategoryItem];
+        self.magicView.hideSlider = NO;
+    } else {
+        [self.magicView deselectCategoryItem];
+        self.magicView.hideSlider = YES;
+    }
 }
 
 #pragma mark - functional methods

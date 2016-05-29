@@ -65,19 +65,12 @@ static NSInteger const kVTCategoryBarTag = 1000;
     for (NSNumber *index in leftIndexList) {
         frame = [_frameList[[index integerValue]] CGRectValue];
         if ([self vtm_isNeedDisplayWithFrame:frame]) {
-            itemBtn = [_datasource categoryBar:self categoryItemForIndex:[index integerValue]];
-            if (![itemBtn isKindOfClass:[UIButton class]]) continue;
-            [itemBtn addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
-            itemBtn.tag = [index integerValue] + kVTCategoryBarTag;
-            itemBtn.frame = frame;
-            itemBtn.selected = NO;
-            [self addSubview:itemBtn];
-            [_visibleDict setObject:itemBtn forKey:index];
+            [self loadItemAtIndex:[index integerValue]];
         }
     }
     
     _selectedItem = _visibleDict[@(_currentIndex)];
-    _selectedItem.selected = YES;
+    _selectedItem.selected = _deselected ? NO : YES;
 }
 
 - (UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
@@ -95,6 +88,18 @@ static NSInteger const kVTCategoryBarTag = 1000;
 {
     _selectedItem.selected = NO;
     _selectedItem = _visibleDict[@(_currentIndex)];
+    _selectedItem.selected = _deselected ? NO : YES;
+}
+
+- (void)deselectCategoryItem
+{
+    self.deselected = YES;
+    _selectedItem.selected = NO;
+}
+
+- (void)reselectCategoryItem
+{
+    self.deselected = NO;
     _selectedItem.selected = YES;
 }
 
@@ -235,15 +240,26 @@ static NSInteger const kVTCategoryBarTag = 1000;
     if (_catNames.count <= index) return nil;
     UIButton *catItem = _visibleDict[@(index)];
     if (autoCreate && !catItem) {
-        catItem = [_datasource categoryBar:self categoryItemForIndex:index];
-        if (!catItem) return nil;
-        catItem.tag = index + kVTCategoryBarTag;
-        [self addSubview:catItem];
-        [_visibleDict setObject:catItem forKey:@(index)];
-        if (index < _frameList.count) catItem.frame = [_frameList[index] CGRectValue];
-        [catItem addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        catItem = [self loadItemAtIndex:index];
     }
     return catItem;
+}
+
+- (UIButton *)loadItemAtIndex:(NSInteger)index
+{
+    UIButton *itemBtn = [_datasource categoryBar:self categoryItemForIndex:index];
+    NSAssert([itemBtn isKindOfClass:[UIButton class]], @"item:%@ must be a kind of UIButton", itemBtn);
+    if (itemBtn) {
+        [itemBtn addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        itemBtn.tag = index + kVTCategoryBarTag;
+        if (index < _frameList.count) {
+            itemBtn.frame = [_frameList[index] CGRectValue];
+        }
+        [itemBtn setSelected:NO];
+        [self addSubview:itemBtn];
+        [_visibleDict setObject:itemBtn forKey:@(index)];
+    }
+    return itemBtn;
 }
 
 #pragma mark - item 点击事件

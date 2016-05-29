@@ -273,6 +273,16 @@ static const void *kVTMagicView = &kVTMagicView;
     }
 }
 
+- (void)deselectCategoryItem
+{
+    [_categoryBar deselectCategoryItem];
+}
+
+- (void)reselectCategoryItem
+{
+    [_categoryBar reselectCategoryItem];
+}
+
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
 - (void)displayPageHasChanged:(NSInteger)pageIndex disIndex:(NSInteger)disIndex
 {
@@ -528,6 +538,7 @@ static const void *kVTMagicView = &kVTMagicView;
 #pragma mark - change color
 - (void)graduallyChangeColor
 {
+    if (self.isDeselected) return;
     if (VTColorIsZero(_normalVTColor) && VTColorIsZero(_selectedVTColor)) return;
     CGFloat scale = _contentView.contentOffset.x/_contentView.frame.size.width - _currentIndex;
     CGFloat absScale = ABS(scale);
@@ -954,6 +965,11 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 {
     _needExtendedBottom = needExtendedBottom;
     [self updateFrameForSubviews];
+}
+
+- (BOOL)isDeselected
+{
+    return _categoryBar.isDeselected;
 }
 
 - (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated

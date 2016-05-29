@@ -54,6 +54,16 @@
 - (void)updateSelectedItem;
 
 /**
+ *  取消导航分类item的选中状态
+ */
+- (void)deselectCategoryItem;
+
+/**
+ *  恢复导航分类item的选中状态
+ */
+- (void)reselectCategoryItem;
+
+/**
  *  根据索引获取对应item对应的frame
  *
  *  @param index 索引
@@ -123,6 +133,11 @@
  *  当前被选中的item
  */
 @property (nonatomic, strong, readonly) UIButton *selectedItem;
+
+/**
+ *  是否取消导航item选中状态，默认NO
+ */
+@property (nonatomic, assign, getter=isDeselected) BOOL deselected;
 
 /**
  *  自定义item宽度，仅VTLayoutStyleCustom样式下有效

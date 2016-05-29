@@ -80,12 +80,7 @@
     for (NSIndexPath *indexPath in tempPaths) {
         frame = [_frameList[indexPath.row] CGRectValue];
         if ([self vtm_isNeedDisplayWithFrame:frame]) {
-            viewController = [_dataSource contentView:self viewControllerForIndex:indexPath.row];
-            if (!viewController) continue;
-            viewController.view.frame = frame;
-            viewController.reuseIdentifier = _identifier;
-            [self addSubview:viewController.view];
-            [_visibleDict setObject:viewController forKey:indexPath];
+            [self loadViewControllerAtIndexPath:indexPath];
         }
     }
 }
@@ -164,14 +159,22 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UIViewController *viewController = [_visibleDict objectForKey:indexPath];
     if (!viewController && autoCreate) {
-        viewController = [_dataSource contentView:self viewControllerForIndex:index];
+        viewController = [self loadViewControllerAtIndexPath:indexPath];
+    }
+    return viewController;
+}
+
+- (UIViewController *)loadViewControllerAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIViewController *viewController = [_dataSource contentView:self viewControllerForIndex:indexPath.row];
+    if (viewController) {
         viewController.reuseIdentifier = _identifier;
-        if (!viewController) return nil;
-        viewController.view.frame = [_frameList[index] CGRectValue];
+        CGRect pageFrame = [_frameList[indexPath.row] CGRectValue];
+        viewController.view.frame = pageFrame;
         [self addSubview:viewController.view];
         [_visibleDict setObject:viewController forKey:indexPath];
     }
-    
+    _identifier = nil;
     return viewController;
 }
 
