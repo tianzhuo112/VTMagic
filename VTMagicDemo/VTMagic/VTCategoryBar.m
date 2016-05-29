@@ -104,6 +104,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
     [self resetCacheData];
     [self resetFrames];
     [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 -(void)resetCacheData
@@ -127,6 +128,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
 - (void)resetFrames
 {
     [_frameList removeAllObjects];
+    if (!_catNames.count) return;
     
     UIButton *catItem = nil;
     if (!_itemFont && _catNames.count) {
@@ -134,6 +136,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
         _itemFont = catItem.titleLabel.font;
     }
     
+    NSAssert(_itemFont != nil, @"you must conform VTMagicViewDataSource");
     if (_autoResizing) {
         [self autoResizingMode];
     } else {
@@ -218,13 +221,12 @@ static NSInteger const kVTCategoryBarTag = 1000;
 - (void)catItemClick:(id)sender
 {
     NSInteger itemIndex = [(UIButton *)sender tag] - kVTCategoryBarTag;
-    if (itemIndex == _currentIndex) return;
     if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItemAtIndex:)]) {
         [_catDelegate categoryBar:self didSelectedItemAtIndex:itemIndex];
     }
 }
 
-#pragma mark - accessor
+#pragma mark - accessors
 - (void)setItemBorder:(CGFloat)itemBorder
 {
     _itemBorder = itemBorder;

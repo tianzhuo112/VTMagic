@@ -49,6 +49,15 @@
 - (UIViewController *)viewControllerWithIndex:(NSUInteger)index;
 
 /**
+ *  根据索引生成对应的ViewController，若对应ViewController已经存在，则直接返回
+ *
+ *  @param index 索引
+ *
+ *  @return UIViewController对象
+ */
+- (UIViewController *)creatViewControllerWithIndex:(NSUInteger)index;
+
+/**
  *  获取索引对应的ViewController，当ViewController为nil时，根据autoCreate的值决定是否创建
  *
  *  @param index      索引

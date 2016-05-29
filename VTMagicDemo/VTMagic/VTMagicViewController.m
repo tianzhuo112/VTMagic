@@ -23,7 +23,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
         } else if ([self respondsToSelector:@selector(setWantsFullScreenLayout:)]) {
             [self setValue:@YES forKey:@"wantsFullScreenLayout"];
@@ -35,19 +35,14 @@
 - (void)loadView
 {
     [super loadView];
-    
-    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-        self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        [self.view addSubview:self.magicView];
-    } else {
-        self.view = self.magicView;
-    }
+    self.view = self.magicView;
 }
 
 - (VTMagicView *)magicView
 {
     if (!_magicView) {
         _magicView = [[VTMagicView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        _magicView.autoresizesSubviews = YES;
         _magicView.magicViewController = self;
         _magicView.delegate = self;
         _magicView.dataSource = self;
@@ -110,6 +105,12 @@
 - (void)magicView:(VTMagicView *)magicView viewControllerDidDisappeare:(UIViewController *)viewController index:(NSUInteger)index
 {
     VTLog(@"index:%ld viewControllerDidDisappeare:%@",(long)index, viewController.view);
+}
+
+#pragma mark - accessors
+- (NSArray<UIViewController *> *)viewControllers
+{
+    return self.magicView.viewControllers;
 }
 
 @end

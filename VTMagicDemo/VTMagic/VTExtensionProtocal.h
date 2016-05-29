@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class VTMagicView;
 @protocol VTExtensionProtocal <NSObject>
 
 @required
@@ -32,5 +33,11 @@
  *  @param currentViewController 当前页面控制器
  */
 - (void)setCurrentViewController:(UIViewController *)currentViewController;
+
+@optional
+/**
+ *  任何magicController默认都会有对应的magicView
+ */
+- (VTMagicView *)magicView;
 
 @end

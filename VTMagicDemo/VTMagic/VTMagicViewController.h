@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIViewController+Magic.h"
 #import "VTMagicView.h"
 #import "VTCommon.h"
 
@@ -31,7 +32,7 @@
 - (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
 
 /**
- *  magic view，iOS8以上等同于self.view
+ *  magic view，等同于self.view
  */
 @property (nonatomic, strong) VTMagicView *magicView;
 
@@ -44,5 +45,10 @@
  *  当前显示的控制器
  */
 @property (nonatomic, strong) UIViewController *currentViewController;
+
+/**
+ *  屏幕上可见的控制器
+ */
+@property (nonatomic, strong, readonly) NSArray<__kindof UIViewController *> *viewControllers;
 
 @end

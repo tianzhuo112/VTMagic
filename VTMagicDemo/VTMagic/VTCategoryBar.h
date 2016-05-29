@@ -101,7 +101,7 @@
 /**
  *  分类名数组，字符串类型
  */
-@property (nonatomic, strong) NSArray *catNames;
+@property (nonatomic, strong) NSArray<__kindof NSString *> *catNames;
 
 /**
  *  导航分类的item是否需要自适应宽度，默认NO

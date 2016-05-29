@@ -11,6 +11,5 @@
 
 #import "VTCommon.h"
 #import "VTMagicViewController.h"
-#import "UIViewController+Magic.h"
 
 #endif /* VTMagic_h */

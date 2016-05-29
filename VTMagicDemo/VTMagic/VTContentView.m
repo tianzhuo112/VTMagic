@@ -52,6 +52,7 @@
 {
     [super layoutSubviews];
     
+    if (CGRectIsEmpty(self.frame)) return;
     CGFloat offset = self.contentOffset.x;
     CGFloat width = self.frame.size.width;
     BOOL isNotBorder = 0 != (int)offset%(int)width;
@@ -95,6 +96,7 @@
     [self resetCacheData];
     [self resetFrames];
     [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - 重置缓存信息
@@ -139,7 +141,7 @@
     self.contentOffset = CGPointMake(CGRectGetWidth(frame)*_currentIndex, 0);
 }
 
-#pragma mark - accessor
+#pragma mark - accessors
 - (NSArray *)visibleList
 {
     return [_visibleDict allValues];
@@ -148,6 +150,11 @@
 - (UIViewController *)viewControllerWithIndex:(NSUInteger)index
 {
     return [self viewControllerWithIndex:index autoCreateForNil:NO];
+}
+
+- (UIViewController *)creatViewControllerWithIndex:(NSUInteger)index
+{
+    return [self viewControllerWithIndex:index autoCreateForNil:YES];
 }
 
 - (UIViewController *)viewControllerWithIndex:(NSUInteger)index autoCreateForNil:(BOOL)autoCreate

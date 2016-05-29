@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 
 static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
+static const void *kVTMagicWillAppear = &kVTMagicWillAppear;
 
 @implementation UIViewController (Magic)
 
@@ -53,6 +54,7 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController beginAppearanceTransition:YES animated:animated];
+        [self setMagic_willAppear:currentViewController ? YES : NO];
     }
 }
 
@@ -60,6 +62,7 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
 {
     [self magic_viewDidAppear:animated];
     if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
+        if (![self magic_willAppear]) return;
         UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
         [currentViewController endAppearanceTransition];
     }
@@ -83,7 +86,7 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
     }
 }
 
-#pragma mark - accessor
+#pragma mark - accessors
 - (void)setReuseIdentifier:(NSString *)reuseIdentifier
 {
     objc_setAssociatedObject(self, kVTReuseIdentifier, reuseIdentifier, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -92,6 +95,16 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
 - (NSString *)reuseIdentifier
 {
     return objc_getAssociatedObject(self, kVTReuseIdentifier);
+}
+
+- (void)setMagic_willAppear:(BOOL)magic_willAppear
+{
+    objc_setAssociatedObject(self, kVTMagicWillAppear, @(magic_willAppear), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)magic_willAppear
+{
+    return [objc_getAssociatedObject(self, kVTMagicWillAppear) boolValue];
 }
 
 - (UIViewController<VTExtensionProtocal> *)magicController

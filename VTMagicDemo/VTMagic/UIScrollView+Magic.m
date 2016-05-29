@@ -14,7 +14,7 @@
 {
     CGRect visibleRect = (CGRect){CGPointMake(self.contentOffset.x, 0), self.frame.size};
     CGRect intersectRegion = CGRectIntersection(frame, visibleRect);
-    BOOL isOnScreen = !CGRectIsNull(intersectRegion);
+    BOOL isOnScreen =  !CGRectIsNull(intersectRegion) || !CGRectIsEmpty(intersectRegion);
     return isOnScreen;
 }
 
