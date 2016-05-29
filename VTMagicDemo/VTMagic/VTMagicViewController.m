@@ -70,13 +70,30 @@
     
 }
 
+#pragma mark - 禁止自动触发appearance methods
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods
+{
+    return NO;
+}
+
+#pragma mark - obtain view controller with index & switch to specified page
+- (UIViewController *)viewControllerWithIndex:(NSUInteger)index
+{
+    return [self.magicView viewControllerWithIndex:index];
+}
+
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated
+{
+    [self.magicView switchToPage:pageIndex animated:animated];
+}
+
 #pragma mark - VTMagicViewDataSource & VTMagicViewDelegate
 - (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView
 {
     return nil;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index
+- (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSUInteger)index
 {
     return nil;
 }
@@ -86,12 +103,12 @@
     return nil;
 }
 
-- (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSInteger)index
+- (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSUInteger)index
 {
     VTLog(@"index:%ld viewControllerDidAppeare:%@",(long)index, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewControllerDidDisappeare:(UIViewController *)viewController index:(NSInteger)index
+- (void)magicView:(VTMagicView *)magicView viewControllerDidDisappeare:(UIViewController *)viewController index:(NSUInteger)index
 {
     VTLog(@"index:%ld viewControllerDidDisappeare:%@",(long)index, viewController.view);
 }

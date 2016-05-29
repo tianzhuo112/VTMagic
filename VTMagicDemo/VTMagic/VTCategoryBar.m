@@ -10,6 +10,8 @@
 #import "UIScrollView+Magic.h"
 #import "VTCommon.h"
 
+static NSInteger const kVTCategoryBarTag = 1000;
+
 @interface VTCategoryBar()
 
 @property (nonatomic, strong) NSMutableArray *frameList; // frame数组
@@ -66,7 +68,7 @@
             itemBtn = [_datasource categoryBar:self categoryItemForIndex:[index integerValue]];
             if (![itemBtn isKindOfClass:[UIButton class]]) continue;
             [itemBtn addTarget:self action:@selector(catItemClick:) forControlEvents:UIControlEventTouchUpInside];
-            itemBtn.tag = [index integerValue];
+            itemBtn.tag = [index integerValue] + kVTCategoryBarTag;
             itemBtn.frame = frame;
             itemBtn.selected = NO;
             [self addSubview:itemBtn];
@@ -156,7 +158,10 @@
         if (iOS7_OR_LATER) {
             size = [_catNames[index] sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
         } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             size = [_catNames[index] sizeWithFont:_itemFont];
+#pragma clang diagnostic pop
         }
         frame = CGRectMake(itemX, 0, size.width + _itemBorder, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
@@ -177,30 +182,30 @@
 }
 
 #pragma mark - 查询
-- (CGRect)itemFrameWithIndex:(NSInteger)index
+- (CGRect)itemFrameWithIndex:(NSUInteger)index
 {
-    if (index < 0 || _frameList.count <= index) return CGRectNull;
+    if (_frameList.count <= index) return CGRectZero;
     return [_frameList[index] CGRectValue];
 }
 
-- (UIButton *)itemWithIndex:(NSInteger)index
+- (UIButton *)itemWithIndex:(NSUInteger)index
 {
     return [self itemWithIndex:index autoCreateForNil:NO];
 }
 
-- (UIButton *)createItemWithIndex:(NSInteger)index
+- (UIButton *)createItemWithIndex:(NSUInteger)index
 {
     return [self itemWithIndex:index autoCreateForNil:YES];
 }
 
-- (UIButton *)itemWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate
+- (UIButton *)itemWithIndex:(NSUInteger)index autoCreateForNil:(BOOL)autoCreate
 {
-    if (index < 0 || _catNames.count <= index) return nil;
+    if (_catNames.count <= index) return nil;
     UIButton *catItem = _visibleDict[@(index)];
     if (autoCreate && !catItem) {
         catItem = [_datasource categoryBar:self categoryItemForIndex:index];
         if (!catItem) return nil;
-        catItem.tag = index;
+        catItem.tag = index + kVTCategoryBarTag;
         [self addSubview:catItem];
         [_visibleDict setObject:catItem forKey:@(index)];
         if (index < _frameList.count) catItem.frame = [_frameList[index] CGRectValue];
@@ -212,10 +217,10 @@
 #pragma mark - item 点击事件
 - (void)catItemClick:(id)sender
 {
-    NSInteger newIndex = [(UIButton *)sender tag];
-    if (newIndex == _currentIndex) return;
-    if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItem:)]) {
-        [_catDelegate categoryBar:self didSelectedItem:sender];
+    NSInteger itemIndex = [(UIButton *)sender tag] - kVTCategoryBarTag;
+    if (itemIndex == _currentIndex) return;
+    if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItemAtIndex:)]) {
+        [_catDelegate categoryBar:self didSelectedItemAtIndex:itemIndex];
     }
 }
 

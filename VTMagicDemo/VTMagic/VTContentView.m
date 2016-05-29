@@ -145,14 +145,14 @@
     return [_visibleDict allValues];
 }
 
-- (UIViewController *)viewControllerWithIndex:(NSInteger)index
+- (UIViewController *)viewControllerWithIndex:(NSUInteger)index
 {
     return [self viewControllerWithIndex:index autoCreateForNil:NO];
 }
 
-- (UIViewController *)viewControllerWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate
+- (UIViewController *)viewControllerWithIndex:(NSUInteger)index autoCreateForNil:(BOOL)autoCreate
 {
-    if (index < 0 || _pageCount <= index) return nil;
+    if (_pageCount <= index) return nil;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UIViewController *viewController = [_visibleDict objectForKey:indexPath];
     if (!viewController && autoCreate) {

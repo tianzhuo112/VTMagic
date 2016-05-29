@@ -47,7 +47,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     [super viewWillAppear:animated];
     
-//    NSLog(@"viewWillAppear:%@",self);
+    VTPRINT_METHOD
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -55,6 +55,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     [super viewDidAppear:animated];
     
     self.collectionView.scrollsToTop = YES;
+    VTPRINT_METHOD
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -62,6 +63,14 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     [super viewWillDisappear:animated];
     
     self.collectionView.scrollsToTop = NO;
+    VTPRINT_METHOD
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    VTPRINT_METHOD
 }
 
 #pragma mark UICollectionViewDataSource

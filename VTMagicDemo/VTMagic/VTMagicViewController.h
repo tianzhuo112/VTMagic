@@ -13,6 +13,24 @@
 @interface VTMagicViewController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource,VTExtensionProtocal>
 
 /**
+ *  获取索引对应的ViewController
+ *  若index超出范围或对应控制器不可见，则返回nil
+ *
+ *  @param index 索引
+ *
+ *  @return UIViewController对象
+ */
+- (UIViewController *)viewControllerWithIndex:(NSUInteger)index;
+
+/**
+ *  切换到指定页面
+ *
+ *  @param pageIndex 页面索引
+ *  @param animated  是否需要动画执行
+ */
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
+
+/**
  *  magic view，iOS8以上等同于self.view
  */
 @property (nonatomic, strong) VTMagicView *magicView;
@@ -20,7 +38,7 @@
 /**
  *  当前页面对应的索引
  */
-@property (nonatomic, assign) NSInteger currentPage;
+@property (nonatomic, assign) NSUInteger currentPage;
 
 /**
  *  当前显示的控制器

@@ -22,31 +22,11 @@
  *
  *  @return 当前索引对应的控制器
  */
-- (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSInteger)index;
+- (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSUInteger)index;
 
 @end
 
 @interface VTContentView : UIScrollView
-
-/**
- *  数据源
- */
-@property (nonatomic, weak) id <VTContentViewDataSource> dataSource;
-
-/**
- *  页面数量
- */
-@property (nonatomic, assign) NSInteger pageCount;
-
-/**
- *  当前页面索引
- */
-@property (nonatomic, assign) NSInteger currentIndex;
-
-/**
- *  屏幕上可见的控制器
- */
-@property (nonatomic, strong, readonly) NSArray *visibleList;
 
 /**
  *  刷新数据
@@ -66,7 +46,7 @@
  *
  *  @return UIViewController对象
  */
-- (UIViewController *)viewControllerWithIndex:(NSInteger)index;
+- (UIViewController *)viewControllerWithIndex:(NSUInteger)index;
 
 /**
  *  获取索引对应的ViewController，当ViewController为nil时，根据autoCreate的值决定是否创建
@@ -76,7 +56,7 @@
  *
  *  @return UIViewController对象
  */
-- (UIViewController *)viewControllerWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate;
+- (UIViewController *)viewControllerWithIndex:(NSUInteger)index autoCreateForNil:(BOOL)autoCreate;
 
 /**
  *  根据缓存标识查询可重用的视图控制器
@@ -86,5 +66,25 @@
  *  @return 可重用的视图控制器
  */
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
+
+/**
+ *  数据源
+ */
+@property (nonatomic, weak) id <VTContentViewDataSource> dataSource;
+
+/**
+ *  页面数量
+ */
+@property (nonatomic, assign) NSUInteger pageCount;
+
+/**
+ *  当前页面索引
+ */
+@property (nonatomic, assign) NSUInteger currentIndex;
+
+/**
+ *  屏幕上可见的控制器
+ */
+@property (nonatomic, strong, readonly) NSArray *visibleList;
 
 @end

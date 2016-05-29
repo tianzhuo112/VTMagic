@@ -28,11 +28,19 @@
     [self.tableView reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    VTPRINT_METHOD
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
     self.tableView.scrollsToTop = YES;
+    VTPRINT_METHOD
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -40,6 +48,14 @@
     [super viewWillDisappear:animated];
     
     self.tableView.scrollsToTop = NO;
+    VTPRINT_METHOD
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    VTPRINT_METHOD
 }
 
 #pragma mark - Table view data source

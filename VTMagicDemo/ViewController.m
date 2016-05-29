@@ -78,14 +78,14 @@
     return viewController;
 }
 
-- (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSInteger)index
+- (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSUInteger)index
 {
-    NSLog(@"index:%ld viewControllerDidAppeare:%@",index, viewController.view);
+//    NSLog(@"index:%ld viewControllerDidAppeare:%@",index, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewControllerDidDisappeare:(UIViewController *)viewController index:(NSInteger)index
+- (void)magicView:(VTMagicView *)magicView viewControllerDidDisappeare:(UIViewController *)viewController index:(NSUInteger)index
 {
-    NSLog(@"index:%ld viewControllerDidDisappeare:%@",index, viewController.view);
+//    NSLog(@"index:%ld viewControllerDidDisappeare:%@",index, viewController.view);
 }
 
 #pragma mark - actions

@@ -18,7 +18,7 @@
  *
  *  @return 当前按钮
  */
-- (UIButton *)categoryBar:(VTCategoryBar *)catBar categoryItemForIndex:(NSInteger)index;
+- (UIButton *)categoryBar:(VTCategoryBar *)catBar categoryItemForIndex:(NSUInteger)index;
 
 @end
 
@@ -31,11 +31,62 @@
  *  @param categoryBar self
  *  @param itemBtn    被选中的按钮
  */
-- (void)categoryBar:(VTCategoryBar *)catBar didSelectedItem:(UIButton *)itemBtn;
+- (void)categoryBar:(VTCategoryBar *)catBar didSelectedItemAtIndex:(NSUInteger)itemIndex;
 
 @end
 
 @interface VTCategoryBar : UIScrollView
+
+/**
+ *  刷新数据
+ */
+- (void)reloadData;
+
+/**
+ *  重置所有item的frame
+ */
+- (void)resetFrames;
+
+/**
+ *  更新选中按钮
+ */
+- (void)updateSelectedItem;
+
+/**
+ *  根据索引获取对应item对应的frame
+ *
+ *  @param index 索引
+ *
+ *  @return 当前索引对应item的frame
+ */
+- (CGRect)itemFrameWithIndex:(NSUInteger)index;
+
+/**
+ *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
+ *
+ *  @param index 索引
+ *
+ *  @return 当前索引对应的item
+ */
+- (UIButton *)itemWithIndex:(NSUInteger)index;
+
+/**
+ *  根据索引生成对应的item，若对应item已经存在，则直接返回
+ *
+ *  @param index 索引
+ *
+ *  @return 当前索引对应的item
+ */
+- (UIButton *)createItemWithIndex:(NSUInteger)index;
+
+/**
+ *  根据重用标识查询可重用的category item
+ *
+ *  @param identifier 重用标识
+ *
+ *  @return 缓存池中取出的category item
+ */
+- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 
 /**
  *  数据源
@@ -60,7 +111,7 @@
 /**
  *  当前选中item对应的索引
  */
-@property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, assign) NSUInteger currentIndex;
 
 /**
  *  当前被选中的item
@@ -71,56 +122,5 @@
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemBorder;
-
-/**
- *  刷新数据
- */
-- (void)reloadData;
-
-/**
- *  重置所有item的frame
- */
-- (void)resetFrames;
-
-/**
- *  更新选中按钮
- */
-- (void)updateSelectedItem;
-
-/**
- *  根据索引获取对应item对应的frame
- *
- *  @param index 索引
- *
- *  @return 当前索引对应item的frame
- */
-- (CGRect)itemFrameWithIndex:(NSInteger)index;
-
-/**
- *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
- *
- *  @param index 索引
- *
- *  @return 当前索引对应的item
- */
-- (UIButton *)itemWithIndex:(NSInteger)index;
-
-/**
- *  根据索引生成对应的item，若对应item已经存在，则直接返回
- *
- *  @param index 索引
- *
- *  @return 当前索引对应的item
- */
-- (UIButton *)createItemWithIndex:(NSInteger)index;
-
-/**
- *  根据重用标识查询可重用的category item
- *
- *  @param identifier 重用标识
- *
- *  @return 缓存池中取出的category item
- */
-- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 
 @end
