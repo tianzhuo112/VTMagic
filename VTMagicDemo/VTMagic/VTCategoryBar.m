@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
 @property (nonatomic, strong) NSMutableArray *indexList; // 索引集合
+@property (nonatomic, strong) UIFont *itemFont;
 
 @end
 
@@ -47,7 +48,6 @@
         itemBtn = _visibleDict[index];
         frame = [_frameList[[index integerValue]] CGRectValue];
         if (![self vtm_isNeedDisplayWithFrame:frame]) {
-            if (itemBtn.selected) _currentIndex = itemBtn.tag;
             [itemBtn setSelected:NO];
             [itemBtn removeFromSuperview];
             [_visibleDict removeObjectForKey:index];
@@ -93,7 +93,6 @@
 - (void)setCatNames:(NSArray *)catNames
 {
     _catNames = catNames;
-    [self resetFrameForAllItems];
 }
 
 - (void)setItemBorder:(CGFloat)itemBorder
@@ -147,18 +146,23 @@
         _frameList = [[NSMutableArray alloc] initWithCapacity:_catNames.count];
     }
     
+    UIButton *catItem = nil;
+    if (!_itemFont && _catNames.count) {
+        catItem = [self itemWithIndex:_currentIndex];
+        _itemFont = catItem.titleLabel.font;
+    }
+    
     CGFloat itemX = 0;
     CGSize size = CGSizeZero;
     CGRect frame = CGRectZero;
     [_frameList removeAllObjects];
     NSInteger count = _catNames.count;
     CGFloat height = self.frame.size.height;
-    _normalFont = _normalFont ?: [UIFont fontWithName:@"Helvetica" size:16];
     for (int index = 0; index < count; index++) {
         if (IOS7_OR_LATER) {
-            size = [_catNames[index] sizeWithAttributes:@{NSFontAttributeName : _normalFont}];
+            size = [_catNames[index] sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
         } else {
-            size = [_catNames[index] sizeWithFont:_normalFont];
+            size = [_catNames[index] sizeWithFont:_itemFont];
         }
         
         frame = CGRectMake(itemX, 0, size.width + _itemBorder, height);
@@ -167,6 +171,9 @@
     }
     
     self.contentSize = CGSizeMake(itemX, 0);
+    if (catItem && CGRectIsEmpty(catItem.frame)) {
+        catItem.frame = [_frameList[_currentIndex] CGRectValue];
+    }
 }
 
 - (UIButton *)itemWithIndex:(NSInteger)index
@@ -181,7 +188,7 @@
     if (!catItem) return nil;
     [self addSubview:catItem];
     [_visibleDict setObject:catItem forKey:@(index)];
-    catItem.frame = [_frameList[index] CGRectValue];
+    if (index < _frameList.count) catItem.frame = [_frameList[index] CGRectValue];
     [catItem addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
     return catItem;
 }

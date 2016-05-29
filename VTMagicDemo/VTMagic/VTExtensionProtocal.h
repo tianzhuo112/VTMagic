@@ -18,6 +18,7 @@
  *  @param viewController 当前显示的页面控制器
  */
 - (void)displayViewControllerDidChanged:(UIViewController *)viewController index:(NSUInteger)index;
+
 /**
  *  控制器即将添加到页面上时触发
  *  私有协议，仅允许在VTMagicViewController内部实现，子类禁止重写父类实现

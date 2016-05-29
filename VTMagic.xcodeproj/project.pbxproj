@@ -14,6 +14,7 @@
 		7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */; };
 		7EF068581CF83C1B00EDFC41 /* UIScrollView+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068521CF8383E00EDFC41 /* UIScrollView+Magic.m */; };
 		7EF068591CF83C1D00EDFC41 /* UIViewController+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068541CF8383E00EDFC41 /* UIViewController+Magic.m */; };
+		7EF06F3C1CF852C000EDFC41 /* UIColor+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF06F3B1CF852C000EDFC41 /* UIColor+Magic.m */; };
 		AEA0D4F91A11E4AB00229B72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4F81A11E4AB00229B72 /* main.m */; };
 		AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */; };
 		AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FE1A11E4AB00229B72 /* ViewController.m */; };
@@ -53,6 +54,8 @@
 		7EF068531CF8383E00EDFC41 /* UIViewController+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Magic.h"; sourceTree = "<group>"; };
 		7EF068541CF8383E00EDFC41 /* UIViewController+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Magic.m"; sourceTree = "<group>"; };
 		7EF06F391CF842C200EDFC41 /* VTExtensionProtocal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTExtensionProtocal.h; sourceTree = "<group>"; };
+		7EF06F3A1CF852C000EDFC41 /* UIColor+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Magic.h"; sourceTree = "<group>"; };
+		7EF06F3B1CF852C000EDFC41 /* UIColor+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Magic.m"; sourceTree = "<group>"; };
 		AEA0D4F31A11E4AB00229B72 /* VTMagic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA0D4F71A11E4AB00229B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEA0D4F81A11E4AB00229B72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -178,6 +181,8 @@
 				7EF068511CF8383E00EDFC41 /* UIScrollView+Magic.h */,
 				7EF068521CF8383E00EDFC41 /* UIScrollView+Magic.m */,
 				7EF06F391CF842C200EDFC41 /* VTExtensionProtocal.h */,
+				7EF06F3A1CF852C000EDFC41 /* UIColor+Magic.h */,
+				7EF06F3B1CF852C000EDFC41 /* UIColor+Magic.m */,
 			);
 			path = VTMagic;
 			sourceTree = "<group>";
@@ -289,6 +294,7 @@
 				AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */,
 				AED72D2A1A527331008E13B7 /* ListViewController.m in Sources */,
 				AEA0D4F91A11E4AB00229B72 /* main.m in Sources */,
+				7EF06F3C1CF852C000EDFC41 /* UIColor+Magic.m in Sources */,
 				AED72D271A5264CE008E13B7 /* VTMagicViewController.m in Sources */,
 				7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */,
 				AED72D261A5264CE008E13B7 /* VTMagicView.m in Sources */,

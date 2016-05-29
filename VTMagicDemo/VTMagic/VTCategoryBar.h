@@ -36,43 +36,42 @@
 @end
 
 @interface VTCategoryBar : UIScrollView
-/**
- *  分类名数组，字符串类型
- */
-@property (nonatomic, strong) NSArray *catNames;
-/**
- *  顶部正常item的字体
- */
-@property (nonatomic, strong) UIFont *normalFont;
-/**
- *  被选中的item的字体
- */
-@property (nonatomic, strong) UIFont *selectedFont;
-/**
- *  当前选中item对应的索引
- */
-@property (nonatomic, assign) NSInteger currentIndex;
-/**
- *  当前被选中的item
- */
-@property (nonatomic, strong) UIButton *selectedItem;
-/**
- *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
- */
-@property (nonatomic, assign) CGFloat itemBorder;
+
 /**
  *  数据源
  */
 @property (nonatomic, weak) id <VTCategoryBarDatasource> datasource;
+
 /**
  *  代理
  */
 @property (nonatomic, weak) id <VTCagetoryBarDelegate> catDelegate;
 
 /**
+ *  分类名数组，字符串类型
+ */
+@property (nonatomic, strong) NSArray *catNames;
+
+/**
+ *  当前选中item对应的索引
+ */
+@property (nonatomic, assign) NSInteger currentIndex;
+
+/**
+ *  当前被选中的item
+ */
+@property (nonatomic, strong) UIButton *selectedItem;
+
+/**
+ *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
+ */
+@property (nonatomic, assign) CGFloat itemBorder;
+
+/**
  *  刷新数据
  */
 - (void)reloadData;
+
 /**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
  *
@@ -81,6 +80,7 @@
  *  @return 当前索引对应的item
  */
 - (UIButton *)itemWithIndex:(NSInteger)index;
+
 /**
  *  根据重用标识查询可重用的category item
  *

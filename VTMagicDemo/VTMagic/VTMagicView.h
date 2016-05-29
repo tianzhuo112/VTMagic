@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "VTExtensionProtocal.h"
 
+typedef enum : NSUInteger {
+    VTSwitchStyleDefault,   // 默认模式，切换时有颜色渐变效果
+    VTSwitchStyleStiff,     // 延迟响应切换
+    VTSwitchStyleUnknown,   // ？？？
+} VTSwitchStyle;
+
 @class VTMagicView;
 
 /****************************************delegate****************************************/
@@ -23,6 +29,7 @@
  *  @param index          当前控控制器对应的索引
  */
 - (void)magicView:(VTMagicView *)magicView viewControllerDidAppeare:(UIViewController *)viewController index:(NSInteger)index;
+
 /**
  *  视图控制器从屏幕上消失时触发
  *
@@ -44,6 +51,7 @@
  *  @return header数组
  */
 - (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView;
+
 /**
  *  根据index获取对应索引的category item
  *
@@ -53,6 +61,7 @@
  *  @return 当前索引对应的按钮
  */
 - (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index;
+
 /**
  *  当前索引对应的控制器
  *
@@ -63,24 +72,42 @@
  */
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index;
 
-@optional
-
 @end
 
 @interface VTMagicView : UIView
+
+/**
+ *  切换模式，默认是VTSwitchStyleDefault
+ */
+@property (nonatomic, assign) VTSwitchStyle style;
+
+/**
+ *  数据源
+ */
+@property (weak, nonatomic) id<VTMagicViewDataSource> dataSource;
+
+/**
+ *  代理
+ */
+@property (weak, nonatomic) id<VTMagicViewDelegate, VTExtensionProtocal> delegate;
+
 /****************************************sub views****************************************/
 /**
  *  最顶部的头部组件，默认隐藏
+ *  若需显示请通过属性headerHidden设置
  */
 @property (nonatomic, strong, readonly) UIView *headerView;
+
 /**
  *  顶部导航视图
  */
 @property (nonatomic, strong, readonly) UIView *navigationView;
+
 /**
  *  顶部导航栏左侧视图
  */
 @property (nonatomic, strong) UIView *leftHeaderView;
+
 /**
  *  顶部导航栏右侧视图
  */
@@ -88,55 +115,57 @@
 
 /**************************************configurations**************************************/
 /**
- *  顶部正常item的字体
- */
-@property (nonatomic, strong) UIFont *normalFont;
-/**
- *  顶部被选中的item的字体
- */
-@property (nonatomic, strong) UIFont *selectedFont;
-/**
  *  顶部导航栏背景色
  */
 @property (nonatomic, strong) UIColor *navigationColor;
+
 /**
  *  顶部导航栏底部分割线颜色
  */
 @property (nonatomic, strong) UIColor *separatorColor;
+
 /**
  *  顶部导航栏下划线颜色
  */
 @property (nonatomic, strong) UIColor *slideColor;
+
 /**
  *  头部组件的高度，默认64
  */
 @property (nonatomic, assign) CGFloat headerHeight;
+
 /**
  *  顶部导航条的高度，默认是44
  *  默认情况下修改导航高度会同步修改item的高度
  *  若不希望两者高度保持一致，建议item的高度在导航之后修改
  */
 @property (nonatomic, assign) CGFloat navigationHeight;
+
 /**
  *  导航分类item的高度，默认与导航高度相等
  */
 @property (nonatomic, assign) CGFloat itemHeight;
+
 /**
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemBorder;
+
 /**
  *  左右两侧是否需要反弹效果，默认NO
  */
 @property (nonatomic, assign) BOOL needBounces;
+
 /**
  *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
 @property (nonatomic, assign) BOOL needExtendedBottom;
+
 /**
  *  禁止切换，默认NO
  */
 @property (nonatomic, assign) BOOL forbiddenSwitching;
+
 /**
  *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认YES
  *  需要注意的是，直接修改该属性值页面不会立即会重新布局
@@ -150,6 +179,7 @@
  *  @param animated        是否动画执行
  */
 - (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated;
+
 /**
  *  是否隐藏头部组件，默认YES
  *  修改该属性本质上是调用方法setHeaderHidden:animated:，默认无动画
@@ -163,25 +193,19 @@
  */
 - (void)setHeaderHidden:(BOOL)headerHidden animated:(BOOL)animated;
 
+/**************************************method**************************************/
 /**
- *  代理
- */
-@property (weak, nonatomic) id<VTMagicViewDelegate, VTExtensionProtocal> delegate;
-/**
- *  数据源
- */
-@property (weak, nonatomic) id<VTMagicViewDataSource> dataSource;
-
-/**
- *  刷新数据
+ *  重新加载所有数据
  */
 - (void)reloadData;
+
 /**
- *  手动切换到指定页面
+ *  切换到指定页面，一般情况下不建议直接调用该方法
  *
  *  @param index 页面索引
  */
 - (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
+
 /**
  *  查询可重用category item
  *
@@ -190,6 +214,7 @@
  *  @return 可重用的category item
  */
 - (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
+
 /**
  *  根据缓存标识获取可重用的tableViewController
  *

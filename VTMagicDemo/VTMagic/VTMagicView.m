@@ -11,6 +11,7 @@
 #import "VTContentView.h"
 #import "VTMagicViewController.h"
 #import "VTExtensionProtocal.h"
+#import "UIColor+Magic.h"
 
 typedef struct {
     unsigned int willAddToContenView                : 1;
@@ -33,6 +34,10 @@ typedef struct {
 @property (nonatomic, assign) BOOL isRotateAnimating;
 @property (nonatomic, assign) BOOL needSkipUpdate; // 是否是跳页切换
 @property (nonatomic, assign) MagicFlags magicFlags;
+@property (nonatomic, assign) VTColor normalVTColor;
+@property (nonatomic, assign) VTColor selectedVTColor;
+@property (nonatomic, strong) UIColor *normalColor; // 顶部item正常的文本颜色
+@property (nonatomic, strong) UIColor *selectedColor; // 顶部item被选中时的文本颜色
 
 @end
 
@@ -100,8 +105,11 @@ typedef struct {
     
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
     CGFloat contentH = size.height - contentY + (_needExtendedBottom ? TABBAR_HEIGHT_VT : 0);
+    CGRect originalFrame = _contentView.frame;
     _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
-    [_contentView reloadData];
+    if (!CGRectEqualToRect(_contentView.frame, originalFrame)) {
+        [_contentView reloadData];
+    }
 }
 
 - (void)resetFrameForCategoryBar
@@ -129,13 +137,15 @@ typedef struct {
         _categoryBar.catNames = _catNames;
     }
     
-    BOOL needReset = _catNames.count <= _currentIndex || !_catNames.count;
+    BOOL needReset = _catNames.count <= _currentIndex;
     if (needReset && _magicFlags.displayViewControllerDidChanged) {
         [_delegate displayViewControllerDidChanged:nil index:_catNames.count];
     }
     
     if (needReset) {
-        _currentIndex = _catNames.count;
+        _currentIndex = _catNames.count - 1;
+        if (_currentIndex < 0) _currentIndex = 0;
+        _categoryBar.currentIndex = _currentIndex;
     }
     
     _originalButton = nil;
@@ -171,6 +181,14 @@ typedef struct {
     if ([_dataSource respondsToSelector:@selector(magicView:categoryItemForIndex:)]) {
         UIButton *catItem = [_dataSource magicView:self categoryItemForIndex:index];
         if (index == _currentIndex) _originalButton = catItem;
+        if (VTColorIsZero(_normalVTColor)) {
+            _normalColor = [catItem titleColorForState:UIControlStateNormal];
+            _normalVTColor = [_normalColor vtm_changeToVTColor];
+        }
+        if (VTColorIsZero(_selectedVTColor)) {
+            _selectedColor = [catItem titleColorForState:UIControlStateSelected];
+            _selectedVTColor = [_selectedColor vtm_changeToVTColor];
+        }
         return catItem;
     }
     return nil;
@@ -297,6 +315,37 @@ typedef struct {
     }];
 }
 
+- (void)updateItemStateForDefaultStyle
+{
+    UIButton *catItem = [_categoryBar itemWithIndex:_currentIndex];
+    [catItem setTitleColor:_normalColor forState:UIControlStateNormal];
+    [_originalButton setSelected:NO];
+    [catItem setSelected:YES];
+    _originalButton = catItem;
+}
+
+#pragma mark - change color
+- (void)graduallyChangeColor
+{
+    if (VTColorIsZero(_normalVTColor) && VTColorIsZero(_selectedVTColor)) return;
+    CGFloat scale = _contentView.contentOffset.x/_contentView.frame.size.width - _currentIndex;
+    CGFloat absScale = ABS(scale);
+    UIColor *nextColor = [UIColor vtm_compositeColor:_normalVTColor anoColor:_selectedVTColor scale:absScale];
+    UIColor *selectedColor = [UIColor vtm_compositeColor:_selectedVTColor anoColor:_normalVTColor scale:absScale];
+    UIButton *currentItem = [_categoryBar itemWithIndex:_currentIndex];
+    [currentItem setTitleColor:selectedColor forState:UIControlStateSelected];
+    UIButton *nextItem = [_categoryBar itemWithIndex:_nextIndex];
+    [nextItem setTitleColor:nextColor forState:UIControlStateNormal];
+    
+    CGRect shadowFrame = _shadowView.frame;
+    CGFloat nextWidth = nextItem.frame.size.width;
+    CGFloat currentWidth = currentItem.frame.size.width;
+    CGFloat offset = (scale > 0 ? currentWidth : nextWidth) * scale;
+    shadowFrame.origin.x = currentItem.frame.origin.x + offset;
+    shadowFrame.size.width = currentWidth - (currentWidth - nextWidth) * absScale;
+    _shadowView.frame = shadowFrame;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
@@ -329,11 +378,29 @@ typedef struct {
     
     if (!_needSkipUpdate && newIndex != _currentIndex) {
         self.currentIndex = newIndex;
-        [self updateCategoryBarWhenUserScrolled];
+        switch (_style) {
+            case VTSwitchStyleDefault:
+                [self updateItemStateForDefaultStyle];
+                break;
+            case VTSwitchStyleStiff:
+                [self updateCategoryBarWhenUserScrolled];
+                break;
+            case VTSwitchStyleUnknown:
+                //TODO:缺失
+                VTLog(@"VTSwitchStyleUnknown");
+                break;
+            default:
+                VTLog(@"VTSwitchStyleError");
+                break;
+        }
     }
     
     if (tempIndex == _currentIndex) { // 重置_nextIndex
         _nextIndex = _currentIndex;
+    }
+    
+    if (VTSwitchStyleDefault == _style) {
+        [self graduallyChangeColor];
     }
 }
 
@@ -358,6 +425,11 @@ typedef struct {
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
 //    VTLog(@"scrollViewDidEndDecelerating");
+    if (VTSwitchStyleDefault == _style) {
+        [UIView animateWithDuration:0.25 animations:^{
+            [self updateCategoryBar];
+        }];
+    }
 }
 
 #pragma mark - 视图即将显示
@@ -551,18 +623,6 @@ typedef struct {
     _currentIndex = currentIndex;
     
     [self displayViewControllerDidChangedWithIndex:currentIndex disIndex:disIndex];
-}
-
-- (void)setNormalFont:(UIFont *)normalFont
-{
-    _normalFont = normalFont;
-    _categoryBar.normalFont = normalFont;
-}
-
-- (void)setSelectedFont:(UIFont *)selectedFont
-{
-    _selectedFont = selectedFont;
-    _categoryBar.selectedFont = selectedFont;
 }
 
 @end

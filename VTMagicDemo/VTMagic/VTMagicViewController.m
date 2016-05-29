@@ -66,6 +66,7 @@
     
 }
 
+#pragma mark - UIViewControllerRotation
 - (BOOL)shouldAutorotate NS_AVAILABLE_IOS(6_0)
 {
     return NO;

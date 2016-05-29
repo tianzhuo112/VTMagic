@@ -27,6 +27,7 @@
 //    self.magicView.headerHidden = NO;
     self.magicView.navigationHeight = 40;
 //    self.magicView.forbiddenSwitching = YES;
+//    self.magicView.style = VTSwitchStyleStiff;
     self.magicView.navigationColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
     

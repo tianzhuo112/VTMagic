@@ -27,14 +27,17 @@
 @end
 
 @interface VTContentView : UIScrollView
+
 /**
  *  数据源
  */
 @property (nonatomic, weak) id <VTContentViewDataSource> dataSource;
+
 /**
  *  页面数量
  */
 @property (nonatomic, assign) NSInteger pageCount;
+
 /**
  *  屏幕上可见的控制器
  */
@@ -44,14 +47,17 @@
  *  刷新数据
  */
 - (void)reloadData;
+
 /**
  *  横竖屏切换适配，设备旋转时调用
  */
 - (void)layoutSubviewsWhenRotated;
+
 /**
  *  重置frame，横竖屏切换时调用
  */
 - (void)resetFrames;
+
 /**
  *  获取索引对应的ViewController
  *
@@ -60,6 +66,7 @@
  *  @return UIViewController对象
  */
 - (UIViewController *)viewControllerWithIndex:(NSInteger)index;
+
 /**
  *  获取索引对应的ViewController，当ViewController为nil时，根据autoCreate的值决定是否创建
  *
@@ -69,6 +76,7 @@
  *  @return UIViewController对象
  */
 - (UIViewController *)viewControllerWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate;
+
 /**
  *  根据缓存标识查询可重用的视图控制器
  *
