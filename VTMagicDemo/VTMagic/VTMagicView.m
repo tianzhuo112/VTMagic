@@ -12,6 +12,13 @@
 #import "VTMagicViewController.h"
 #import "VTExtensionProtocal.h"
 
+typedef struct {
+    unsigned int willAddToContenView                : 1;
+    unsigned int viewControllerDidAppeare           : 1;
+    unsigned int viewControllerDidDisappeare        : 1;
+    unsigned int displayViewControllerDidChanged    : 1;
+} MagicFlags;
+
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTCategoryBarDatasource,VTCagetoryBarDelegate>
 
 @property (nonatomic, strong) VTCategoryBar *categoryBar; // 顶部导航分类视图
@@ -25,6 +32,7 @@
 @property (nonatomic, assign) BOOL isViewWillAppeare;
 @property (nonatomic, assign) BOOL isRotateAnimating;
 @property (nonatomic, assign) BOOL needSkipUpdate; // 是否是跳页切换
+@property (nonatomic, assign) MagicFlags magicFlags;
 
 @end
 
@@ -122,7 +130,7 @@
     }
     
     BOOL needReset = _catNames.count <= _currentIndex || !_catNames.count;
-    if (needReset && [_delegate respondsToSelector:@selector(displayViewControllerDidChanged:index:)]) {
+    if (needReset && _magicFlags.displayViewControllerDidChanged) {
         [_delegate displayViewControllerDidChanged:nil index:_catNames.count];
     }
     
@@ -144,15 +152,15 @@
     UIViewController *appearViewController = [_contentView viewControllerWithIndex:currentIndex autoCreateForNil:!_needSkipUpdate];
     UIViewController *disappearViewController = [_contentView viewControllerWithIndex:disIndex autoCreateForNil:!_needSkipUpdate];
     
-    if (appearViewController && [_delegate respondsToSelector:@selector(displayViewControllerDidChanged:index:)]) {
+    if (appearViewController && _magicFlags.displayViewControllerDidChanged) {
         [_delegate displayViewControllerDidChanged:appearViewController index:currentIndex];
     }
     
-    if (disappearViewController && [_delegate respondsToSelector:@selector(magicView:viewControllerDidDisappeare:index:)]) {
+    if (disappearViewController && _magicFlags.viewControllerDidDisappeare) {
         [_delegate magicView:self viewControllerDidDisappeare:disappearViewController index:disIndex];
     }
     
-    if (appearViewController && [_delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)]) {
+    if (appearViewController && _magicFlags.viewControllerDidAppeare) {
         [_delegate magicView:self viewControllerDidAppeare:appearViewController index:currentIndex];
     }
 }
@@ -216,7 +224,7 @@
 {
     if (![_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) return nil;
     UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
-    if (viewController && [_delegate respondsToSelector:@selector(viewControllerWillAddToContentView:index:)]) {
+    if (viewController && _magicFlags.willAddToContenView) {
         [_delegate viewControllerWillAddToContentView:viewController index:index];
     }
     return viewController;
@@ -423,6 +431,21 @@
     return _contentView;
 }
 
+- (void)setDelegate:(id<VTMagicViewDelegate,VTExtensionProtocal>)delegate
+{
+    _delegate = delegate;
+    _magicFlags.viewControllerDidAppeare = [delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)];
+    _magicFlags.viewControllerDidDisappeare = [delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)];
+    _magicFlags.displayViewControllerDidChanged = [delegate respondsToSelector:@selector(displayViewControllerDidChanged:index:)];
+    _magicFlags.willAddToContenView = [delegate respondsToSelector:@selector(viewControllerWillAddToContentView:index:)];
+}
+
+- (void)setNeedBounces:(BOOL)needBounces
+{
+    _needBounces = needBounces;
+    _contentView.bounces = needBounces;
+}
+
 - (void)setNeedExtendedBottom:(BOOL)needExtendedBottom
 {
     _needExtendedBottom = needExtendedBottom;
@@ -437,7 +460,7 @@
 
 - (void)setDependStatusBar:(BOOL)dependStatusBar
 {
-    [self setDependStatusBar:dependStatusBar animated:NO];
+    _dependStatusBar = dependStatusBar;
 }
 
 - (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated

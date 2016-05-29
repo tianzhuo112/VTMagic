@@ -126,6 +126,10 @@
  */
 @property (nonatomic, assign) CGFloat itemBorder;
 /**
+ *  左右两侧是否需要反弹效果，默认NO
+ */
+@property (nonatomic, assign) BOOL needBounces;
+/**
  *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
 @property (nonatomic, assign) BOOL needExtendedBottom;
@@ -135,7 +139,8 @@
 @property (nonatomic, assign) BOOL forbiddenSwitching;
 /**
  *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认YES
- *  修改该属性本质上是调用方法setDependStatusBar:animated:，默认无动画
+ *  需要注意的是，直接修改该属性值页面不会立即会重新布局
+ *  若希望立即生效，建议使用方法setDependStatusBar:animated:
  */
 @property (nonatomic, assign, getter=isDependStatusBar) BOOL dependStatusBar;
 /**

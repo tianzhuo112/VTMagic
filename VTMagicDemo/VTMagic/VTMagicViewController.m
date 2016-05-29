@@ -30,10 +30,6 @@
         } else if ([self respondsToSelector:@selector(setWantsFullScreenLayout:)]) {
             [self setValue:@YES forKey:@"wantsFullScreenLayout"];
         }
-        
-        _magicView = [[VTMagicView alloc] init];
-        _magicView.delegate = self;
-        _magicView.dataSource = self;
     }
     return self;
 }
@@ -42,8 +38,18 @@
 {
     [super loadView];
     
-    _magicView.frame = self.view.frame;
+    self.magicView.frame = self.view.frame;
     self.view = _magicView;
+}
+
+- (VTMagicView *)magicView
+{
+    if (!_magicView) {
+        _magicView = [[VTMagicView alloc] init];
+        _magicView.delegate = self;
+        _magicView.dataSource = self;
+    }
+    return _magicView;
 }
 
 - (void)viewDidLoad
@@ -51,7 +57,7 @@
     [super viewDidLoad];
 
     // 刷新数据
-    [_magicView reloadData];
+//    [_magicView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -60,7 +66,6 @@
     
 }
 
-#pragma mark - UIViewControllerRotation
 - (BOOL)shouldAutorotate NS_AVAILABLE_IOS(6_0)
 {
     return NO;
