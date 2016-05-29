@@ -107,6 +107,18 @@
     
     if (!_visibleDict) {
         _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_pageCount];
+    } else {
+        // 新增逻辑，reload时清除页面数据
+        NSArray *viewControllers = [_visibleDict allValues];
+        for (UIViewController *viewController in viewControllers) {
+//            [viewController removeFromParentViewController];
+            [viewController.view removeFromSuperview];
+            NSMutableSet *cacheSet = _cacheDict[viewController.reuseIdentifier];
+            if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
+            [cacheSet addObject:viewController];
+            [_cacheDict setValue:cacheSet forKey:viewController.reuseIdentifier];
+        }
+        [_visibleDict removeAllObjects];
     }
 }
 
