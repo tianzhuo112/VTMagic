@@ -86,7 +86,7 @@
  *
  *  @return 缓存池中取出的category item
  */
-- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
+- (__kindof UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 
 /**
  *  数据源

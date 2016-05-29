@@ -74,7 +74,7 @@
  *
  *  @return 可重用的视图控制器
  */
-- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
+- (__kindof UIViewController *)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
 
 /**
  *  数据源

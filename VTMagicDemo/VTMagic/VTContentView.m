@@ -175,7 +175,7 @@
 }
 
 #pragma mark - 根据缓存标识查询可重用的视图控制器
-- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
+- (UIViewController *)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
 {
     _identifier = identifier;
     NSMutableSet *cacheSet = [_pageCache objectForKey:identifier];

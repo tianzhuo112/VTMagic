@@ -80,7 +80,7 @@ static NSInteger const kVTCategoryBarTag = 1000;
     _selectedItem.selected = YES;
 }
 
-- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
+- (UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
 {
     _identifier = identifier;
     UIButton *catItem = [_cacheSet anyObject];

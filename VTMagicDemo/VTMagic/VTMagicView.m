@@ -118,17 +118,16 @@ static const void *kVTMagicView = &kVTMagicView;
     _headerView.frame = CGRectMake(0, headerY, size.width, _headerHeight);
     
     CGFloat navigationY = _headerHidden ? 0 : CGRectGetMaxY(_headerView.frame);
-    CGFloat naviWidth = size.width - _navigationMargin.left - _navigationMargin.right;
-    _navigationView.frame = CGRectMake(_navigationMargin.left, navigationY, naviWidth, _naviHeight + topY);
+    _navigationView.frame = CGRectMake(0, navigationY, size.width, _naviHeight + topY);
     
     CGFloat separatorY = CGRectGetHeight(_navigationView.frame) - _separatorHeight;
-    _separatorLine.frame = CGRectMake(0, separatorY, naviWidth, _separatorHeight);
+    _separatorLine.frame = CGRectMake(0, separatorY, size.width, _separatorHeight);
     
-    CGFloat catX = CGRectGetWidth(_leftHeaderView.frame);
-    CGFloat catY = (_naviHeight - _itemHeight) * 0.5 + topY;
-    CGFloat catWidth = naviWidth - catX - CGRectGetWidth(_rightHeaderView.frame);
     CGRect originalCatFrame = _categoryBar.frame;
-    _categoryBar.frame = CGRectMake(catX, catY, catWidth, _itemHeight);
+    CGFloat leftItemWidth = CGRectGetWidth(_leftHeaderView.frame);
+    CGFloat rightItemWidth = CGRectGetWidth(_rightHeaderView.frame);
+    CGFloat catWidth = size.width - leftItemWidth - rightItemWidth;
+    _categoryBar.frame = CGRectMake(leftItemWidth, topY, catWidth, _naviHeight);
     if (!CGRectEqualToRect(_categoryBar.frame, originalCatFrame)) {
         [_categoryBar resetFrames];
     }
@@ -355,12 +354,12 @@ static const void *kVTMagicView = &kVTMagicView;
 }
 
 #pragma mark - 查询可重用cat item
-- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
+- (UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
 {
     return [_categoryBar dequeueReusableCatItemWithIdentifier:identifier];
 }
 
-- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
+- (UIViewController *)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
 {
     return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
 }
@@ -937,6 +936,7 @@ static const void *kVTMagicView = &kVTMagicView;
     _rightHeaderView = rightHeaderView;
     [_navigationView addSubview:rightHeaderView];
     [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_categoryBar];
     rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self updateFrameForRightHeader];
     [self updateFrameForCategoryBar];

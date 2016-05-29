@@ -129,16 +129,16 @@ VTMarginMake(CGFloat left, CGFloat right)
  *
  *  @return 可重用的category item
  */
-- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
+- (__kindof UIButton *)dequeueReusableCatItemWithIdentifier:(NSString *)identifier;
 
 /**
- *  根据缓存标识获取可重用的tableViewController
+ *  根据缓存标识获取可重用的UIViewController
  *
  *  @param identifier 缓存重用标识
  *
- *  @return 可重用的tableViewController
+ *  @return 可重用的UIViewController
  */
-- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
+- (__kindof UIViewController *)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier;
 
 /**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil
@@ -372,11 +372,6 @@ VTMarginMake(CGFloat left, CGFloat right)
  *  导航分类的inset，对leftHeaderView和rightHeaderView无效
  */
 @property (nonatomic) UIEdgeInsets navigationInset;
-
-/**
- *  整体导航视图距离左右两侧边缘的间距
- */
-@property (nonatomic, assign) VTMargin navigationMargin;
 
 #pragma mark - other properties
 /**************************************other properties**************************************/

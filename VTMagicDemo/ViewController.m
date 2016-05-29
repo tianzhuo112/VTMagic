@@ -48,7 +48,7 @@
 - (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSUInteger)index
 {
     static NSString *itemIdentifier = @"itemIdentifier";
-    UIButton *headerItem = [magicView dequeueReusableViewControllerWithIdentifier:itemIdentifier];
+    UIButton *headerItem = [magicView dequeueReusableCatItemWithIdentifier:itemIdentifier];
     if (!headerItem) {
         headerItem = [UIButton buttonWithType:UIButtonTypeCustom];
         [headerItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
