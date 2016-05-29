@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7E8317751CF74DCC00436604 /* VTHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E8317741CF74DCC00436604 /* VTHeaderView.m */; };
 		7E83177E1CF7684300436604 /* RecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E83177D1CF7684300436604 /* RecomViewController.m */; };
+		7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */; };
+		7EF0684D1CF8191B00EDFC41 /* VTListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */; };
 		AEA0D4F91A11E4AB00229B72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4F81A11E4AB00229B72 /* main.m */; };
 		AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */; };
 		AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FE1A11E4AB00229B72 /* ViewController.m */; };
@@ -38,6 +40,11 @@
 		7E8317781CF74E6B00436604 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7E83177C1CF7684300436604 /* RecomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecomViewController.h; sourceTree = "<group>"; };
 		7E83177D1CF7684300436604 /* RecomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecomViewController.m; sourceTree = "<group>"; };
+		7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRecomCell.h; sourceTree = "<group>"; };
+		7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomCell.m; sourceTree = "<group>"; };
+		7EF0684B1CF8191B00EDFC41 /* VTListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTListViewCell.h; sourceTree = "<group>"; };
+		7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTListViewCell.m; sourceTree = "<group>"; };
+		7EF0684E1CF81B4A00EDFC41 /* VTMagicView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTMagicView-Prefix.pch"; sourceTree = "<group>"; };
 		AEA0D4F31A11E4AB00229B72 /* VTMagicView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagicView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA0D4F71A11E4AB00229B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEA0D4F81A11E4AB00229B72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -109,6 +116,10 @@
 				7E83177D1CF7684300436604 /* RecomViewController.m */,
 				AED72D281A527331008E13B7 /* ListViewController.h */,
 				AED72D291A527331008E13B7 /* ListViewController.m */,
+				7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */,
+				7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */,
+				7EF0684B1CF8191B00EDFC41 /* VTListViewCell.h */,
+				7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */,
 				AEA0D5031A11E4AB00229B72 /* Images.xcassets */,
 				AEA0D5051A11E4AB00229B72 /* LaunchScreen.xib */,
 				AEA0D4F61A11E4AB00229B72 /* Supporting Files */,
@@ -119,6 +130,7 @@
 		AEA0D4F61A11E4AB00229B72 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7EF0684E1CF81B4A00EDFC41 /* VTMagicView-Prefix.pch */,
 				AEA0D4F71A11E4AB00229B72 /* Info.plist */,
 				AEA0D4F81A11E4AB00229B72 /* main.m */,
 			);
@@ -260,10 +272,12 @@
 			files = (
 				7E83177E1CF7684300436604 /* RecomViewController.m in Sources */,
 				AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */,
+				7EF0684D1CF8191B00EDFC41 /* VTListViewCell.m in Sources */,
 				AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */,
 				AED72D2A1A527331008E13B7 /* ListViewController.m in Sources */,
 				AEA0D4F91A11E4AB00229B72 /* main.m in Sources */,
 				AED72D271A5264CE008E13B7 /* VTMagicViewController.m in Sources */,
+				7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */,
 				AED72D261A5264CE008E13B7 /* VTMagicView.m in Sources */,
 				7E8317751CF74DCC00436604 /* VTHeaderView.m in Sources */,
 				AED72D251A5264CE008E13B7 /* VTContentView.m in Sources */,
@@ -384,6 +398,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicView/VTMagicView-Prefix.pch";
 				INFOPLIST_FILE = VTMagicView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -398,6 +413,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicView/VTMagicView-Prefix.pch";
 				INFOPLIST_FILE = VTMagicView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

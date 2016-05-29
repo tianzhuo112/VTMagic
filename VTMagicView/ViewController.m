@@ -57,22 +57,19 @@
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerForIndex:(NSUInteger)index
 {
     if (0 == index) {
-        static NSString *playerID = @"playerIdentifier";
-        RecomViewController *playerViewController = [magicView dequeueReusableViewControllerWithIdentifier:playerID];
+        static NSString *playerId = @"playerIdentifier";
+        RecomViewController *playerViewController = [magicView dequeueReusableViewControllerWithIdentifier:playerId];
         if (!playerViewController) {
             playerViewController = [[RecomViewController alloc] init];
         }
         return playerViewController;
     }
     
-    static NSString *ID = @"magicIdentifier";
-    ListViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:ID];
+    static NSString *listId = @"magicIdentifier";
+    ListViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:listId];
     if (!viewController) {
         viewController = [[ListViewController alloc] init];
     }
-    
-    viewController.view.backgroundColor = _colorList[index];
-    [viewController updatePageInfo:index];
     return viewController;
 }
 

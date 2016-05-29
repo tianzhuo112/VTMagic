@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ListViewController : UIViewController
+@interface ListViewController : UICollectionViewController
 
-- (void)updatePageInfo:(NSInteger)page;
 
 @end

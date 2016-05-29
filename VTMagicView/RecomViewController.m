@@ -7,6 +7,7 @@
 //
 
 #import "RecomViewController.h"
+#import "VTRecomCell.h"
 
 @interface RecomViewController ()
 
@@ -20,7 +21,25 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor lightGrayColor];
+    self.tableView.scrollsToTop = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.tableView.rowHeight = 70.f;
+    [self fetchNewsData];
+    [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.tableView.scrollsToTop = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.tableView.scrollsToTop = NO;
 }
 
 #pragma mark - Table view data source
@@ -31,14 +50,26 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
+    VTRecomCell *cell = nil;
     static NSString *cellID = @"cell.Identifier";
     cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell = [[VTRecomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    NSString *imageName = [NSString stringWithFormat:@"image_%ld", indexPath.row%13];
+    [cell.iconView setImage:[UIImage imageNamed:imageName]];
+    cell.titleLabel.text = @"标题标题";
+    cell.descLabel.text = @"景点描述景点描述景点描述景点描述景点描述";
     return cell;
+}
+
+#pragma mark - functional methods
+- (void)fetchNewsData
+{
+    _newsList = [[NSMutableArray alloc] init];
+    for (NSInteger index = 0; index < 50; index++) {
+        [_newsList addObject:[NSString stringWithFormat:@"新闻%ld", (long)index]];
+    }
 }
 
 @end
