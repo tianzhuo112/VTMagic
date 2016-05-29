@@ -18,10 +18,10 @@
 /**
  *  当前页面对应的索引
  */
-@property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, assign, readonly) NSInteger currentIndex;
 /**
  *  当前显示的控制器
  */
-@property (nonatomic, strong) UIViewController *currentViewController;
+@property (nonatomic, strong, readonly) UIViewController *currentViewController;
 
 @end

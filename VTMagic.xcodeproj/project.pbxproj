@@ -52,6 +52,7 @@
 		7EF068521CF8383E00EDFC41 /* UIScrollView+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Magic.m"; sourceTree = "<group>"; };
 		7EF068531CF8383E00EDFC41 /* UIViewController+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Magic.h"; sourceTree = "<group>"; };
 		7EF068541CF8383E00EDFC41 /* UIViewController+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Magic.m"; sourceTree = "<group>"; };
+		7EF06F391CF842C200EDFC41 /* VTExtensionProtocal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTExtensionProtocal.h; sourceTree = "<group>"; };
 		AEA0D4F31A11E4AB00229B72 /* VTMagic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA0D4F71A11E4AB00229B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEA0D4F81A11E4AB00229B72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -176,6 +177,7 @@
 				7EF068541CF8383E00EDFC41 /* UIViewController+Magic.m */,
 				7EF068511CF8383E00EDFC41 /* UIScrollView+Magic.h */,
 				7EF068521CF8383E00EDFC41 /* UIScrollView+Magic.m */,
+				7EF06F391CF842C200EDFC41 /* VTExtensionProtocal.h */,
 			);
 			path = VTMagic;
 			sourceTree = "<group>";

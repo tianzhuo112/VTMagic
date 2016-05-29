@@ -12,13 +12,9 @@
 
 - (BOOL)vtm_isNeedDisplayWithFrame:(CGRect)frame
 {
-    CGFloat referenceMinX = self.contentOffset.x;
-    CGFloat referenceMaxX = referenceMinX + self.frame.size.width;
-    CGFloat viewMinX = frame.origin.x;
-    CGFloat viewMaxX = viewMinX + frame.size.width;
-    BOOL isLeftBorderOnScreen = referenceMinX <= viewMinX && viewMinX <= referenceMaxX;
-    BOOL isRightBorderOnScreen = referenceMinX <= viewMaxX && viewMaxX <= referenceMaxX;
-    BOOL isOnScreen = isLeftBorderOnScreen || isRightBorderOnScreen;
+    CGRect visibleRect = (CGRect){CGPointMake(self.contentOffset.x, 0), self.frame.size};
+    CGRect intersectRegion = CGRectIntersection(frame, visibleRect);
+    BOOL isOnScreen = !CGRectIsNull(intersectRegion);
     return isOnScreen;
 }
 

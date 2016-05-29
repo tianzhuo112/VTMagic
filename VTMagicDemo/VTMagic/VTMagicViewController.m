@@ -7,12 +7,13 @@
 //
 
 #import "VTMagicViewController.h"
+#import "VTExtensionProtocal.h"
 #import "VTMagicView.h"
 
 #define NOTICENTER [NSNotificationCenter defaultCenter]
 #define USERDEFAULTS [NSUserDefaults standardUserDefaults]
 
-@interface VTMagicViewController ()
+@interface VTMagicViewController ()<VTExtensionProtocal>
 
 @property (nonatomic, assign) BOOL isDeviceChange;
 
@@ -27,7 +28,7 @@
         if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
         } else if ([self respondsToSelector:@selector(setWantsFullScreenLayout:)]) {
-            self.wantsFullScreenLayout = YES;
+            [self setValue:@YES forKey:@"wantsFullScreenLayout"];
         }
         
         _magicView = [[VTMagicView alloc] init];
@@ -73,6 +74,25 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation NS_DEPRECATED_IOS(2_0, 6_0)
 {
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+}
+
+#pragma mark - 私有协议VTExtensionProtocal
+- (void)displayViewControllerDidChanged:(UIViewController *)viewController index:(NSUInteger)index
+{
+    _currentIndex = index;
+    _currentViewController = viewController;
+}
+
+- (void)viewControllerWillAddToContentView:(UIViewController *)viewController index:(NSUInteger)index
+{
+    if (!viewController || [viewController.parentViewController isEqual:self]) return;
+    [self addChildViewController:viewController];
+    [viewController didMoveToParentViewController:self];
+    // 设置默认的currentViewController，并触发viewControllerDidAppeare
+    if (index == _currentIndex && !self.currentViewController) {
+        _currentViewController = viewController;
+        [self magicView:self.magicView viewControllerDidAppeare:viewController index:_currentIndex];
+    }
 }
 
 #pragma mark - VTMagicViewDataSource & VTMagicViewDelegate

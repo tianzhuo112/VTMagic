@@ -16,6 +16,13 @@
 #define VTLog(...)
 #endif
 
+// weakSelf
+#define __DEFINE_WEAK_SELF__ __weak __typeof(&*self) weakSelf = self;
+
+// 打印方法运行时间
+#define TIME_BEGIN NSDate * startTime = [NSDate date];
+#define TIME_END NSLog(@"time interval: %f", -[startTime timeIntervalSinceNow]);
+
 // 设置RGBA颜色值
 #define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
 #define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(1.f)]
@@ -31,11 +38,12 @@
 #define IOS6_OR_LATER SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"6.0")
 #define IOS7_OR_LATER SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")
 #define IOS8_OR_LATER SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")
+#define IOS9_OR_LATER SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")
 
 /**
  *  tabbar高度
  */
-#define TABBAR_HEIGHT_VT (49)
+#define TABBAR_HEIGHT_VT 49
 /**
  *  屏幕的高度
  */

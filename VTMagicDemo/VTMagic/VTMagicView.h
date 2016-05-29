@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VTExtensionProtocal.h"
 
 @class VTMagicView;
 
@@ -160,7 +161,7 @@
 /**
  *  代理
  */
-@property (weak, nonatomic) id<VTMagicViewDelegate> delegate;
+@property (weak, nonatomic) id<VTMagicViewDelegate, VTExtensionProtocal> delegate;
 /**
  *  数据源
  */

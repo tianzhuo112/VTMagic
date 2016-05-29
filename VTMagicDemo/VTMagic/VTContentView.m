@@ -50,8 +50,6 @@
             if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
             [cacheSet addObject:viewController];
             [_cacheDict setValue:cacheSet forKey:viewController.reuseIdentifier];
-        } else {
-            viewController.view.frame = frame;
         }
     }
     
@@ -142,7 +140,7 @@
         viewController = [_dataSource contentView:self viewControllerForIndex:index];
         viewController.reuseIdentifier = _identifier;
         if (!viewController) return viewController;
-        viewController.view.frame = [_frameList[indexPath.row] CGRectValue];
+        viewController.view.frame = [_frameList[index] CGRectValue];
         [self addSubview:viewController.view];
         [_visibleDict setObject:viewController forKey:indexPath];
     }

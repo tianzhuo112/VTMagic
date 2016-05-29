@@ -11,7 +11,7 @@
 @interface UIScrollView (Magic)
 
 /**
- *  判断指定的frame是否在当前屏幕范围内
+ *  判断指定的frame是否在当前屏幕的可视范围内
  */
 - (BOOL)vtm_isNeedDisplayWithFrame:(CGRect)frame;
 

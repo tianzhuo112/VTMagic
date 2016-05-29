@@ -10,6 +10,7 @@
 #import "VTCategoryBar.h"
 #import "VTContentView.h"
 #import "VTMagicViewController.h"
+#import "VTExtensionProtocal.h"
 
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTCategoryBarDatasource,VTCagetoryBarDelegate>
 
@@ -121,8 +122,8 @@
     }
     
     BOOL needReset = _catNames.count <= _currentIndex || !_catNames.count;
-    if (needReset && [_delegate respondsToSelector:@selector(currentViewController)]) {
-        [(VTMagicViewController *)_delegate setCurrentViewController:nil];
+    if (needReset && [_delegate respondsToSelector:@selector(displayViewControllerDidChanged:index:)]) {
+        [_delegate displayViewControllerDidChanged:nil index:_catNames.count];
     }
     
     if (needReset) {
@@ -143,16 +144,12 @@
     UIViewController *appearViewController = [_contentView viewControllerWithIndex:currentIndex autoCreateForNil:!_needSkipUpdate];
     UIViewController *disappearViewController = [_contentView viewControllerWithIndex:disIndex autoCreateForNil:!_needSkipUpdate];
     
-    if (appearViewController && [_delegate respondsToSelector:@selector(currentIndex)]) {
-        [(VTMagicViewController *)_delegate setCurrentIndex:currentIndex];
+    if (appearViewController && [_delegate respondsToSelector:@selector(displayViewControllerDidChanged:index:)]) {
+        [_delegate displayViewControllerDidChanged:appearViewController index:currentIndex];
     }
     
     if (disappearViewController && [_delegate respondsToSelector:@selector(magicView:viewControllerDidDisappeare:index:)]) {
         [_delegate magicView:self viewControllerDidDisappeare:disappearViewController index:disIndex];
-    }
-    
-    if (appearViewController && [_delegate respondsToSelector:@selector(currentViewController)]) {
-        [_delegate performSelector:@selector(setCurrentViewController:) withObject:appearViewController];
     }
     
     if (appearViewController && [_delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)]) {
@@ -219,17 +216,8 @@
 {
     if (![_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) return nil;
     UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
-    if (viewController && ![viewController.parentViewController isEqual:_delegate]) {
-        [contentView addSubview:viewController.view];
-        [(UIViewController *)_delegate addChildViewController:viewController];
-        [viewController didMoveToParentViewController:(UIViewController *)_delegate];
-        // 设置默认的currentViewController，并触发viewControllerDidAppeare
-        if (index == _currentIndex && [_delegate respondsToSelector:@selector(currentViewController)] && ![(VTMagicViewController *)_delegate currentViewController]) {
-            [(VTMagicViewController *)_delegate setCurrentViewController:viewController];
-            if ([_delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)]) {
-                [_delegate magicView:self viewControllerDidAppeare:viewController index:_currentIndex];
-            }
-        }
+    if (viewController && [_delegate respondsToSelector:@selector(viewControllerWillAddToContentView:index:)]) {
+        [_delegate viewControllerWillAddToContentView:viewController index:index];
     }
     return viewController;
 }
@@ -290,15 +278,14 @@
 
 - (void)updateCategoryBarWhenUserScrolled
 {
-    [self canPerformAction:@selector(updateCategoryBarWhenUserScrolled) withSender:nil];
     UIButton *catItem = [_categoryBar itemWithIndex:_currentIndex];
     [UIView animateWithDuration:0.25 animations:^{
         [_originalButton setSelected:NO];
         [catItem setSelected:YES];
         _originalButton = catItem;
         [self updateCategoryBar];
-//            CGSize size = headerButton.frame.size;
-//            _shadowView.frame = CGRectMake(headerButton.frame.origin.x, size.height - 2, size.width, 2);
+//        CGSize size = catItem.frame.size;
+//        _shadowView.frame = CGRectMake(catItem.frame.origin.x, size.height - 2, size.width, 2);
     }];
 }
 
@@ -342,11 +329,11 @@
     }
 }
 
-//- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-//{
-////    _isViewWillAppeare = NO;
-////    _nextIndex = _currentIndex; // 左右来回滑动有问题，只发送一次subviewWillAppeareWithIndex:
-//}
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+//    _isViewWillAppeare = NO;
+//    _nextIndex = _currentIndex; // 左右来回滑动有问题，只发送一次subviewWillAppeareWithIndex:
+}
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
@@ -356,7 +343,6 @@
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-
 {
 //    VTLog(@"scrollViewDidEndScrollingAnimation ");
 }
@@ -512,7 +498,7 @@
 - (void)setSlideColor:(UIColor *)slideColor
 {
     _slideColor = slideColor;
-    _separatorLine.backgroundColor = slideColor;
+    _shadowView.backgroundColor = slideColor;
 }
 
 - (void)setNavigationHeight:(CGFloat)navigationHeight
