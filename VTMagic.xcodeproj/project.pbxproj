@@ -11,12 +11,12 @@
 		7E83177E1CF7684300436604 /* RecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E83177D1CF7684300436604 /* RecomViewController.m */; };
 		7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */; };
 		7EF0684D1CF8191B00EDFC41 /* VTListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */; };
+		7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */; };
 		AEA0D4F91A11E4AB00229B72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4F81A11E4AB00229B72 /* main.m */; };
 		AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */; };
 		AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FE1A11E4AB00229B72 /* ViewController.m */; };
 		AEA0D5041A11E4AB00229B72 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEA0D5031A11E4AB00229B72 /* Images.xcassets */; };
 		AEA0D5071A11E4AB00229B72 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEA0D5051A11E4AB00229B72 /* LaunchScreen.xib */; };
-		AEA0D5131A11E4AB00229B72 /* VTMagicViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D5121A11E4AB00229B72 /* VTMagicViewTests.m */; };
 		AED72D251A5264CE008E13B7 /* VTContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D201A5264CE008E13B7 /* VTContentView.m */; };
 		AED72D261A5264CE008E13B7 /* VTMagicView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D221A5264CE008E13B7 /* VTMagicView.m */; };
 		AED72D271A5264CE008E13B7 /* VTMagicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D241A5264CE008E13B7 /* VTMagicViewController.m */; };
@@ -44,8 +44,9 @@
 		7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomCell.m; sourceTree = "<group>"; };
 		7EF0684B1CF8191B00EDFC41 /* VTListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTListViewCell.h; sourceTree = "<group>"; };
 		7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTListViewCell.m; sourceTree = "<group>"; };
-		7EF0684E1CF81B4A00EDFC41 /* VTMagicView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTMagicView-Prefix.pch"; sourceTree = "<group>"; };
-		AEA0D4F31A11E4AB00229B72 /* VTMagicView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagicView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EF0684E1CF81B4A00EDFC41 /* VTMagic-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTMagic-Prefix.pch"; sourceTree = "<group>"; };
+		7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicTests.m; sourceTree = "<group>"; };
+		AEA0D4F31A11E4AB00229B72 /* VTMagic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA0D4F71A11E4AB00229B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AEA0D4F81A11E4AB00229B72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AEA0D4FA1A11E4AB00229B72 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -54,9 +55,8 @@
 		AEA0D4FE1A11E4AB00229B72 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		AEA0D5031A11E4AB00229B72 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AEA0D5061A11E4AB00229B72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		AEA0D50C1A11E4AB00229B72 /* VTMagicViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VTMagicViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEA0D50C1A11E4AB00229B72 /* VTMagic.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VTMagic.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA0D5111A11E4AB00229B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AEA0D5121A11E4AB00229B72 /* VTMagicViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VTMagicViewTests.m; sourceTree = "<group>"; };
 		AED72D1F1A5264CE008E13B7 /* VTContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTContentView.h; sourceTree = "<group>"; };
 		AED72D201A5264CE008E13B7 /* VTContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTContentView.m; sourceTree = "<group>"; };
 		AED72D211A5264CE008E13B7 /* VTMagicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMagicView.h; sourceTree = "<group>"; };
@@ -89,8 +89,8 @@
 			isa = PBXGroup;
 			children = (
 				7E8317781CF74E6B00436604 /* README.md */,
-				AEA0D4F51A11E4AB00229B72 /* VTMagicView */,
-				AEA0D50F1A11E4AB00229B72 /* VTMagicViewTests */,
+				AEA0D4F51A11E4AB00229B72 /* VTMagicDemo */,
+				AEA0D50F1A11E4AB00229B72 /* VTMagicTests */,
 				AEA0D4F41A11E4AB00229B72 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,16 +98,16 @@
 		AEA0D4F41A11E4AB00229B72 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AEA0D4F31A11E4AB00229B72 /* VTMagicView.app */,
-				AEA0D50C1A11E4AB00229B72 /* VTMagicViewTests.xctest */,
+				AEA0D4F31A11E4AB00229B72 /* VTMagic.app */,
+				AEA0D50C1A11E4AB00229B72 /* VTMagic.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AEA0D4F51A11E4AB00229B72 /* VTMagicView */ = {
+		AEA0D4F51A11E4AB00229B72 /* VTMagicDemo */ = {
 			isa = PBXGroup;
 			children = (
-				AED72D1E1A5264CE008E13B7 /* VTMagicView */,
+				AED72D1E1A5264CE008E13B7 /* VTMagic */,
 				AEA0D4FA1A11E4AB00229B72 /* AppDelegate.h */,
 				AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */,
 				AEA0D4FD1A11E4AB00229B72 /* ViewController.h */,
@@ -124,26 +124,26 @@
 				AEA0D5051A11E4AB00229B72 /* LaunchScreen.xib */,
 				AEA0D4F61A11E4AB00229B72 /* Supporting Files */,
 			);
-			path = VTMagicView;
+			path = VTMagicDemo;
 			sourceTree = "<group>";
 		};
 		AEA0D4F61A11E4AB00229B72 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7EF0684E1CF81B4A00EDFC41 /* VTMagicView-Prefix.pch */,
+				7EF0684E1CF81B4A00EDFC41 /* VTMagic-Prefix.pch */,
 				AEA0D4F71A11E4AB00229B72 /* Info.plist */,
 				AEA0D4F81A11E4AB00229B72 /* main.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		AEA0D50F1A11E4AB00229B72 /* VTMagicViewTests */ = {
+		AEA0D50F1A11E4AB00229B72 /* VTMagicTests */ = {
 			isa = PBXGroup;
 			children = (
-				AEA0D5121A11E4AB00229B72 /* VTMagicViewTests.m */,
+				7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */,
 				AEA0D5101A11E4AB00229B72 /* Supporting Files */,
 			);
-			path = VTMagicViewTests;
+			path = VTMagicTests;
 			sourceTree = "<group>";
 		};
 		AEA0D5101A11E4AB00229B72 /* Supporting Files */ = {
@@ -154,7 +154,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		AED72D1E1A5264CE008E13B7 /* VTMagicView */ = {
+		AED72D1E1A5264CE008E13B7 /* VTMagic */ = {
 			isa = PBXGroup;
 			children = (
 				7E8317721CF74DCC00436604 /* VTCommon.h */,
@@ -167,15 +167,15 @@
 				AED72D231A5264CE008E13B7 /* VTMagicViewController.h */,
 				AED72D241A5264CE008E13B7 /* VTMagicViewController.m */,
 			);
-			path = VTMagicView;
+			path = VTMagic;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AEA0D4F21A11E4AB00229B72 /* VTMagicView */ = {
+		AEA0D4F21A11E4AB00229B72 /* VTMagic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AEA0D5161A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicView" */;
+			buildConfigurationList = AEA0D5161A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagic" */;
 			buildPhases = (
 				AEA0D4EF1A11E4AB00229B72 /* Sources */,
 				AEA0D4F01A11E4AB00229B72 /* Frameworks */,
@@ -185,14 +185,14 @@
 			);
 			dependencies = (
 			);
-			name = VTMagicView;
+			name = VTMagic;
 			productName = VTMagicView;
-			productReference = AEA0D4F31A11E4AB00229B72 /* VTMagicView.app */;
+			productReference = AEA0D4F31A11E4AB00229B72 /* VTMagic.app */;
 			productType = "com.apple.product-type.application";
 		};
-		AEA0D50B1A11E4AB00229B72 /* VTMagicViewTests */ = {
+		AEA0D50B1A11E4AB00229B72 /* VTMagicTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AEA0D5191A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicViewTests" */;
+			buildConfigurationList = AEA0D5191A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicTests" */;
 			buildPhases = (
 				AEA0D5081A11E4AB00229B72 /* Sources */,
 				AEA0D5091A11E4AB00229B72 /* Frameworks */,
@@ -203,9 +203,9 @@
 			dependencies = (
 				AEA0D50E1A11E4AB00229B72 /* PBXTargetDependency */,
 			);
-			name = VTMagicViewTests;
+			name = VTMagicTests;
 			productName = VTMagicViewTests;
-			productReference = AEA0D50C1A11E4AB00229B72 /* VTMagicViewTests.xctest */;
+			productReference = AEA0D50C1A11E4AB00229B72 /* VTMagic.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -227,7 +227,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AEA0D4EE1A11E4AB00229B72 /* Build configuration list for PBXProject "VTMagicView" */;
+			buildConfigurationList = AEA0D4EE1A11E4AB00229B72 /* Build configuration list for PBXProject "VTMagic" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -240,8 +240,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AEA0D4F21A11E4AB00229B72 /* VTMagicView */,
-				AEA0D50B1A11E4AB00229B72 /* VTMagicViewTests */,
+				AEA0D4F21A11E4AB00229B72 /* VTMagic */,
+				AEA0D50B1A11E4AB00229B72 /* VTMagicTests */,
 			);
 		};
 /* End PBXProject section */
@@ -288,7 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEA0D5131A11E4AB00229B72 /* VTMagicViewTests.m in Sources */,
+				7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,7 +297,7 @@
 /* Begin PBXTargetDependency section */
 		AEA0D50E1A11E4AB00229B72 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = AEA0D4F21A11E4AB00229B72 /* VTMagicView */;
+			target = AEA0D4F21A11E4AB00229B72 /* VTMagic */;
 			targetProxy = AEA0D50D1A11E4AB00229B72 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -398,11 +398,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicView/VTMagicView-Prefix.pch";
-				INFOPLIST_FILE = VTMagicView/Info.plist;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicDemo/VTMagic-Prefix.pch";
+				INFOPLIST_FILE = VTMagicDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = VTMagic;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -413,11 +413,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicView/VTMagicView-Prefix.pch";
-				INFOPLIST_FILE = VTMagicView/Info.plist;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicDemo/VTMagic-Prefix.pch";
+				INFOPLIST_FILE = VTMagicDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = VTMagic;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -436,8 +436,8 @@
 				);
 				INFOPLIST_FILE = VTMagicViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VTMagicView.app/VTMagicView";
+				PRODUCT_NAME = VTMagic;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VTMagic.app/VTMagic";
 			};
 			name = Debug;
 		};
@@ -451,15 +451,15 @@
 				);
 				INFOPLIST_FILE = VTMagicViewTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VTMagicView.app/VTMagicView";
+				PRODUCT_NAME = VTMagic;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VTMagic.app/VTMagic";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AEA0D4EE1A11E4AB00229B72 /* Build configuration list for PBXProject "VTMagicView" */ = {
+		AEA0D4EE1A11E4AB00229B72 /* Build configuration list for PBXProject "VTMagic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AEA0D5141A11E4AB00229B72 /* Debug */,
@@ -468,7 +468,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AEA0D5161A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicView" */ = {
+		AEA0D5161A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AEA0D5171A11E4AB00229B72 /* Debug */,
@@ -477,7 +477,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AEA0D5191A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicViewTests" */ = {
+		AEA0D5191A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AEA0D51A1A11E4AB00229B72 /* Debug */,

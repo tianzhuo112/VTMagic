@@ -11,7 +11,6 @@
 @interface VTListViewCell()
 
 
-
 @end
 
 @implementation VTListViewCell

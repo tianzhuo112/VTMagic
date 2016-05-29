@@ -15,9 +15,23 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AEA0D4F21A11E4AB00229B72"
-               BuildableName = "VTMagicView.app"
-               BlueprintName = "VTMagicView"
-               ReferencedContainer = "container:VTMagicView.xcodeproj">
+               BuildableName = "VTMagic.app"
+               BlueprintName = "VTMagic"
+               ReferencedContainer = "container:VTMagic.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AEA0D50B1A11E4AB00229B72"
+               BuildableName = "VTMagic.xctest"
+               BlueprintName = "VTMagicTests"
+               ReferencedContainer = "container:VTMagic.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "AEA0D50B1A11E4AB00229B72"
-               BuildableName = "VTMagicViewTests.xctest"
-               BlueprintName = "VTMagicViewTests"
-               ReferencedContainer = "container:VTMagicView.xcodeproj">
+               BuildableName = "VTMagic.xctest"
+               BlueprintName = "VTMagicTests"
+               ReferencedContainer = "container:VTMagic.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AEA0D4F21A11E4AB00229B72"
-            BuildableName = "VTMagicView.app"
-            BlueprintName = "VTMagicView"
-            ReferencedContainer = "container:VTMagicView.xcodeproj">
+            BuildableName = "VTMagic.app"
+            BlueprintName = "VTMagic"
+            ReferencedContainer = "container:VTMagic.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +80,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AEA0D4F21A11E4AB00229B72"
-            BuildableName = "VTMagicView.app"
-            BlueprintName = "VTMagicView"
-            ReferencedContainer = "container:VTMagicView.xcodeproj">
+            BuildableName = "VTMagic.app"
+            BlueprintName = "VTMagic"
+            ReferencedContainer = "container:VTMagic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +99,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "AEA0D4F21A11E4AB00229B72"
-            BuildableName = "VTMagicView.app"
-            BlueprintName = "VTMagicView"
-            ReferencedContainer = "container:VTMagicView.xcodeproj">
+            BuildableName = "VTMagic.app"
+            BlueprintName = "VTMagic"
+            ReferencedContainer = "container:VTMagic.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

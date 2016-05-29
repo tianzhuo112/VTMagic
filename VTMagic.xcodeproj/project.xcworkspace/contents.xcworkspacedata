@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:VTMagicView.xcodeproj">
+      location = "self:/Users/letv/Documents/Framework/VTMagicView/VTMagic.xcodeproj">
    </FileRef>
 </Workspace>
