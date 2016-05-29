@@ -10,21 +10,21 @@
 #import "VTMagicView.h"
 #import "VTCommon.h"
 
-@interface VTMagicViewController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource>
+@interface VTMagicViewController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource,VTExtensionProtocal>
 
 /**
- *  magic view，等同于self.view
+ *  magic view，iOS8以上等同于self.view
  */
 @property (nonatomic, strong) VTMagicView *magicView;
 
 /**
  *  当前页面对应的索引
  */
-@property (nonatomic, assign, readonly) NSInteger currentIndex;
+@property (nonatomic, assign) NSInteger currentPage;
 
 /**
  *  当前显示的控制器
  */
-@property (nonatomic, strong, readonly) UIViewController *currentViewController;
+@property (nonatomic, strong) UIViewController *currentViewController;
 
 @end

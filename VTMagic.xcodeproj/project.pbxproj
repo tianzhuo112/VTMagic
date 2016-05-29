@@ -10,7 +10,7 @@
 		7E8317751CF74DCC00436604 /* VTCategoryBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E8317741CF74DCC00436604 /* VTCategoryBar.m */; };
 		7E83177E1CF7684300436604 /* RecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E83177D1CF7684300436604 /* RecomViewController.m */; };
 		7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */; };
-		7EF0684D1CF8191B00EDFC41 /* VTListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */; };
+		7EF0684D1CF8191B00EDFC41 /* VTGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684C1CF8191B00EDFC41 /* VTGridViewCell.m */; };
 		7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */; };
 		7EF068581CF83C1B00EDFC41 /* UIScrollView+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068521CF8383E00EDFC41 /* UIScrollView+Magic.m */; };
 		7EF068591CF83C1D00EDFC41 /* UIViewController+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068541CF8383E00EDFC41 /* UIViewController+Magic.m */; };
@@ -23,7 +23,7 @@
 		AED72D251A5264CE008E13B7 /* VTContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D201A5264CE008E13B7 /* VTContentView.m */; };
 		AED72D261A5264CE008E13B7 /* VTMagicView.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D221A5264CE008E13B7 /* VTMagicView.m */; };
 		AED72D271A5264CE008E13B7 /* VTMagicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D241A5264CE008E13B7 /* VTMagicViewController.m */; };
-		AED72D2A1A527331008E13B7 /* ListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D291A527331008E13B7 /* ListViewController.m */; };
+		AED72D2A1A527331008E13B7 /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D291A527331008E13B7 /* GridViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +45,8 @@
 		7E83177D1CF7684300436604 /* RecomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecomViewController.m; sourceTree = "<group>"; };
 		7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRecomCell.h; sourceTree = "<group>"; };
 		7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomCell.m; sourceTree = "<group>"; };
-		7EF0684B1CF8191B00EDFC41 /* VTListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTListViewCell.h; sourceTree = "<group>"; };
-		7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTListViewCell.m; sourceTree = "<group>"; };
+		7EF0684B1CF8191B00EDFC41 /* VTGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTGridViewCell.h; sourceTree = "<group>"; };
+		7EF0684C1CF8191B00EDFC41 /* VTGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTGridViewCell.m; sourceTree = "<group>"; };
 		7EF0684E1CF81B4A00EDFC41 /* VTMagic-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTMagic-Prefix.pch"; sourceTree = "<group>"; };
 		7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicTests.m; sourceTree = "<group>"; };
 		7EF068511CF8383E00EDFC41 /* UIScrollView+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Magic.h"; sourceTree = "<group>"; };
@@ -73,8 +73,8 @@
 		AED72D221A5264CE008E13B7 /* VTMagicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicView.m; sourceTree = "<group>"; };
 		AED72D231A5264CE008E13B7 /* VTMagicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMagicViewController.h; sourceTree = "<group>"; };
 		AED72D241A5264CE008E13B7 /* VTMagicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicViewController.m; sourceTree = "<group>"; };
-		AED72D281A527331008E13B7 /* ListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListViewController.h; sourceTree = "<group>"; };
-		AED72D291A527331008E13B7 /* ListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListViewController.m; sourceTree = "<group>"; };
+		AED72D281A527331008E13B7 /* GridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewController.h; sourceTree = "<group>"; };
+		AED72D291A527331008E13B7 /* GridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,12 +124,12 @@
 				AEA0D4FE1A11E4AB00229B72 /* ViewController.m */,
 				7E83177C1CF7684300436604 /* RecomViewController.h */,
 				7E83177D1CF7684300436604 /* RecomViewController.m */,
-				AED72D281A527331008E13B7 /* ListViewController.h */,
-				AED72D291A527331008E13B7 /* ListViewController.m */,
+				AED72D281A527331008E13B7 /* GridViewController.h */,
+				AED72D291A527331008E13B7 /* GridViewController.m */,
 				7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */,
 				7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */,
-				7EF0684B1CF8191B00EDFC41 /* VTListViewCell.h */,
-				7EF0684C1CF8191B00EDFC41 /* VTListViewCell.m */,
+				7EF0684B1CF8191B00EDFC41 /* VTGridViewCell.h */,
+				7EF0684C1CF8191B00EDFC41 /* VTGridViewCell.m */,
 				AEA0D5031A11E4AB00229B72 /* Images.xcassets */,
 				AEA0D5051A11E4AB00229B72 /* LaunchScreen.xib */,
 				AEA0D4F61A11E4AB00229B72 /* Supporting Files */,
@@ -289,10 +289,10 @@
 			files = (
 				7E83177E1CF7684300436604 /* RecomViewController.m in Sources */,
 				AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */,
-				7EF0684D1CF8191B00EDFC41 /* VTListViewCell.m in Sources */,
+				7EF0684D1CF8191B00EDFC41 /* VTGridViewCell.m in Sources */,
 				7EF068581CF83C1B00EDFC41 /* UIScrollView+Magic.m in Sources */,
 				AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */,
-				AED72D2A1A527331008E13B7 /* ListViewController.m in Sources */,
+				AED72D2A1A527331008E13B7 /* GridViewController.m in Sources */,
 				AEA0D4F91A11E4AB00229B72 /* main.m in Sources */,
 				7EF06F3C1CF852C000EDFC41 /* UIColor+Magic.m in Sources */,
 				AED72D271A5264CE008E13B7 /* VTMagicViewController.m in Sources */,

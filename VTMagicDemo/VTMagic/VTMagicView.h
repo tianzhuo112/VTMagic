@@ -10,9 +10,12 @@
 #import "VTExtensionProtocal.h"
 
 typedef enum : NSUInteger {
-    VTSwitchStyleDefault,   // 默认模式，切换时有颜色渐变效果
-    VTSwitchStyleStiff,     // 延迟响应切换
-    VTSwitchStyleUnknown,   // ？？？
+    /** 默认模式，切换时有颜色渐变效果 */
+    VTSwitchStyleDefault,
+    /** 延迟响应切换 */
+    VTSwitchStyleStiff,
+    /** ？？？ */
+    VTSwitchStyleUnknown,
 } VTSwitchStyle;
 
 @class VTMagicView;
@@ -84,12 +87,20 @@ typedef enum : NSUInteger {
 /**
  *  数据源
  */
-@property (weak, nonatomic) id<VTMagicViewDataSource> dataSource;
+@property (nonatomic, weak) id<VTMagicViewDataSource> dataSource;
 
 /**
  *  代理
+ *  若delegate为UIViewController并且实现了VTExtensionProtocal协议，
+ *  则主控制器(mainViewController)默认与其相同
  */
-@property (weak, nonatomic) id<VTMagicViewDelegate, VTExtensionProtocal> delegate;
+@property (nonatomic, weak) id<VTMagicViewDelegate> delegate;
+
+/**
+ *  主控制器
+ *  注：若继承自VTMagicViewController，则不需要设置该属性
+ */
+@property (nonatomic, weak) UIViewController<VTExtensionProtocal> *magicViewController;
 
 /****************************************sub views****************************************/
 /**

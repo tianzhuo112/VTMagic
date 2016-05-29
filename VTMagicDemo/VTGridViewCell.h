@@ -1,5 +1,5 @@
 //
-//  VTListViewCell.h
+//  VTGridViewCell.h
 //  VTMagicView
 //
 //  Created by tianzhuo on 5/27/16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface VTListViewCell : UICollectionViewCell
+@interface VTGridViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *titleLabel;

@@ -1,5 +1,5 @@
 //
-//  ChildViewController.h
+//  GridViewController.h
 //  VTMagicView
 //
 //  Created by tianzhuo on 14/12/30.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ListViewController : UICollectionViewController
+@interface GridViewController : UICollectionViewController
 
 
 @end

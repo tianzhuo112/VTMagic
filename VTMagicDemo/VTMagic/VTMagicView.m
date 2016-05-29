@@ -14,10 +14,8 @@
 #import "UIColor+Magic.h"
 
 typedef struct {
-    unsigned int willAddToContenView                : 1;
     unsigned int viewControllerDidAppeare           : 1;
     unsigned int viewControllerDidDisappeare        : 1;
-    unsigned int displayViewControllerDidChanged    : 1;
 } MagicFlags;
 
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTCategoryBarDatasource,VTCagetoryBarDelegate>
@@ -159,8 +157,20 @@ typedef struct {
 
 - (void)statusBarOrientationChange:(NSNotification *)notification
 {
+    _needSkipUpdate = YES;
     [self updateFrameForSubviews];
     [self updateCategoryBar];
+    _needSkipUpdate = NO;
+    [self reviseLayout];
+}
+
+- (void)reviseLayout
+{
+    if (iOS8_OR_LATER) return;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC));
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+        [self setNeedsLayout];
+    });
 }
 
 #pragma mark - 重新加载数据
@@ -172,14 +182,12 @@ typedef struct {
     }
     
     BOOL needReset = _catNames.count <= _currentIndex;
-    if (needReset && _magicFlags.displayViewControllerDidChanged) {
-        [_delegate displayViewControllerDidChanged:nil index:0];
-    }
-    
     if (needReset) {
         _currentIndex = 0;
         _categoryBar.currentIndex = _currentIndex;
         _contentView.currentIndex = _currentIndex;
+        [_magicViewController setCurrentViewController:nil];
+        [_magicViewController setCurrentPage:_currentIndex];
     }
     
     _contentView.pageCount = _catNames.count;
@@ -195,8 +203,9 @@ typedef struct {
     UIViewController *appearViewController = [_contentView viewControllerWithIndex:currentIndex autoCreateForNil:!_needSkipUpdate];
     UIViewController *disappearViewController = [_contentView viewControllerWithIndex:disIndex autoCreateForNil:!_needSkipUpdate];
     
-    if (appearViewController && _magicFlags.displayViewControllerDidChanged) {
-        [_delegate displayViewControllerDidChanged:appearViewController index:currentIndex];
+    if (appearViewController) {
+        [_magicViewController setCurrentPage:currentIndex];
+        [_magicViewController setCurrentViewController:appearViewController];
     }
     
     if (disappearViewController && _magicFlags.viewControllerDidDisappeare) {
@@ -262,8 +271,17 @@ typedef struct {
 {
     if (![_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) return nil;
     UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
-    if (viewController && _magicFlags.willAddToContenView) {
-        [_delegate viewControllerWillAddToContentView:viewController index:index];
+    if (viewController && ![viewController.parentViewController isEqual:_magicViewController]) {
+        [_magicViewController addChildViewController:viewController];
+//        [contentView addSubview:viewController.view];
+        [viewController didMoveToParentViewController:_magicViewController];
+        // 设置默认的currentViewController，并触发viewControllerDidAppeare
+        if (index == _currentIndex && !_magicViewController.currentViewController) {
+            [_magicViewController setCurrentViewController:viewController];
+            if (_magicFlags.viewControllerDidAppeare) {
+                [_delegate magicView:self viewControllerDidAppeare:viewController index:_currentIndex];
+            }
+        }
     }
     return viewController;
 }
@@ -293,10 +311,9 @@ typedef struct {
         UIButton *catItem = [_categoryBar itemWithIndex:pageIndex];
         [self categoryBar:_categoryBar didSelectedItem:catItem];
     } else {
-        _currentIndex = pageIndex;
+        CGFloat offset = _contentView.frame.size.width * pageIndex;
+        _contentView.contentOffset = CGPointMake(offset, 0);
         _categoryBar.currentIndex = pageIndex;
-        CGPoint offset = CGPointMake(_contentView.frame.size.width * pageIndex, 0);
-        _contentView.contentOffset = offset;
         [self updateCategoryBar];
     }
 }
@@ -527,6 +544,7 @@ typedef struct {
         _categoryBar.showsHorizontalScrollIndicator = NO;
         _categoryBar.catDelegate = self;
         _categoryBar.datasource = self;
+        _categoryBar.scrollsToTop = NO;
     }
     return _categoryBar;
 }
@@ -539,18 +557,20 @@ typedef struct {
         _contentView.pagingEnabled = YES;
         _contentView.delegate = self;
         _contentView.dataSource = self;
+        _contentView.scrollsToTop = NO;
         _contentView.bounces = NO;
     }
     return _contentView;
 }
 
-- (void)setDelegate:(id<VTMagicViewDelegate,VTExtensionProtocal>)delegate
+- (void)setDelegate:(id<VTMagicViewDelegate>)delegate
 {
     _delegate = delegate;
     _magicFlags.viewControllerDidAppeare = [delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)];
-    _magicFlags.viewControllerDidDisappeare = [delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)];
-    _magicFlags.displayViewControllerDidChanged = [delegate respondsToSelector:@selector(displayViewControllerDidChanged:index:)];
-    _magicFlags.willAddToContenView = [delegate respondsToSelector:@selector(viewControllerWillAddToContentView:index:)];
+    _magicFlags.viewControllerDidDisappeare = [delegate respondsToSelector:@selector(magicView:viewControllerDidDisappeare:index:)];
+    if (!_magicViewController && [_delegate isKindOfClass:[UIViewController class]] && [delegate conformsToProtocol:@protocol(VTExtensionProtocal)]) {
+        _magicViewController = (UIViewController<VTExtensionProtocal> *)delegate;
+    }
 }
 
 - (void)setAutoResizing:(BOOL)autoResizing

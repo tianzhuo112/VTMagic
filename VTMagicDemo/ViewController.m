@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "RecomViewController.h"
-#import "ListViewController.h"
+#import "GridViewController.h"
 #import "VTCommon.h"
 
 @interface ViewController ()
@@ -71,9 +71,9 @@
     }
     
     static NSString *listId = @"magicIdentifier";
-    ListViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:listId];
+    GridViewController *viewController = [magicView dequeueReusableViewControllerWithIdentifier:listId];
     if (!viewController) {
-        viewController = [[ListViewController alloc] init];
+        viewController = [[GridViewController alloc] init];
     }
     return viewController;
 }

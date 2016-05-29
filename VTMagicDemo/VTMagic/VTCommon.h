@@ -9,6 +9,8 @@
 #ifndef VTMagicView_VTCommon_h
 #define VTMagicView_VTCommon_h
 
+#import "UIViewController+Magic.h"
+
 /** 自定义Log  */
 #ifdef DEBUG
 #define VTLog(...) NSLog(__VA_ARGS__)
@@ -44,13 +46,5 @@
  *  tabbar高度
  */
 #define TABBAR_HEIGHT_VT 49
-/**
- *  屏幕的高度
- */
-#define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height > [UIScreen mainScreen].bounds.size.width?[UIScreen mainScreen].bounds.size.height:[UIScreen mainScreen].bounds.size.width)
-/**
- *  屏幕的宽度
- */
-#define SCREENWIDTH ([UIScreen mainScreen].bounds.size.height > [UIScreen mainScreen].bounds.size.width?[UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
 
 #endif

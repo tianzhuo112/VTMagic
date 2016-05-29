@@ -1,19 +1,19 @@
 //
-//  VTListViewCell.m
+//  VTGridViewCell.m
 //  VTMagicView
 //
 //  Created by tianzhuo on 5/27/16.
 //  Copyright © 2016 tianzhuo. All rights reserved.
 //
 
-#import "VTListViewCell.h"
+#import "VTGridViewCell.h"
 
-@interface VTListViewCell()
+@interface VTGridViewCell()
 
 
 @end
 
-@implementation VTListViewCell
+@implementation VTGridViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

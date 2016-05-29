@@ -153,7 +153,7 @@
     NSInteger count = _catNames.count;
     CGFloat height = self.frame.size.height;
     for (int index = 0; index < count; index++) {
-        if (IOS7_OR_LATER) {
+        if (iOS7_OR_LATER) {
             size = [_catNames[index] sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
         } else {
             size = [_catNames[index] sizeWithFont:_itemFont];

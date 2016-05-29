@@ -47,7 +47,8 @@
     [self addContraints:@"V:|-5-[_iconView]-5-|" forViews:NSDictionaryOfVariableBindings(_iconView)];
     
     [self addContraints:@"H:[_iconView]-10-[_titleLabel]-10-|" forViews:NSDictionaryOfVariableBindings(_iconView, _titleLabel)];
-    [self addContraints:@"V:|-5-[_titleLabel]" forViews:NSDictionaryOfVariableBindings(_titleLabel)];
+    NSString *titleContraints = [NSString stringWithFormat:@"V:|-5-[_titleLabel(%f)]", _titleLabel.font.lineHeight];
+    [self addContraints:titleContraints forViews:NSDictionaryOfVariableBindings(_titleLabel)];
     
     [self addContraints:@"H:[_iconView]-10-[_descLabel]-10-|" forViews:NSDictionaryOfVariableBindings(_iconView, _descLabel)];
     [self addContraints:@"V:[_titleLabel]-5-[_descLabel]-5-|" forViews:NSDictionaryOfVariableBindings(_titleLabel, _descLabel)];

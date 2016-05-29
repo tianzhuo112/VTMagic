@@ -1,31 +1,32 @@
 //
-//  ChildViewController.m
+//  GridViewController.m
 //  VTMagicView
 //
 //  Created by tianzhuo on 14/12/30.
 //  Copyright (c) 2014年 tianzhuo. All rights reserved.
 //
 
-#import "ListViewController.h"
-#import "VTListViewCell.h"
+#import "GridViewController.h"
+#import "VTGridViewCell.h"
 
-static NSString *reuseIdentifier = @"list.reuse.identifier";
+#define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
+static NSString *reuseIdentifier = @"grid.reuse.identifier";
 
-@interface ListViewController()
+@interface GridViewController()
 
 @property (nonatomic, strong) NSMutableArray *infoList;
 
 @end
 
-@implementation ListViewController
+@implementation GridViewController
 
 - (instancetype)init
 {
     BOOL iPhoneDevice = [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-    layout.sectionInset = iPhoneDevice ?UIEdgeInsetsMake(10, 20, 10, 20) : UIEdgeInsetsMake(20, 20, 20, 20);
-    layout.itemSize = iPhoneDevice ? CGSizeMake(135, 183) : CGSizeMake(188, 188);
+    layout.sectionInset = iPhoneDevice ?UIEdgeInsetsMake(10, 10, 10, 10) : UIEdgeInsetsMake(20, 20, 20, 20);
+    layout.itemSize = iPhoneDevice ? (IPHONELESS6 ? CGSizeMake(140, 175) : CGSizeMake(115, 170)) : CGSizeMake(188, 188);
     layout.minimumInteritemSpacing = iPhoneDevice ? 2 : 11;
     layout.minimumLineSpacing = iPhoneDevice ? 10 : 11;
     return [super initWithCollectionViewLayout:layout];
@@ -38,7 +39,7 @@ static NSString *reuseIdentifier = @"list.reuse.identifier";
     [self generateData];
     self.collectionView.scrollsToTop = NO;
     self.collectionView.backgroundColor = RGBCOLOR(239, 239, 239);
-    [self.collectionView registerClass:[VTListViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [self.collectionView registerClass:[VTGridViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView reloadData];
 }
 
@@ -71,7 +72,7 @@ static NSString *reuseIdentifier = @"list.reuse.identifier";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    VTListViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    VTGridViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
     NSString *imageName = [NSString stringWithFormat:@"image_%ld", indexPath.row%13];
     [cell.imageView setImage:[UIImage imageNamed:imageName]];

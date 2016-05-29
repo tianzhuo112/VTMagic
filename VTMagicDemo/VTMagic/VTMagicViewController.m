@@ -7,13 +7,12 @@
 //
 
 #import "VTMagicViewController.h"
-#import "VTExtensionProtocal.h"
 #import "VTMagicView.h"
 
 #define NOTICENTER [NSNotificationCenter defaultCenter]
 #define USERDEFAULTS [NSUserDefaults standardUserDefaults]
 
-@interface VTMagicViewController ()<VTExtensionProtocal>
+@interface VTMagicViewController ()
 
 @property (nonatomic, assign) BOOL isDeviceChange;
 
@@ -25,7 +24,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
+        if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
         } else if ([self respondsToSelector:@selector(setWantsFullScreenLayout:)]) {
             [self setValue:@YES forKey:@"wantsFullScreenLayout"];
@@ -38,14 +37,19 @@
 {
     [super loadView];
     
-    self.magicView.frame = self.view.frame;
-    self.view = _magicView;
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        self.view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        [self.view addSubview:self.magicView];
+    } else {
+        self.view = self.magicView;
+    }
 }
 
 - (VTMagicView *)magicView
 {
     if (!_magicView) {
-        _magicView = [[VTMagicView alloc] init];
+        _magicView = [[VTMagicView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        _magicView.magicViewController = self;
         _magicView.delegate = self;
         _magicView.dataSource = self;
     }
@@ -64,25 +68,6 @@
 {
     [super viewDidAppear:animated];
     
-}
-
-#pragma mark - 私有协议VTExtensionProtocal
-- (void)displayViewControllerDidChanged:(UIViewController *)viewController index:(NSUInteger)index
-{
-    _currentIndex = index;
-    _currentViewController = viewController;
-}
-
-- (void)viewControllerWillAddToContentView:(UIViewController *)viewController index:(NSUInteger)index
-{
-    if (!viewController || [viewController.parentViewController isEqual:self]) return;
-    [self addChildViewController:viewController];
-    [viewController didMoveToParentViewController:self];
-    // 设置默认的currentViewController，并触发viewControllerDidAppeare
-    if (index == _currentIndex && !self.currentViewController) {
-        _currentViewController = viewController;
-        [self magicView:self.magicView viewControllerDidAppeare:viewController index:_currentIndex];
-    }
 }
 
 #pragma mark - VTMagicViewDataSource & VTMagicViewDelegate
