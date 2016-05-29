@@ -90,6 +90,7 @@
 {
     [super layoutSubviews];
     
+    [self updateFrameForSubviews];
     [self updateHeaderView];
 }
 
@@ -416,12 +417,6 @@
         _contentView.bounces = NO;
     }
     return _contentView;
-}
-
-- (void)setFrame:(CGRect)frame
-{
-    [super setFrame:frame];
-    [self updateFrameForSubviews];
 }
 
 - (void)setNeedExtendedBottom:(BOOL)needExtendedBottom
