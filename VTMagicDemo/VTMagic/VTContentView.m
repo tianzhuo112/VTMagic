@@ -14,9 +14,9 @@
 
 @property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的控制器
 @property (nonatomic, strong) NSMutableArray *indexList; // 索引集合
-@property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSMutableArray *frameList; // 控制器的坐标集合
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
+@property (nonatomic, strong) NSCache *pageCache; // 缓存池
 
 @end
 
@@ -29,9 +29,23 @@
         _indexList = [[NSMutableArray alloc] init];
         _frameList = [[NSMutableArray alloc] init];
         _visibleDict = [[NSMutableDictionary alloc] init];
-        _cacheDict = [[NSMutableDictionary alloc] init];
+        _pageCache = [[NSCache alloc] init];
+        _pageCache.name = @"com.tianzhuo.magic";
+        _pageCache.countLimit = 10;
+        
+#if TARGET_OS_IPHONE
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(clearMemoryCache)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
+#endif
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)layoutSubviews
@@ -53,14 +67,8 @@
         viewController = _visibleDict[indexPath];
         // 控制器若移出屏幕则将其视图从父类中移除，并添加到缓存池中
         if (![self vtm_isNeedDisplayWithFrame:frame]) {
-            [viewController.view removeFromSuperview];
+            [self moveViewControllerToCache:viewController];
             [_visibleDict removeObjectForKey:indexPath];
-            
-            // 添加到缓存池
-            NSMutableSet *cacheSet = _cacheDict[viewController.reuseIdentifier];
-            if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
-            [cacheSet addObject:viewController];
-            [_cacheDict setValue:cacheSet forKey:viewController.reuseIdentifier];
         } else {
             viewController.view.frame = frame;
         }
@@ -101,14 +109,22 @@
     // reload时清除所有页面
     NSArray *viewControllers = [_visibleDict allValues];
     for (UIViewController *viewController in viewControllers) {
-//        [viewController removeFromParentViewController];
-        [viewController.view removeFromSuperview];
-        NSMutableSet *cacheSet = _cacheDict[viewController.reuseIdentifier];
-        if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
-        [cacheSet addObject:viewController];
-        [_cacheDict setValue:cacheSet forKey:viewController.reuseIdentifier];
+        [self moveViewControllerToCache:viewController];
     }
     [_visibleDict removeAllObjects];
+}
+
+- (void)moveViewControllerToCache:(UIViewController *)viewController
+{
+    [viewController willMoveToParentViewController:nil];
+    [viewController removeFromParentViewController];
+    [viewController.view removeFromSuperview];
+    
+    // 添加到缓存池
+    NSMutableSet *cacheSet = [_pageCache objectForKey:viewController.reuseIdentifier];
+    if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
+    [cacheSet addObject:viewController];
+    [_pageCache setObject:cacheSet forKey:viewController.reuseIdentifier];
 }
 
 - (void)resetFrames
@@ -155,13 +171,19 @@
 - (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
 {
     _identifier = identifier;
-    NSMutableSet *cacheSet = _cacheDict[identifier];
+    NSMutableSet *cacheSet = [_pageCache objectForKey:identifier];
     UIViewController *viewController = [cacheSet anyObject];
     if (viewController) {
         [cacheSet removeObject:viewController];
-        [_cacheDict setValue:cacheSet forKey:identifier];
+        [_pageCache setObject:cacheSet forKey:identifier];
     }
     return viewController;
+}
+
+#pragma mark - 清除缓存
+- (void)clearMemoryCache
+{
+    [_pageCache removeAllObjects];
 }
 
 @end
