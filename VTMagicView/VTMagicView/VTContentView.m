@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSMutableArray *frameList; // 控制器的坐标集合
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
+@property (nonatomic, assign) NSInteger preIndex;
 
 @end
 
@@ -24,25 +25,29 @@
 {
     [super layoutSubviews];
     
+    CGFloat offset = self.contentOffset.x;
+    CGFloat width = self.frame.size.width;
+    BOOL isNotBorder = 0 != (int)offset%(int)width;
+    NSInteger currentPage = self.contentOffset.x/self.frame.size.width;
+    if (_preIndex == currentPage && isNotBorder) return;
+    _preIndex = currentPage;
+    
     CGRect frame = CGRectZero;
     UIViewController *viewController = nil;
     NSArray *pathList = [_visibleDict allKeys];
     for (NSIndexPath *indexPath in pathList) {
-        viewController = _visibleDict[indexPath];
         frame = [_frameList[indexPath.row] CGRectValue];
         // 控制器若移出屏幕则将其视图从父类中移除，并添加到缓存池中
         if (![self isNeedDisplayWithFrame:frame]) {
+            viewController = _visibleDict[indexPath];
             [viewController.view removeFromSuperview];
             [_visibleDict removeObjectForKey:indexPath];
-            [_visibleList removeObject:viewController];
             
             // 添加到缓存池
             NSMutableSet *cacheSet = _cacheDict[viewController.restorationIdentifier];
             if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
             [cacheSet addObject:viewController];
             [_cacheDict setValue:cacheSet forKey:viewController.restorationIdentifier];
-        } else {
-            viewController.view.frame = frame;
         }
     }
     
@@ -57,9 +62,6 @@
             viewController.restorationIdentifier = _identifier;
             [self addSubview:viewController.view];
             [_visibleDict setObject:viewController forKey:indexPath];
-            if (![_visibleList containsObject:viewController]) {
-                [_visibleList addObject:viewController];
-            }
         }
     }
 }
@@ -116,22 +118,6 @@
     
     if (!_visibleDict) {
         _visibleDict = [[NSMutableDictionary alloc] initWithCapacity:_pageCount];
-    } else {
-        // 新增逻辑，reload时清除页面数据
-//        NSArray *viewControllers = [_visibleDict allValues];
-//        for (UIViewController *viewController in viewControllers) {
-//            [viewController removeFromParentViewController];
-////            [viewController.view removeFromSuperview];
-//            NSMutableSet *cacheSet = _cacheDict[viewController.restorationIdentifier];
-//            if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
-//            [cacheSet addObject:viewController];
-//            [_cacheDict setValue:cacheSet forKey:viewController.restorationIdentifier];
-//        }
-//        [_visibleDict removeAllObjects];
-    }
-    
-    if (!_visibleList) {
-        _visibleList = [[NSMutableArray alloc] initWithCapacity:_pageCount];
     }
 }
 
@@ -144,6 +130,33 @@
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
     }
     self.contentSize = CGSizeMake(CGRectGetMaxX([[_frameList lastObject] CGRectValue]), 0);
+}
+
+#pragma mark - accessor
+- (NSArray *)visibleList
+{
+    return [_visibleDict allValues];
+}
+
+- (UIViewController *)viewControllerWithIndex:(NSInteger)index
+{
+    return [self viewControllerWithIndex:index autoCreateForNil:NO];
+}
+
+- (UIViewController *)viewControllerWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UIViewController *viewController = [_visibleDict objectForKey:indexPath];
+    if (!viewController && autoCreate) {
+        viewController = [_dataSource contentView:self viewControllerForIndex:index];
+        viewController.restorationIdentifier = _identifier;
+        if (!viewController) return viewController;
+        viewController.view.frame = [_frameList[indexPath.row] CGRectValue];
+        [self addSubview:viewController.view];
+        [_visibleDict setObject:viewController forKey:indexPath];
+    }
+    
+    return viewController;
 }
 
 #pragma mark - 根据缓存标识查询可重用的视图控制器

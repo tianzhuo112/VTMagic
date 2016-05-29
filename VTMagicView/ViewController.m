@@ -23,7 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.magicView.navigationColor = RGBCOLOR(239, 239, 239);
+    self.magicView.navigationHeight = 40;
+    self.magicView.navigationColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self integrateComponents];
@@ -113,15 +114,6 @@
 
 - (void)integrateComponents
 {
-    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-    [leftButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [leftButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateHighlighted];
-    [leftButton setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateNormal];
-    [leftButton setTitle:@"左侧" forState:UIControlStateNormal];
-    leftButton.titleLabel.font = [UIFont systemFontOfSize:20];
-    leftButton.center = self.view.center;
-    self.magicView.leftHeaderView = leftButton;
-    
     UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     [rightButton addTarget:self action:@selector(subscribeAction) forControlEvents:UIControlEventTouchUpInside];
     [rightButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateHighlighted];

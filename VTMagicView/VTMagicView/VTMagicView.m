@@ -13,26 +13,30 @@
 
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTHeaderDatasource,VTHeaderDelegate>
 
-@property (nonatomic, strong) UIView *navigationView;// 顶部导航视图
 @property (nonatomic, strong) VTHeaderView *headerView; // 顶部导航视图内的滚动视图
 @property (nonatomic, strong) VTContentView *contentView; // 容器视图
 @property (nonatomic, strong) UIView *shadowView; // 顶部下划线
+@property (nonatomic, strong) UIView *separatorLine; // 导航模块底部分割线
 @property (nonatomic, strong) UIButton *originalButton;
 @property (nonatomic, strong) NSArray *headerList; //顶部item内容数组
 @property (nonatomic, assign) NSInteger nextIndex; // 下一个页面的索引
 @property (nonatomic, assign) NSInteger currentIndex; //当前页面的索引
 @property (nonatomic, assign) BOOL isViewWillAppeare;
 @property (nonatomic, assign) BOOL isRotateAnimating;
-@property (nonatomic, assign) BOOL isUserSliding; // 是否是用户手动滑动
+@property (nonatomic, assign) BOOL needSkipUpdate; // 是否是跳页切换
 
 @end
 
 @implementation VTMagicView
+@synthesize navigationView = _navigationView;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _itemHeight = 44;
+        _dependStatusBar = YES;
+        _navigationHeight = 44;
         [self addSubviews];
     }
     return self;
@@ -41,41 +45,45 @@
 #pragma mark - layout subviews
 - (void)addSubviews
 {
-    CGFloat topY = 20;
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    _navigationView = [[UIView alloc] initWithFrame:CGRectMake(0, topY, size.width, 44)];
-    _navigationView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _navigationView.backgroundColor = [UIColor clearColor];
-    [self addSubview:_navigationView];
+    [self addSubview:self.navigationView];
+    [_navigationView addSubview:self.separatorLine];
+    [_navigationView addSubview:self.headerView];
+    [_headerView addSubview:self.shadowView];
+    [self addSubview:self.contentView];
+    [self updateFrameForSubviews];
+}
+
+- (void)updateFrameForSubviews
+{
+    CGFloat topY = _dependStatusBar ? 20 : 0;
+    CGSize size = self.frame.size;
+    _navigationView.frame = CGRectMake(0, topY, size.width, _navigationHeight);
     
     CGFloat separatorH = 0.5;
-    CGRect separatorFrame = CGRectMake(0, CGRectGetHeight(_navigationView.frame) - separatorH, size.width, separatorH);
-    UIView *separatorLine_ = [[UIView alloc] initWithFrame:separatorFrame];
-    separatorLine_.backgroundColor = RGBCOLOR(188, 188, 188);
-    [_navigationView addSubview:separatorLine_];
+    _separatorLine.frame = CGRectMake(0, CGRectGetHeight(_navigationView.frame) - separatorH, size.width, separatorH);
     
-    _headerView = [[VTHeaderView alloc] initWithFrame:CGRectMake(0, 0, size.width, 44)];
-    _headerView.backgroundColor = [UIColor clearColor];
-    _headerView.showsHorizontalScrollIndicator = NO;
-    _headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _headerView.headerDelegate = self;
-    _headerView.datasource = self;
-    [_navigationView addSubview:_headerView];
+    CGFloat headerX = CGRectGetWidth(_leftHeaderView.frame);
+    CGFloat headerY = (_navigationHeight - _itemHeight) * 0.5;
+    CGFloat headerWidth = size.width - headerX - CGRectGetWidth(_rightHeaderView.frame);
+    _headerView.frame = CGRectMake(headerX, headerY, headerWidth, _itemHeight);
     
-    _shadowView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(_headerView.frame) - 2, 0, 2)];
-    _shadowView.backgroundColor = RGBCOLOR(194, 39, 39);
-    [_headerView addSubview:_shadowView];
+    CGRect shadowFrame = _shadowView.frame;
+    shadowFrame.origin.y = CGRectGetHeight(_navigationView.frame) - 2;
+    _shadowView.frame = shadowFrame;
     
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
-    CGFloat contentH = size.height - contentY;
-    _contentView = [[VTContentView alloc] initWithFrame:CGRectMake(0, contentY, size.width, contentH)];
-    _contentView.contentSize = CGSizeMake(_headerList.count * size.width, 0);
-    _contentView.showsHorizontalScrollIndicator = NO;
-    _contentView.pagingEnabled = YES;
-    _contentView.delegate = self;
-    _contentView.dataSource = self;
-    _contentView.bounces = NO;
-    [self addSubview:_contentView];
+    CGFloat contentH = size.height - contentY + (_needExtendedBottom ? TABBAR_HEIGHT : 0);
+    _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
+    [_contentView reloadData];
+}
+
+- (void)resetFrameForHeaderView
+{
+    CGRect headerFrame = _headerView.frame;
+    headerFrame.origin.x = CGRectGetMaxX(_leftHeaderView.frame);
+    CGFloat headerWidth = self.frame.size.width - CGRectGetWidth(_leftHeaderView.frame) - CGRectGetWidth(_rightHeaderView.frame);
+    headerFrame.size.width = headerWidth;
+    _headerView.frame = headerFrame;
 }
 
 - (void)layoutSubviews
@@ -83,117 +91,11 @@
     [super layoutSubviews];
     
     [self updateHeaderView];
-#if 0
-    // 暂不支持旋转
-    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    if (isLandscape) return;
-    
-    self.frame = self.window.bounds;
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    _isRotateAnimating = YES;
-    _contentView.contentOffset = CGPointMake(size.width * _currentIndex, 0);
-    _contentView.contentSize = CGSizeMake(_headerList.count * size.width, 0);
-    _contentView.frame = CGRectMake(0, CGRectGetMaxY(_navigationView.frame), size.width, size.height);
-    [self updateHeaderView];
-    _isRotateAnimating = NO;
-
-    CGSize viewSize = CGSizeZero;
-    if (isLandscape) {
-        if (0 == _currentIndex) {
-            _navigationView.hidden = YES;
-            viewSize = CGSizeMake(size.width, _contentView.frame.size.height);
-            _contentView.contentSize = CGSizeMake(viewSize.width, 0);
-            _contentView.frame = (CGRect){CGPointZero,viewSize};
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-        } else {
-            viewSize = CGSizeMake(size.width, _contentView.frame.size.height - _contentView.frame.origin.y);
-        }
-    } else {
-        _navigationView.hidden = NO;
-        viewSize = _contentView.frame.size;
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        if (0 == _currentIndex) {
-            _contentView.contentSize = CGSizeMake(viewSize.width * _headerList.count, 0);
-            _contentView.frame = (CGRect){CGPointMake(0, CGRectGetMaxY(_navigationView.frame)),viewSize};
-        }
-    }
-    
-    // 横竖屏切换适配
-    [_contentView layoutSubviewsWhenRotated];
-#endif
-}
-
-#pragma mark - set 方法
-- (void)setTabbarShow:(BOOL)tabbarShow
-{
-    _tabbarShow = tabbarShow;
-    if (tabbarShow) {
-        CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
-        CGRect contentFrame = _contentView.frame;
-        contentFrame.size.height = self.frame.size.height - contentY - TABBAR_HEIGHT;
-        _contentView.frame = contentFrame;
-        [_contentView reloadData];
-    }
-}
-
-- (void)setLeftHeaderView:(UIView *)leftHeaderView
-{
-    _leftHeaderView = leftHeaderView;
-    
-    CGRect leftFrame = leftHeaderView.bounds;
-    leftFrame.size.height = _navigationView.frame.size.height;
-    leftHeaderView.frame = leftFrame;
-    leftHeaderView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [_navigationView addSubview:leftHeaderView];
-    [self resetFrameForHeaderView];
-}
-
-- (void)setRightHeaderView:(UIView *)rightHeaderView
-{
-    _rightHeaderView = rightHeaderView;
-    
-    CGRect rightFrame = rightHeaderView.bounds;
-    rightFrame.origin.x = _navigationView.frame.size.width - rightFrame.size.width;
-    rightFrame.origin.y = (_navigationView.frame.size.height - rightFrame.size.height) * 0.5;
-    rightHeaderView.frame = rightFrame;
-    rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [_navigationView addSubview:rightHeaderView];
-    [self resetFrameForHeaderView];
-}
-
-- (void)resetFrameForHeaderView
-{
-    CGRect headerFrame = _headerView.frame;
-    headerFrame.origin.x = CGRectGetMaxX(_leftHeaderView.frame);
-    headerFrame.size.width = CGRectGetMinX(_rightHeaderView.frame) - CGRectGetMaxX(_leftHeaderView.frame);
-    _headerView.frame = headerFrame;
-}
-
-- (void)setNavigationColor:(UIColor *)navigationColor
-{
-    _navigationColor = navigationColor;
-    _navigationView.backgroundColor = navigationColor;
-}
-
-- (void)setItemBorder:(CGFloat)itemBorder
-{
-    _itemBorder = itemBorder;
-    _headerView.itemBorder = itemBorder;
-}
-
-- (void)setCurrentIndex:(NSInteger)currentIndex
-{
-//    if (_currentIndex == _nextIndex) return;
-    NSInteger disIndex = _currentIndex;
-    _currentIndex = currentIndex;
-    
-    [self displayViewControllerDidChangedWithIndex:currentIndex disIndex:disIndex];
 }
 
 #pragma mark - 重新加载数据
 - (void)reloadData
 {
-#warning mark 每次刷新都调一次viewDidAppeare
     if ([_dataSource respondsToSelector:@selector(headersForMagicView:)]) {
         _headerList = [_dataSource headersForMagicView:self];
         _headerView.headerList = _headerList;
@@ -215,37 +117,13 @@
     [self setNeedsLayout];
 }
 
-- (void)setNormalFont:(UIFont *)normalFont
-{
-    _normalFont = normalFont;
-    _headerView.normalFont = normalFont;
-}
-
-- (void)setSelectedFont:(UIFont *)selectedFont
-{
-    _selectedFont = selectedFont;
-    _headerView.selectedFont = selectedFont;
-}
-
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
 - (void)displayViewControllerDidChangedWithIndex:(NSInteger)currentIndex disIndex:(NSInteger)disIndex
 {
-    UIViewController *appearViewController = nil;
-    UIViewController *disappearViewController = nil;
-    NSArray *visiableList = _contentView.visibleList;
-    CGFloat disappearX = disIndex * self.frame.size.width;
-    CGFloat appearX = currentIndex * self.frame.size.width;
-    for (UIViewController *viewController in visiableList) {
-        if (viewController.view.frame.origin.x == disappearX) {
-            disappearViewController = viewController;
-        }
-        
-        if (viewController.view.frame.origin.x == appearX) {
-            appearViewController = viewController;
-        }
-    }
-    
     _headerView.currentIndex = currentIndex;
+    UIViewController *appearViewController = [_contentView viewControllerWithIndex:currentIndex autoCreateForNil:!_needSkipUpdate];
+    UIViewController *disappearViewController = [_contentView viewControllerWithIndex:disIndex autoCreateForNil:!_needSkipUpdate];
+    
     if (appearViewController && [_delegate respondsToSelector:@selector(currentIndex)]) {
         [(VTMagicViewController *)_delegate setCurrentIndex:currentIndex];
     }
@@ -290,7 +168,7 @@
     return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
 }
 
-#pragma mark - contentView data source
+#pragma mark - VTContentViewDataSource
 - (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSInteger)index
 {
     if ([_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) {
@@ -314,7 +192,6 @@
 #pragma mark - header切换动画
 - (void)headerItemClick:(id)sender
 {
-    _isUserSliding = NO;
     if ([_originalButton isEqual:sender]) return;
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
         sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
@@ -323,11 +200,12 @@
     NSInteger disIndex = _currentIndex;
     NSInteger newIndex = [(UIButton *)sender tag];
     if (abs((int)(_currentIndex - newIndex)) > 1) {// 当前按钮与选中按钮不相邻时
+        _needSkipUpdate = YES;
         [self subviewWillAppeareWithIndex:newIndex];
         [self displayViewControllerDidChangedWithIndex:newIndex disIndex:_currentIndex];
         [UIView animateWithDuration:0 animations:^{
-            NSInteger tempIndex = _currentIndex < newIndex ? newIndex - 1 : newIndex + 1;
             _isViewWillAppeare = YES;
+            NSInteger tempIndex = _currentIndex < newIndex ? newIndex - 1 : newIndex + 1;
             _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * tempIndex, 0);
         } completion:^(BOOL finished) {
             _isViewWillAppeare = NO;
@@ -342,8 +220,9 @@
         [self updateHeaderView];
         _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * newIndex, 0);
     } completion:^(BOOL finished) {
-//        self.currentIndex = newIndex;
         [self displayViewControllerDidChangedWithIndex:_currentIndex disIndex:disIndex];
+        _needSkipUpdate = NO;
+//        self.currentIndex = newIndex;
     }];
 }
 
@@ -414,11 +293,10 @@
     }];
 }
 
-#pragma mark - UIScrollView delegate
+#pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     _isViewWillAppeare = NO;
-    _isUserSliding = YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -443,7 +321,7 @@
         [self subviewWillAppeareWithIndex:nextIndex];
     }
     
-    if (_isUserSliding && newIndex != _currentIndex) {
+    if (!_needSkipUpdate && newIndex != _currentIndex) {
         self.currentIndex = newIndex;
         [self updateHeaderViewWhenUserScrolled];
     }
@@ -462,21 +340,20 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
-//        NSLog(@"scrollViewDidEndDragging");
+//        VTLog(@"scrollViewDidEndDragging");
     }
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 
 {
-//    NSLog(@"scrollViewDidEndScrollingAnimation ");
+//    VTLog(@"scrollViewDidEndScrollingAnimation ");
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    _isUserSliding = NO;
     if (0 != (int)scrollView.contentOffset.x%320) {
-//        NSLog(@"scrollViewDidEndDecelerating ERROR: %d",(int)scrollView.contentOffset.x%320);
+//        VTLog(@"scrollViewDidEndDecelerating ERROR: %d",(int)scrollView.contentOffset.x%320);
     }
 }
 
@@ -485,7 +362,158 @@
 {
     if (_nextIndex == index) return;
     _nextIndex = index;
-//    NSLog(@"subviewWillAppeare current index:%d",index);
+//    VTLog(@"subviewWillAppeare current index:%d",index);
+}
+
+#pragma mark - accessor 方法
+- (UIView *)navigationView
+{
+    if (!_navigationView) {
+        _navigationView = [[UIView alloc] init];
+        _navigationView.backgroundColor = [UIColor clearColor];
+    }
+    return _navigationView;
+}
+
+- (UIView *)separatorLine
+{
+    if (!_separatorLine) {
+        _separatorLine = [[UIView alloc] init];
+        _separatorLine.backgroundColor = RGBCOLOR(188, 188, 188);
+    }
+    return _separatorLine;
+}
+
+- (UIView *)shadowView
+{
+    if (!_shadowView) {
+        _shadowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 2)];
+        _shadowView.backgroundColor = RGBCOLOR(194, 39, 39);
+    }
+    return _shadowView;
+}
+
+- (VTHeaderView *)headerView
+{
+    if (!_headerView) {
+        _headerView = [[VTHeaderView alloc] init];
+        _headerView.backgroundColor = [UIColor clearColor];
+        _headerView.showsHorizontalScrollIndicator = NO;
+        _headerView.headerDelegate = self;
+        _headerView.datasource = self;
+    }
+    return _headerView;
+}
+
+- (VTContentView *)contentView
+{
+    if (!_contentView) {
+        _contentView = [[VTContentView alloc] init];
+        _contentView.showsHorizontalScrollIndicator = NO;
+        _contentView.pagingEnabled = YES;
+        _contentView.delegate = self;
+        _contentView.dataSource = self;
+        _contentView.bounces = NO;
+    }
+    return _contentView;
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    [super setFrame:frame];
+    [self updateFrameForSubviews];
+}
+
+- (void)setNeedExtendedBottom:(BOOL)needExtendedBottom
+{
+    _needExtendedBottom = needExtendedBottom;
+    [self updateFrameForSubviews];
+}
+
+- (void)setDependStatusBar:(BOOL)dependStatusBar
+{
+    [self setDependStatusBar:dependStatusBar animated:NO];
+}
+
+- (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated
+{
+    _dependStatusBar = dependStatusBar;
+    CGFloat duration = animated ? 0.3 : 0;
+    [UIView animateWithDuration:duration animations:^{
+        [self updateFrameForSubviews];
+    }];
+}
+
+- (void)setLeftHeaderView:(UIView *)leftHeaderView
+{
+    _leftHeaderView = leftHeaderView;
+    
+    CGRect leftFrame = leftHeaderView.bounds;
+    leftFrame.size.height = _navigationView.frame.size.height;
+    leftHeaderView.frame = leftFrame;
+    leftHeaderView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [_navigationView addSubview:leftHeaderView];
+    [self resetFrameForHeaderView];
+}
+
+- (void)setRightHeaderView:(UIView *)rightHeaderView
+{
+    _rightHeaderView = rightHeaderView;
+    
+    CGRect rightFrame = rightHeaderView.bounds;
+    rightFrame.origin.x = _navigationView.frame.size.width - rightFrame.size.width;
+    rightFrame.origin.y = (_navigationView.frame.size.height - rightFrame.size.height) * 0.5;
+    rightHeaderView.frame = rightFrame;
+    rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    [_navigationView addSubview:rightHeaderView];
+    [self resetFrameForHeaderView];
+}
+
+- (void)setNavigationColor:(UIColor *)navigationColor
+{
+    _navigationColor = navigationColor;
+    _navigationView.backgroundColor = navigationColor;
+}
+
+- (void)setNavigationHeight:(CGFloat)navigationHeight
+{
+    _itemHeight = navigationHeight;
+    _navigationHeight = navigationHeight;
+    [self updateFrameForSubviews];
+}
+
+- (void)setItemHeight:(CGFloat)itemHeight
+{
+    _itemHeight = itemHeight;
+    [self updateFrameForSubviews];
+    [_headerView reloadData];
+}
+
+- (void)setItemBorder:(CGFloat)itemBorder
+{
+    _itemBorder = itemBorder;
+    _headerView.itemBorder = itemBorder;
+}
+
+- (void)setCurrentIndex:(NSInteger)currentIndex
+{
+//    if (_currentIndex == _nextIndex) return;
+    NSInteger disIndex = _currentIndex;
+    _currentIndex = currentIndex;
+    
+    [self displayViewControllerDidChangedWithIndex:currentIndex disIndex:disIndex];
+}
+
+- (void)setNormalFont:(UIFont *)normalFont
+{
+    _normalFont = normalFont;
+    _headerView.normalFont = normalFont;
+}
+
+- (void)setSelectedFont:(UIFont *)selectedFont
+{
+    _selectedFont = selectedFont;
+    _headerView.selectedFont = selectedFont;
 }
 
 @end

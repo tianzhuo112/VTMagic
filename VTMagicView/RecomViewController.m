@@ -22,7 +22,7 @@
     [super viewDidLoad];
     
     self.tableView.scrollsToTop = NO;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = RGBCOLOR(239, 239, 239);
     self.tableView.rowHeight = 70.f;
     [self fetchNewsData];
     [self.tableView reloadData];

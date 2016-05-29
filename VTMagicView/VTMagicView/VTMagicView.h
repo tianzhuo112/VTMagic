@@ -77,6 +77,10 @@
  */
 @property (nonatomic, strong) UIFont *selectedFont;
 /**
+ *  顶部导航视图
+ */
+@property (nonatomic, strong, readonly) UIView *navigationView;
+/**
  *  顶部导航栏左侧视图
  */
 @property (nonatomic, strong) UIView *leftHeaderView;
@@ -90,8 +94,14 @@
 @property (nonatomic, strong) UIColor *navigationColor;
 /**
  *  顶部导航条的高度，默认是44
+ *  默认情况下修改导航高度会同步修改item的高度
+ *  若不希望两者高度保持一致，建议item的高度在导航之后修改
  */
 @property (nonatomic, assign) CGFloat navigationHeight;
+/**
+ *  导航分类item的高度，默认与导航高度相等
+ */
+@property (nonatomic, assign) CGFloat itemHeight;
 /**
  *  顶部导航栏下划线颜色
  */
@@ -101,9 +111,20 @@
  */
 @property (nonatomic, assign) CGFloat itemBorder;
 /**
- *  底部tabbar是否显示，默认NO
+ *  底部是否需要扩展一个tabbar的高度，默认NO
  */
-@property (nonatomic, assign) BOOL tabbarShow;
+@property (nonatomic, assign) BOOL needExtendedBottom;
+/**
+ *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认YES
+ */
+@property (nonatomic, assign) BOOL dependStatusBar;
+/**
+ *  动画显示或隐藏顶部导航20点的区域
+ *
+ *  @param dependStatusBar 隐藏或显示
+ *  @param animated        是否动画执行
+ */
+- (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated;
 /**
  *  代理
  */

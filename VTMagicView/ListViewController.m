@@ -27,7 +27,7 @@ static NSString *reuseIdentifier = @"list.reuse.identifier";
     layout.sectionInset = iPhoneDevice ?UIEdgeInsetsMake(10, 20, 10, 20) : UIEdgeInsetsMake(20, 20, 20, 20);
     layout.itemSize = iPhoneDevice ? CGSizeMake(125, 183) : CGSizeMake(188, 188);
     layout.minimumInteritemSpacing = iPhoneDevice ? 2 : 11;
-    layout.minimumLineSpacing = iPhoneDevice ? 2 : 11;
+    layout.minimumLineSpacing = iPhoneDevice ? 10 : 11;
     return [super initWithCollectionViewLayout:layout];
 }
 
@@ -37,7 +37,7 @@ static NSString *reuseIdentifier = @"list.reuse.identifier";
     
     [self generateData];
     self.collectionView.scrollsToTop = NO;
-    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.backgroundColor = RGBCOLOR(239, 239, 239);
     [self.collectionView registerClass:[VTListViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView reloadData];
 }
@@ -73,6 +73,7 @@ static NSString *reuseIdentifier = @"list.reuse.identifier";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     VTListViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.backgroundColor = [UIColor whiteColor];
     NSString *imageName = [NSString stringWithFormat:@"image_%ld", indexPath.row%13];
     [cell.imageView setImage:[UIImage imageNamed:imageName]];
     cell.titleLabel.text = @"景点介绍，景点介绍。。";

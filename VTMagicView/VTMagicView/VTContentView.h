@@ -13,7 +13,7 @@
 
 @class VTContentView;
 /**
- *  数据源
+ *  数据源协议
  */
 @protocol VTContentViewDataSource <NSObject>
 /**
@@ -40,7 +40,7 @@
 /**
  *  屏幕上可见的控制器
  */
-@property (nonatomic, strong) NSMutableArray *visibleList;
+@property (nonatomic, strong, readonly) NSArray *visibleList;
 
 /**
  *  刷新数据
@@ -54,6 +54,23 @@
  *  重置frame，横竖屏切换时调用
  */
 - (void)resetFrames;
+/**
+ *  获取索引对应的ViewController
+ *
+ *  @param index 索引
+ *
+ *  @return UIViewController对象
+ */
+- (UIViewController *)viewControllerWithIndex:(NSInteger)index;
+/**
+ *  获取索引对应的ViewController，当ViewController为nil时，根据autoCreate的值决定是否创建
+ *
+ *  @param index      索引
+ *  @param autoCreate 若当前
+ *
+ *  @return UIViewController对象
+ */
+- (UIViewController *)viewControllerWithIndex:(NSInteger)index autoCreateForNil:(BOOL)autoCreate;
 /**
  *  根据缓存标识查询可重用的视图控制器
  *
