@@ -7,6 +7,8 @@
 //
 
 #import "VTContentView.h"
+#import "UIViewController+Magic.h"
+#import "UIScrollView+Magic.h"
 
 @interface VTContentView()
 
@@ -38,16 +40,18 @@
     for (NSIndexPath *indexPath in pathList) {
         frame = [_frameList[indexPath.row] CGRectValue];
         // 控制器若移出屏幕则将其视图从父类中移除，并添加到缓存池中
-        if (![self isNeedDisplayWithFrame:frame]) {
+        if (![self vtm_isNeedDisplayWithFrame:frame]) {
             viewController = _visibleDict[indexPath];
             [viewController.view removeFromSuperview];
             [_visibleDict removeObjectForKey:indexPath];
             
             // 添加到缓存池
-            NSMutableSet *cacheSet = _cacheDict[viewController.restorationIdentifier];
+            NSMutableSet *cacheSet = _cacheDict[viewController.reuseIdentifier];
             if (!cacheSet) cacheSet = [[NSMutableSet alloc] init];
             [cacheSet addObject:viewController];
-            [_cacheDict setValue:cacheSet forKey:viewController.restorationIdentifier];
+            [_cacheDict setValue:cacheSet forKey:viewController.reuseIdentifier];
+        } else {
+            viewController.view.frame = frame;
         }
     }
     
@@ -55,28 +59,15 @@
     [tempPaths removeObjectsInArray:pathList];
     for (NSIndexPath *indexPath in tempPaths) {
         frame = [_frameList[indexPath.row] CGRectValue];
-        if ([self isNeedDisplayWithFrame:frame]) {
+        if ([self vtm_isNeedDisplayWithFrame:frame]) {
             viewController = [_dataSource contentView:self viewControllerForIndex:indexPath.row];
             if (!viewController) continue;
             viewController.view.frame = frame;
-            viewController.restorationIdentifier = _identifier;
+            viewController.reuseIdentifier = _identifier;
             [self addSubview:viewController.view];
             [_visibleDict setObject:viewController forKey:indexPath];
         }
     }
-}
-
-#pragma mark 判断指定frame是否在屏幕范围之内
-- (BOOL)isNeedDisplayWithFrame:(CGRect)frame
-{
-    CGFloat referenceMinX = self.contentOffset.x;
-    CGFloat referenceMaxX = referenceMinX + self.frame.size.width;
-    CGFloat viewMinX = frame.origin.x;
-    CGFloat viewMaxX = viewMinX + frame.size.width;
-    BOOL isLeftBorderInScreen = referenceMinX <= viewMinX && viewMinX <= referenceMaxX;
-    BOOL isRightBorderInScreen = referenceMinX <= viewMaxX && viewMaxX <= referenceMaxX;
-    BOOL isInScreen = isLeftBorderInScreen || isRightBorderInScreen;
-    return isInScreen;
 }
 
 #pragma mark - 加载数据
@@ -149,7 +140,7 @@
     UIViewController *viewController = [_visibleDict objectForKey:indexPath];
     if (!viewController && autoCreate) {
         viewController = [_dataSource contentView:self viewControllerForIndex:index];
-        viewController.restorationIdentifier = _identifier;
+        viewController.reuseIdentifier = _identifier;
         if (!viewController) return viewController;
         viewController.view.frame = [_frameList[indexPath.row] CGRectValue];
         [self addSubview:viewController.view];

@@ -11,14 +11,14 @@
 #import "VTContentView.h"
 #import "VTMagicViewController.h"
 
-@interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTHeaderDatasource,VTHeaderDelegate>
+@interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTCategoryBarDatasource,VTCagetoryBarDelegate>
 
-@property (nonatomic, strong) VTCategoryBar *headerView; // 顶部导航视图内的滚动视图
+@property (nonatomic, strong) VTCategoryBar *categoryBar; // 顶部导航分类视图
 @property (nonatomic, strong) VTContentView *contentView; // 容器视图
 @property (nonatomic, strong) UIView *shadowView; // 顶部下划线
 @property (nonatomic, strong) UIView *separatorLine; // 导航模块底部分割线
 @property (nonatomic, strong) UIButton *originalButton;
-@property (nonatomic, strong) NSArray *headerList; //顶部item内容数组
+@property (nonatomic, strong) NSArray *catNames; // 顶部分类名数组
 @property (nonatomic, assign) NSInteger nextIndex; // 下一个页面的索引
 @property (nonatomic, assign) NSInteger currentIndex; //当前页面的索引
 @property (nonatomic, assign) BOOL isViewWillAppeare;
@@ -29,12 +29,14 @@
 
 @implementation VTMagicView
 @synthesize navigationView = _navigationView;
+@synthesize headerView = _headerView;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         _itemHeight = 44;
+        _headerHeight = 64;
         _dependStatusBar = YES;
         _navigationHeight = 44;
         [self addSubviews];
@@ -45,45 +47,61 @@
 #pragma mark - layout subviews
 - (void)addSubviews
 {
+    [self addSubview:self.headerView];
     [self addSubview:self.navigationView];
     [_navigationView addSubview:self.separatorLine];
-    [_navigationView addSubview:self.headerView];
-    [_headerView addSubview:self.shadowView];
+    [_navigationView addSubview:self.categoryBar];
+    [_categoryBar addSubview:self.shadowView];
     [self addSubview:self.contentView];
     [self updateFrameForSubviews];
+}
+
+- (void)updateFramesWithAnimated:(BOOL)animated
+{
+    CGFloat duration = animated ? 0.3 : 0;
+    [UIView animateWithDuration:duration animations:^{
+        [self updateFrameForSubviews];
+    } completion:^(BOOL finished) {
+        _headerView.hidden = _headerHidden;
+    }];
 }
 
 - (void)updateFrameForSubviews
 {
     CGFloat topY = _dependStatusBar ? 20 : 0;
     CGSize size = self.frame.size;
-    _navigationView.frame = CGRectMake(0, topY, size.width, _navigationHeight);
+    
+    CGFloat headerY = _headerHidden ? -_headerHeight : topY;
+    _headerView.frame = CGRectMake(0, headerY, size.width, _headerHeight);
+    
+    CGFloat navigationY = _headerHidden ? topY : CGRectGetMaxY(_headerView.frame);
+    _navigationView.frame = CGRectMake(0, navigationY, size.width, _navigationHeight);
     
     CGFloat separatorH = 0.5;
     _separatorLine.frame = CGRectMake(0, CGRectGetHeight(_navigationView.frame) - separatorH, size.width, separatorH);
     
-    CGFloat headerX = CGRectGetWidth(_leftHeaderView.frame);
-    CGFloat headerY = (_navigationHeight - _itemHeight) * 0.5;
-    CGFloat headerWidth = size.width - headerX - CGRectGetWidth(_rightHeaderView.frame);
-    _headerView.frame = CGRectMake(headerX, headerY, headerWidth, _itemHeight);
+    CGFloat catX = CGRectGetWidth(_leftHeaderView.frame);
+    CGFloat catY = (_navigationHeight - _itemHeight) * 0.5;
+    CGFloat catWidth = size.width - catX - CGRectGetWidth(_rightHeaderView.frame);
+    _categoryBar.frame = CGRectMake(catX, catY, catWidth, _itemHeight);
     
     CGRect shadowFrame = _shadowView.frame;
     shadowFrame.origin.y = CGRectGetHeight(_navigationView.frame) - 2;
     _shadowView.frame = shadowFrame;
     
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
-    CGFloat contentH = size.height - contentY + (_needExtendedBottom ? TABBAR_HEIGHT : 0);
+    CGFloat contentH = size.height - contentY + (_needExtendedBottom ? TABBAR_HEIGHT_VT : 0);
     _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
     [_contentView reloadData];
 }
 
-- (void)resetFrameForHeaderView
+- (void)resetFrameForCategoryBar
 {
-    CGRect headerFrame = _headerView.frame;
-    headerFrame.origin.x = CGRectGetMaxX(_leftHeaderView.frame);
-    CGFloat headerWidth = self.frame.size.width - CGRectGetWidth(_leftHeaderView.frame) - CGRectGetWidth(_rightHeaderView.frame);
-    headerFrame.size.width = headerWidth;
-    _headerView.frame = headerFrame;
+    CGRect catFrame = _categoryBar.frame;
+    catFrame.origin.x = CGRectGetMaxX(_leftHeaderView.frame);
+    CGFloat catWidth = self.frame.size.width - CGRectGetWidth(_leftHeaderView.frame) - CGRectGetWidth(_rightHeaderView.frame);
+    catFrame.size.width = catWidth;
+    _categoryBar.frame = catFrame;
 }
 
 - (void)layoutSubviews
@@ -91,37 +109,37 @@
     [super layoutSubviews];
     
     [self updateFrameForSubviews];
-    [self updateHeaderView];
+    [self updateCategoryBar];
 }
 
 #pragma mark - 重新加载数据
 - (void)reloadData
 {
-    if ([_dataSource respondsToSelector:@selector(headersForMagicView:)]) {
-        _headerList = [_dataSource headersForMagicView:self];
-        _headerView.headerList = _headerList;
+    if ([_dataSource respondsToSelector:@selector(categoryNamesForMagicView:)]) {
+        _catNames = [_dataSource categoryNamesForMagicView:self];
+        _categoryBar.catNames = _catNames;
     }
     
-    BOOL needReset = _headerList.count <= _currentIndex || !_headerList.count;
+    BOOL needReset = _catNames.count <= _currentIndex || !_catNames.count;
     if (needReset && [_delegate respondsToSelector:@selector(currentViewController)]) {
         [(VTMagicViewController *)_delegate setCurrentViewController:nil];
     }
     
     if (needReset) {
-        _currentIndex = _headerList.count;
+        _currentIndex = _catNames.count;
     }
     
     _originalButton = nil;
-    _contentView.pageCount = _headerList.count;
+    _contentView.pageCount = _catNames.count;
     [_contentView reloadData];
-    [_headerView reloadData];
+    [_categoryBar reloadData];
     [self setNeedsLayout];
 }
 
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
 - (void)displayViewControllerDidChangedWithIndex:(NSInteger)currentIndex disIndex:(NSInteger)disIndex
 {
-    _headerView.currentIndex = currentIndex;
+    _categoryBar.currentIndex = currentIndex;
     UIViewController *appearViewController = [_contentView viewControllerWithIndex:currentIndex autoCreateForNil:!_needSkipUpdate];
     UIViewController *disappearViewController = [_contentView viewControllerWithIndex:disIndex autoCreateForNil:!_needSkipUpdate];
     
@@ -142,64 +160,22 @@
     }
 }
 
-#pragma mark - headerView datasource & deleagte
-- (UIButton *)headerView:(VTCategoryBar *)headerView headerItemForIndex:(NSInteger)index
+#pragma mark - VTCategoryBarDatasource & VTCagetoryBarDelegate
+- (UIButton *)categoryBar:(VTCategoryBar *)catBar categoryItemForIndex:(NSInteger)index
 {
-    if ([_dataSource respondsToSelector:@selector(magicView:headerItemForIndex:)]) {
-        UIButton *headerItem = [_dataSource magicView:self headerItemForIndex:index];
-        if (!_originalButton) _originalButton = headerItem;
-        return headerItem;
+    if ([_dataSource respondsToSelector:@selector(magicView:categoryItemForIndex:)]) {
+        UIButton *catItem = [_dataSource magicView:self categoryItemForIndex:index];
+        if (!_originalButton) _originalButton = catItem;
+        return catItem;
     }
     return nil;
 }
 
-- (void)headerView:(VTCategoryBar *)headerView didSelectedItem:(UIButton *)itemBtn
+- (void)categoryBar:(VTCategoryBar *)catBar didSelectedItem:(UIButton *)itemBtn
 {
-    [self headerItemClick:itemBtn];
-}
-
-#pragma mark - 查询可重用header item
-- (id)dequeueReusableHeaderItemWithIdentifier:(NSString *)identifier
-{
-    return [_headerView dequeueReusableHeaderItemWithIdentifier:identifier];
-}
-
-- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
-{
-    return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
-}
-
-#pragma mark - VTContentViewDataSource
-- (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSInteger)index
-{
-    if ([_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) {
-        UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
-        if (viewController && ![viewController.parentViewController isEqual:_delegate]) {
-            [(UIViewController *)_delegate addChildViewController:viewController];
-            // 设置默认的currentViewController，并触发viewControllerDidAppeare
-            if (index == _currentIndex && [_delegate respondsToSelector:@selector(currentViewController)] && ![(VTMagicViewController *)_delegate currentViewController]) {
-                [(VTMagicViewController *)_delegate setCurrentViewController:viewController];
-                if ([_delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)]) {
-                    [_delegate magicView:self viewControllerDidAppeare:viewController index:_currentIndex];
-                }
-            }
-        }
-        return viewController;
-    }
-    return nil;
-}
-
-
-#pragma mark - header切换动画
-- (void)headerItemClick:(id)sender
-{
-    if ([_originalButton isEqual:sender]) return;
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]){
-        sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
-    }
-    
+    if (_forbiddenSwitching || [_originalButton isEqual:itemBtn]) return;
     NSInteger disIndex = _currentIndex;
-    NSInteger newIndex = [(UIButton *)sender tag];
+    NSInteger newIndex = [itemBtn tag];
     if (abs((int)(_currentIndex - newIndex)) > 1) {// 当前按钮与选中按钮不相邻时
         _needSkipUpdate = YES;
         [self subviewWillAppeareWithIndex:newIndex];
@@ -216,9 +192,9 @@
     _currentIndex = newIndex;
     [UIView animateWithDuration:0.25 animations:^{
         [_originalButton setSelected:NO];
-        [sender setSelected:YES];
-        _originalButton = sender;
-        [self updateHeaderView];
+        [itemBtn setSelected:YES];
+        _originalButton = itemBtn;
+        [self updateCategoryBar];
         _contentView.contentOffset = CGPointMake(_contentView.frame.size.width * newIndex, 0);
     } completion:^(BOOL finished) {
         [self displayViewControllerDidChangedWithIndex:_currentIndex disIndex:disIndex];
@@ -227,25 +203,57 @@
     }];
 }
 
-- (void)updateHeaderView
+#pragma mark - 查询可重用cat item
+- (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
+{
+    return [_categoryBar dequeueReusableCatItemWithIdentifier:identifier];
+}
+
+- (id)dequeueReusableViewControllerWithIdentifier:(NSString *)identifier
+{
+    return [_contentView dequeueReusableViewControllerWithIdentifier:identifier];
+}
+
+#pragma mark - VTContentViewDataSource
+- (UIViewController *)contentView:(VTContentView *)contentView viewControllerForIndex:(NSInteger)index
+{
+    if (![_dataSource respondsToSelector:@selector(magicView:viewControllerForIndex:)]) return nil;
+    UIViewController *viewController = [_dataSource magicView:self viewControllerForIndex:index];
+    if (viewController && ![viewController.parentViewController isEqual:_delegate]) {
+        [contentView addSubview:viewController.view];
+        [(UIViewController *)_delegate addChildViewController:viewController];
+        [viewController didMoveToParentViewController:(UIViewController *)_delegate];
+        // 设置默认的currentViewController，并触发viewControllerDidAppeare
+        if (index == _currentIndex && [_delegate respondsToSelector:@selector(currentViewController)] && ![(VTMagicViewController *)_delegate currentViewController]) {
+            [(VTMagicViewController *)_delegate setCurrentViewController:viewController];
+            if ([_delegate respondsToSelector:@selector(magicView:viewControllerDidAppeare:index:)]) {
+                [_delegate magicView:self viewControllerDidAppeare:viewController index:_currentIndex];
+            }
+        }
+    }
+    return viewController;
+}
+
+#pragma mark - 分类切换动画
+- (void)updateCategoryBar
 {
     if (!_originalButton) {
-        _originalButton = [_headerView itemWithIndex:_currentIndex];
+        _originalButton = [_categoryBar itemWithIndex:_currentIndex];
         _originalButton.selected = YES;
     }
     
     CGFloat offsetX = 0;
-    CGFloat headerWidth = _headerView.frame.size.width;
+    CGFloat catWidth = _categoryBar.frame.size.width;
     CGFloat itemMinX = _originalButton.frame.origin.x;
     CGFloat itemMaxX = CGRectGetMaxX(_originalButton.frame);
-    CGFloat headerOffsetX = _headerView.contentOffset.x;
-    if (itemMaxX < headerOffsetX) {// 位于屏幕左侧
-        offsetX = itemMinX - headerWidth;
+    CGFloat catOffsetX = _categoryBar.contentOffset.x;
+    if (itemMaxX < catOffsetX) {// 位于屏幕左侧
+        offsetX = itemMinX - catWidth;
         offsetX = offsetX < 0 ?: 0;
-        _headerView.contentOffset = CGPointMake(offsetX, 0);
-    } else if (headerOffsetX + headerWidth < itemMinX) {// 位于屏幕右侧
-        offsetX = itemMaxX - headerWidth;
-        _headerView.contentOffset = CGPointMake(offsetX, 0);
+        _categoryBar.contentOffset = CGPointMake(offsetX, 0);
+    } else if (catOffsetX + catWidth < itemMinX) {// 位于屏幕右侧
+        offsetX = itemMaxX - catWidth;
+        _categoryBar.contentOffset = CGPointMake(offsetX, 0);
     }
     
     CGSize itemSize = _originalButton.frame.size;
@@ -255,40 +263,40 @@
     _shadowView.frame = shadowFrame;//CGRectMake(headerItemMinX, size.height - 2, size.width, 2);
     
     if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
-        CGFloat diffX = (CGRectGetMaxX(_originalButton.frame) - headerWidth);
-        headerOffsetX = (diffX < 0 || headerOffsetX > diffX) ? headerOffsetX : diffX;
+        CGFloat diffX = (CGRectGetMaxX(_originalButton.frame) - catWidth);
+        catOffsetX = (diffX < 0 || catOffsetX > diffX) ? catOffsetX : diffX;
     }
     
-    if (headerWidth + headerOffsetX <= itemMaxX) {
-        _headerView.contentOffset = CGPointMake(itemMaxX - headerWidth, 0);
-    } else if (itemMinX < headerOffsetX) {
-        _headerView.contentOffset = CGPointMake(itemMinX, 0);
+    if (catWidth + catOffsetX <= itemMaxX) {
+        _categoryBar.contentOffset = CGPointMake(itemMaxX - catWidth, 0);
+    } else if (itemMinX < catOffsetX) {
+        _categoryBar.contentOffset = CGPointMake(itemMinX, 0);
     }
     
     // 原始逻辑，暂时废弃
-//    if (headerWidth + headerOffsetX <= itemMinX + itemSize.width * 0.5) {
-//        CGFloat totleWidth = _headerView.contentSize.width;
-//        headerOffsetX += itemSize.width;
-//        if (headerWidth + headerOffsetX > totleWidth) {
-//            headerOffsetX = (totleWidth - headerWidth);
+//    if (catWidth + catOffsetX <= itemMinX + itemSize.width * 0.5) {
+//        CGFloat totleWidth = _categoryBar.contentSize.width;
+//        catOffsetX += itemSize.width;
+//        if (catWidth + catOffsetX > totleWidth) {
+//            catOffsetX = (totleWidth - catWidth);
 //        }
-//        _headerView.contentOffset = CGPointMake(headerOffsetX, 0);
-//    } else if ((itemMinX - itemSize.width * 0.5) <= headerOffsetX) {
-//        headerOffsetX -= itemSize.width;
-//        if (headerOffsetX < 0) headerOffsetX = 0;
-//        _headerView.contentOffset = CGPointMake(headerOffsetX, 0);
+//        _categoryBar.contentOffset = CGPointMake(catOffsetX, 0);
+//    } else if ((itemMinX - itemSize.width * 0.5) <= catOffsetX) {
+//        catOffsetX -= itemSize.width;
+//        if (catOffsetX < 0) catOffsetX = 0;
+//        _categoryBar.contentOffset = CGPointMake(catOffsetX, 0);
 //    }
 }
 
-- (void)updateHeaderViewWhenUserScrolled
+- (void)updateCategoryBarWhenUserScrolled
 {
-    [self canPerformAction:@selector(updateHeaderViewWhenUserScrolled) withSender:nil];
-    UIButton *headerButton = [_headerView itemWithIndex:_currentIndex];
+    [self canPerformAction:@selector(updateCategoryBarWhenUserScrolled) withSender:nil];
+    UIButton *catItem = [_categoryBar itemWithIndex:_currentIndex];
     [UIView animateWithDuration:0.25 animations:^{
         [_originalButton setSelected:NO];
-        [headerButton setSelected:YES];
-        _originalButton = headerButton;
-        [self updateHeaderView];
+        [catItem setSelected:YES];
+        _originalButton = catItem;
+        [self updateCategoryBar];
 //            CGSize size = headerButton.frame.size;
 //            _shadowView.frame = CGRectMake(headerButton.frame.origin.x, size.height - 2, size.width, 2);
     }];
@@ -305,13 +313,15 @@
     NSInteger newIndex;
     NSInteger tempIndex;
     if (_isRotateAnimating) return;
-    BOOL isSwipeToLeft = scrollView.frame.size.width * _currentIndex < scrollView.contentOffset.x;
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat scrollWidth = scrollView.frame.size.width;
+    BOOL isSwipeToLeft = scrollWidth * _currentIndex < offsetX;
     if (isSwipeToLeft) { // 向左滑动
-        newIndex = floorf(scrollView.contentOffset.x/scrollView.frame.size.width);
-        tempIndex = (int)((scrollView.contentOffset.x + scrollView.frame.size.width - 0.1)/scrollView.frame.size.width);
+        newIndex = floorf(offsetX/scrollWidth);
+        tempIndex = (int)((offsetX + scrollWidth - 0.1)/scrollWidth);
     } else {
-        newIndex = ceilf(scrollView.contentOffset.x/scrollView.frame.size.width);
-        tempIndex = (int)(scrollView.contentOffset.x/scrollView.frame.size.width);
+        newIndex = ceilf(offsetX/scrollWidth);
+        tempIndex = (int)(offsetX/scrollWidth);
     }
     
     if (_nextIndex != tempIndex) _isViewWillAppeare = NO;
@@ -324,7 +334,7 @@
     
     if (!_needSkipUpdate && newIndex != _currentIndex) {
         self.currentIndex = newIndex;
-        [self updateHeaderViewWhenUserScrolled];
+        [self updateCategoryBarWhenUserScrolled];
     }
     
     if (tempIndex == _currentIndex) { // 重置_nextIndex
@@ -353,9 +363,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (0 != (int)scrollView.contentOffset.x%320) {
-//        VTLog(@"scrollViewDidEndDecelerating ERROR: %d",(int)scrollView.contentOffset.x%320);
-    }
+//    VTLog(@"scrollViewDidEndDecelerating");
 }
 
 #pragma mark - 视图即将显示
@@ -367,6 +375,16 @@
 }
 
 #pragma mark - accessor 方法
+- (UIView *)headerView
+{
+    if (!_headerView) {
+        _headerView = [[UIView alloc] init];
+        _headerView.backgroundColor = [UIColor clearColor];
+        _headerView.hidden = _headerHidden = YES;
+    }
+    return _headerView;
+}
+
 - (UIView *)navigationView
 {
     if (!_navigationView) {
@@ -394,16 +412,16 @@
     return _shadowView;
 }
 
-- (VTCategoryBar *)headerView
+- (VTCategoryBar *)categoryBar
 {
-    if (!_headerView) {
-        _headerView = [[VTCategoryBar alloc] init];
-        _headerView.backgroundColor = [UIColor clearColor];
-        _headerView.showsHorizontalScrollIndicator = NO;
-        _headerView.headerDelegate = self;
-        _headerView.datasource = self;
+    if (!_categoryBar) {
+        _categoryBar = [[VTCategoryBar alloc] init];
+        _categoryBar.backgroundColor = [UIColor clearColor];
+        _categoryBar.showsHorizontalScrollIndicator = NO;
+        _categoryBar.catDelegate = self;
+        _categoryBar.datasource = self;
     }
-    return _headerView;
+    return _categoryBar;
 }
 
 - (VTContentView *)contentView
@@ -425,6 +443,12 @@
     [self updateFrameForSubviews];
 }
 
+- (void)setForbiddenSwitching:(BOOL)forbiddenSwitching
+{
+    _forbiddenSwitching = forbiddenSwitching;
+    _contentView.scrollEnabled = !forbiddenSwitching;
+}
+
 - (void)setDependStatusBar:(BOOL)dependStatusBar
 {
     [self setDependStatusBar:dependStatusBar animated:NO];
@@ -433,10 +457,19 @@
 - (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated
 {
     _dependStatusBar = dependStatusBar;
-    CGFloat duration = animated ? 0.3 : 0;
-    [UIView animateWithDuration:duration animations:^{
-        [self updateFrameForSubviews];
-    }];
+    [self updateFramesWithAnimated:animated];
+}
+
+- (void)setHeaderHidden:(BOOL)headerHidden
+{
+    [self setHeaderHidden:headerHidden animated:NO];
+}
+
+- (void)setHeaderHidden:(BOOL)headerHidden animated:(BOOL)animated
+{
+    _headerView.hidden = NO;
+    _headerHidden = headerHidden;
+    [self updateFramesWithAnimated:animated];
 }
 
 - (void)setLeftHeaderView:(UIView *)leftHeaderView
@@ -448,7 +481,7 @@
     leftHeaderView.frame = leftFrame;
     leftHeaderView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [_navigationView addSubview:leftHeaderView];
-    [self resetFrameForHeaderView];
+    [self resetFrameForCategoryBar];
 }
 
 - (void)setRightHeaderView:(UIView *)rightHeaderView
@@ -461,13 +494,25 @@
     rightHeaderView.frame = rightFrame;
     rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [_navigationView addSubview:rightHeaderView];
-    [self resetFrameForHeaderView];
+    [self resetFrameForCategoryBar];
 }
 
 - (void)setNavigationColor:(UIColor *)navigationColor
 {
     _navigationColor = navigationColor;
     _navigationView.backgroundColor = navigationColor;
+}
+
+- (void)setSeparatorColor:(UIColor *)separatorColor
+{
+    _separatorColor = separatorColor;
+    _separatorLine.backgroundColor = separatorColor;
+}
+
+- (void)setSlideColor:(UIColor *)slideColor
+{
+    _slideColor = slideColor;
+    _separatorLine.backgroundColor = slideColor;
 }
 
 - (void)setNavigationHeight:(CGFloat)navigationHeight
@@ -481,13 +526,13 @@
 {
     _itemHeight = itemHeight;
     [self updateFrameForSubviews];
-    [_headerView reloadData];
+    [_categoryBar reloadData];
 }
 
 - (void)setItemBorder:(CGFloat)itemBorder
 {
     _itemBorder = itemBorder;
-    _headerView.itemBorder = itemBorder;
+    _categoryBar.itemBorder = itemBorder;
 }
 
 - (void)setCurrentIndex:(NSInteger)currentIndex
@@ -502,13 +547,13 @@
 - (void)setNormalFont:(UIFont *)normalFont
 {
     _normalFont = normalFont;
-    _headerView.normalFont = normalFont;
+    _categoryBar.normalFont = normalFont;
 }
 
 - (void)setSelectedFont:(UIFont *)selectedFont
 {
     _selectedFont = selectedFont;
-    _headerView.selectedFont = selectedFont;
+    _categoryBar.selectedFont = selectedFont;
 }
 
 @end

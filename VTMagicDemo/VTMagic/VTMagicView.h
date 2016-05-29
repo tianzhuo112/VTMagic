@@ -36,6 +36,14 @@
 /****************************************data source****************************************/
 @protocol VTMagicViewDataSource <NSObject>
 /**
+ *  获取所有分类名，数组中存放字符串类型对象
+ *
+ *  @param magicView self
+ *
+ *  @return header数组
+ */
+- (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView;
+/**
  *  根据index获取对应索引的category item
  *
  *  @param magicView self
@@ -44,14 +52,6 @@
  *  @return 当前索引对应的按钮
  */
 - (UIButton *)magicView:(VTMagicView *)magicView categoryItemForIndex:(NSInteger)index;
-/**
- *  获取所有分类名，数组中存放字符串类型对象
- *
- *  @param magicView self
- *
- *  @return header数组
- */
-- (NSArray *)categoryNamesForMagicView:(VTMagicView *)magicView;
 /**
  *  当前索引对应的控制器
  *
@@ -99,6 +99,10 @@
  */
 @property (nonatomic, strong) UIColor *navigationColor;
 /**
+ *  顶部导航栏底部分割线颜色
+ */
+@property (nonatomic, strong) UIColor *separatorColor;
+/**
  *  顶部导航栏下划线颜色
  */
 @property (nonatomic, strong) UIColor *slideColor;
@@ -130,13 +134,11 @@
 @property (nonatomic, assign) BOOL forbiddenSwitching;
 /**
  *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认YES
- *  若需修改，请在VTMagicViewController子类的初始化或viewDidLoad方法中设置
- *  如果在其它方法中修改，请使用后一个方法：setDependStatusBar:animated:
+ *  修改该属性本质上是调用方法setDependStatusBar:animated:，默认无动画
  */
 @property (nonatomic, assign, getter=isDependStatusBar) BOOL dependStatusBar;
 /**
  *  是否动画显示或隐藏顶部导航20点的区域
- *  任意地方调用后立即执行，并触发页面重新布局
  *
  *  @param dependStatusBar 隐藏或显示
  *  @param animated        是否动画执行
@@ -144,13 +146,11 @@
 - (void)setDependStatusBar:(BOOL)dependStatusBar animated:(BOOL)animated;
 /**
  *  是否隐藏头部组件，默认YES
- *  若需修改，请在VTMagicViewController子类的初始化或viewDidLoad方法中设置
- *  如果在其它方法中修改，请使用后一个方法：setHeaderHidden:animated:
+ *  修改该属性本质上是调用方法setHeaderHidden:animated:，默认无动画
  */
 @property (nonatomic, assign, getter=isHeaderHidden) BOOL headerHidden;
 /**
  *  是否动画显示或隐藏头部组件
- *  任意地方调用后立即执行，并触发页面重新布局
  *
  *  @param dependStatusBar 隐藏或显示
  *  @param animated        是否动画执行

@@ -64,7 +64,7 @@
  *  获取索引对应的ViewController，当ViewController为nil时，根据autoCreate的值决定是否创建
  *
  *  @param index      索引
- *  @param autoCreate 若当前
+ *  @param autoCreate 是否需要自动创建新的ViewController
  *
  *  @return UIViewController对象
  */

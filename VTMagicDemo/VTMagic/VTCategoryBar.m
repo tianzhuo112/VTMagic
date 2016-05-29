@@ -7,6 +7,7 @@
 //
 
 #import "VTCategoryBar.h"
+#import "UIScrollView+Magic.h"
 #import "VTCommon.h"
 
 @interface VTCategoryBar()
@@ -39,22 +40,20 @@
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     if (isLandscape) return;
     
-    BOOL isSelected = NO;
     UIButton *itemBtn = nil;
     CGRect frame = CGRectZero;
     NSArray *indexList = [_visibleDict allKeys];
     for (NSNumber *index in indexList) {
         itemBtn = _visibleDict[index];
         frame = [_frameList[[index integerValue]] CGRectValue];
-        if (![self isNeedDisplayWithFrame:frame]) {
+        if (![self vtm_isNeedDisplayWithFrame:frame]) {
             if (itemBtn.selected) _currentIndex = itemBtn.tag;
             [itemBtn setSelected:NO];
             [itemBtn removeFromSuperview];
             [_visibleDict removeObjectForKey:index];
             [_cacheSet addObject:itemBtn];
         } else {
-            isSelected = [index integerValue] == _currentIndex;
-            itemBtn.selected = isSelected;
+            itemBtn.selected = NO;
         }
     }
     
@@ -62,7 +61,7 @@
     [leftIndexList removeObjectsInArray:indexList];
     for (NSNumber *index in leftIndexList) {
         frame = [_frameList[[index integerValue]] CGRectValue];
-        if ([self isNeedDisplayWithFrame:frame]) {
+        if ([self vtm_isNeedDisplayWithFrame:frame]) {
             itemBtn = [_datasource categoryBar:self categoryItemForIndex:[index integerValue]];
             if (![itemBtn isKindOfClass:[UIButton class]]) continue;
             [itemBtn addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -70,12 +69,12 @@
             itemBtn.frame = frame;
             [_visibleDict setObject:itemBtn forKey:index];
             [self addSubview:itemBtn];
-            isSelected = [index integerValue] == _currentIndex;
-            itemBtn.selected = isSelected;
+            itemBtn.selected = NO;
         }
     }
     
     _selectedItem = _visibleDict[@(_currentIndex)];
+    _selectedItem.selected = YES;
 }
 
 - (id)dequeueReusableCatItemWithIdentifier:(NSString *)identifier
@@ -88,19 +87,6 @@
         [_cacheDict setValue:cacheSet forKey:identifier];
     }
     return item;
-}
-
-#pragma mark - 是否需要显示在当前屏幕上
-- (BOOL)isNeedDisplayWithFrame:(CGRect)frame
-{
-    CGFloat referenceMinX = self.contentOffset.x;
-    CGFloat referenceMaxX = referenceMinX + self.frame.size.width;
-    CGFloat viewMinX = frame.origin.x;
-    CGFloat viewMaxX = viewMinX + frame.size.width;
-    BOOL isLeftBorderInScreen = referenceMinX <= viewMinX && viewMinX <= referenceMaxX;
-    BOOL isRightBorderInScreen = referenceMinX <= viewMaxX && viewMaxX <= referenceMaxX;
-    BOOL isInScreen = isLeftBorderInScreen || isRightBorderInScreen;
-    return isInScreen;
 }
 
 #pragma mark - set 方法
@@ -207,9 +193,11 @@
         sender = (UIButton *)[(UITapGestureRecognizer *)sender view];
     }
     
+    NSInteger newIndex = [(UIButton *)sender tag];
+    if (newIndex == _currentIndex) return;
     if ([_catDelegate respondsToSelector:@selector(categoryBar:didSelectedItem:)]) {
+        _currentIndex = newIndex;
         _selectedItem.selected = NO;
-        _currentIndex = [(UIButton *)sender tag];
         [_catDelegate categoryBar:self didSelectedItem:sender];
     }
 }
