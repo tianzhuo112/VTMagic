@@ -122,7 +122,7 @@
  *
  *  @return UIViewController对象
  */
-- (UIViewController *)viewControllerWithIndex:(NSUInteger)index;
+- (__kindof UIViewController *)viewControllerWithIndex:(NSUInteger)index;
 
 /**
  *  切换到指定页面

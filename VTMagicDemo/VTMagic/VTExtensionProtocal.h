@@ -24,7 +24,7 @@
 /**
  *  当前页面控制器
  */
-- (UIViewController *)currentViewController;
+- (__kindof UIViewController *)currentViewController;
 /**
  *  当前页面控制器的setter方法
  *

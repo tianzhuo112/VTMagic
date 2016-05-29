@@ -566,37 +566,73 @@ static const void *kVTMagicView = &kVTMagicView;
 }
 
 #pragma mark - UIPanGestureRecognizer for webView
+static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer
 {
+    BOOL isPanGesture = [recognizer isKindOfClass:[UIPanGestureRecognizer class]];
+    NSAssert(isPanGesture, @"The Class of recognizer:%@ must be UIPanGestureRecognizer", recognizer);
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan: {
+            [self handlePanGestureBegin:recognizer];
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            if (VTPanRecognizerDirectionHorizontal == direction) {
+                [self handlePanGestureMove:recognizer];
+            }
+            break;
+        }
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled: {
+            if (VTPanRecognizerDirectionHorizontal == direction) {
+                [self handlePanGestureEnd:recognizer];
+            }
+            direction = VTPanRecognizerDirectionUndefined;
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+- (void)handlePanGestureBegin:(UIPanGestureRecognizer *)recognizer
+{
+    if (direction == VTPanRecognizerDirectionUndefined) {
+        CGPoint velocity = [recognizer velocityInView:recognizer.view];
+        BOOL isHorizontalGesture = fabs(velocity.y) < fabs(velocity.x);
+        if (isHorizontalGesture) {
+            direction = VTPanRecognizerDirectionHorizontal;
+            [self handlePanGestureMove:recognizer];
+        } else {
+            direction = VTPanRecognizerDirectionVertical;
+        }
+    }
+}
+
+- (void)handlePanGestureMove:(UIPanGestureRecognizer *)recognizer
+{
+    _isPanValid = YES;
     CGPoint offset = _contentView.contentOffset;
     CGFloat contentWidth = CGRectGetWidth(_contentView.frame);
     CGFloat maxOffset = _contentView.contentSize.width - contentWidth;
     CGPoint translation = [recognizer translationInView:_contentView];
     [recognizer setTranslation:CGPointZero inView:_contentView];
-    if (offset.x <= maxOffset) {
-        if (UIGestureRecognizerStateBegan == recognizer.state ||
-            UIGestureRecognizerStateChanged == recognizer.state) {
-            _isPanValid = YES;
-            offset.x -= translation.x;
-            if (maxOffset < offset.x) offset.x = maxOffset;
-            if (offset.x < 0) offset.x = 0;
-            _contentView.contentOffset = offset;
-        } else if (UIGestureRecognizerStateFailed == recognizer.state ||
-                   UIGestureRecognizerStateEnded == recognizer.state) {
-            _isPanValid = NO;
-            CGPoint velocity = [recognizer velocityInView:_contentView];
-            if (contentWidth < fabs(velocity.x)) {
-                [self autoSwitchToNextPage:velocity.x < 0];
-            } else {
-                [self reviseAnimation];
-            }
-        }
+    offset.x -= translation.x;
+    if (maxOffset < offset.x) offset.x = maxOffset;
+    if (offset.x < 0) offset.x = 0;
+    _contentView.contentOffset = offset;
+}
+
+- (void)handlePanGestureEnd:(UIPanGestureRecognizer *)recognizer
+{
+    _isPanValid = NO;
+    CGFloat contentWidth = CGRectGetWidth(_contentView.frame);
+    CGPoint velocity = [recognizer velocityInView:_contentView];
+    if (contentWidth < fabs(velocity.x)) {
+        [self autoSwitchToNextPage:velocity.x < 0];
     } else {
-        _isPanValid = NO;
-        CGFloat temp = offset.x/contentWidth;
-        if (temp != (NSInteger)temp) {
-            [self reviseAnimation];
-        }
+        [self reviseAnimation];
     }
 }
 
@@ -611,10 +647,9 @@ static const void *kVTMagicView = &kVTMagicView;
     if (totalCount <= index) index = totalCount - 1;
     if (index < 0) index = 0;
     CGPoint offset = CGPointMake(contentWidth*index, 0);
-    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.001 * NSEC_PER_SEC));
-    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
-        [_contentView setContentOffset:offset animated:YES];
-    });
+    [UIView animateWithDuration:0.35 animations:^{
+        [_contentView setContentOffset:offset animated:NO];
+    }];
 }
 
 - (void)reviseAnimation
@@ -822,6 +857,7 @@ static const void *kVTMagicView = &kVTMagicView;
 {
     if (!_contentView) {
         _contentView = [[VTContentView alloc] init];
+        _contentView.showsVerticalScrollIndicator = NO;
         _contentView.showsHorizontalScrollIndicator = NO;
 //        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _contentView.pagingEnabled = YES;
@@ -945,6 +981,7 @@ static const void *kVTMagicView = &kVTMagicView;
     _leftHeaderView = leftHeaderView;
     [_navigationView addSubview:leftHeaderView];
     [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_categoryBar];
     leftHeaderView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [self updateFrameForLeftHeader];
     [self updateFrameForCategoryBar];
@@ -955,6 +992,7 @@ static const void *kVTMagicView = &kVTMagicView;
     _rightHeaderView = rightHeaderView;
     [_navigationView addSubview:rightHeaderView];
     [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_categoryBar];
     rightHeaderView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self updateFrameForRightHeader];
     [self updateFrameForCategoryBar];

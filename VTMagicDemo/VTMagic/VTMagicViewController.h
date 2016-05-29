@@ -44,7 +44,7 @@
 /**
  *  当前显示的控制器
  */
-@property (nonatomic, strong) UIViewController *currentViewController;
+@property (nonatomic, strong) __kindof UIViewController *currentViewController;
 
 /**
  *  屏幕上可见的控制器
