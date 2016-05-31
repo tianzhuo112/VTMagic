@@ -1,5 +1,5 @@
 //
-//  VTExtensionProtocal.h
+//  VTMagicProtocal.h
 //  VTMagic
 //
 //  Created by tianzhuo on 15/7/11.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class VTMagicView;
-@protocol VTExtensionProtocal <NSObject>
+@protocol VTMagicProtocol <NSObject>
 
 @required
 /**

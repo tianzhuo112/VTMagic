@@ -52,8 +52,8 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
 - (void)vtm_viewWillAppear:(BOOL)animated
 {
     [self vtm_viewWillAppear:animated];
-    if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
-        UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
+    if ([self conformsToProtocol:@protocol(VTMagicProtocol)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
+        UIViewController *currentViewController = [(UIViewController<VTMagicProtocol> *)self currentViewController];
         [currentViewController beginAppearanceTransition:YES animated:animated];
         [self setMagicWillAppear:currentViewController ? YES : NO];
     }
@@ -62,10 +62,10 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
 - (void)vtm_viewDidAppear:(BOOL)animated
 {
     [self vtm_viewDidAppear:animated];
-    if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
-        [(UIViewController<VTExtensionProtocal> *)self setMagicHasAppeared:YES];
+    if ([self conformsToProtocol:@protocol(VTMagicProtocol)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
+        [(UIViewController<VTMagicProtocol> *)self setMagicHasAppeared:YES];
         if (![self magicWillAppear]) return;
-        UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
+        UIViewController *currentViewController = [(UIViewController<VTMagicProtocol> *)self currentViewController];
         [currentViewController endAppearanceTransition];
     }
 }
@@ -73,8 +73,8 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
 - (void)vtm_viewWillDisappear:(BOOL)animated
 {
     [self vtm_viewWillDisappear:animated];
-    if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
-        UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
+    if ([self conformsToProtocol:@protocol(VTMagicProtocol)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
+        UIViewController *currentViewController = [(UIViewController<VTMagicProtocol> *)self currentViewController];
         [currentViewController beginAppearanceTransition:NO animated:animated];
     }
 }
@@ -82,10 +82,10 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
 - (void)vtm_viewDidDisappear:(BOOL)animated
 {
     [self vtm_viewDidDisappear:animated];
-    if ([self conformsToProtocol:@protocol(VTExtensionProtocal)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
-        UIViewController *currentViewController = [(UIViewController<VTExtensionProtocal> *)self currentViewController];
+    if ([self conformsToProtocol:@protocol(VTMagicProtocol)] && ![self shouldAutomaticallyForwardAppearanceMethods]) {
+        UIViewController *currentViewController = [(UIViewController<VTMagicProtocol> *)self currentViewController];
         [currentViewController endAppearanceTransition];
-        [(UIViewController<VTExtensionProtocal> *)self setMagicHasAppeared:NO];
+        [(UIViewController<VTMagicProtocol> *)self setMagicHasAppeared:NO];
     }
 }
 
@@ -120,14 +120,14 @@ static const void *kVTMagicAppeared = &kVTMagicAppeared;
     return [objc_getAssociatedObject(self, kVTMagicAppeared) boolValue];
 }
 
-- (UIViewController<VTExtensionProtocal> *)magicController
+- (UIViewController<VTMagicProtocol> *)magicController
 {
     UIViewController *viewController = self.parentViewController;
     while (viewController) {
-        if ([viewController conformsToProtocol:@protocol(VTExtensionProtocal)]) break;
+        if ([viewController conformsToProtocol:@protocol(VTMagicProtocol)]) break;
         viewController = viewController.parentViewController;
     }
-    return (UIViewController<VTExtensionProtocal> *)viewController;
+    return (UIViewController<VTMagicProtocol> *)viewController;
 }
 
 @end

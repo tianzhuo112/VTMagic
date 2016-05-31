@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VTExtensionProtocal.h"
+#import "VTMagicProtocol.h"
 #import "VTEnumType.h"
 
 @class VTMagicView;
@@ -89,17 +89,17 @@
 
 /**
  *  代理
- *  若delegate为UIViewController并且实现了VTExtensionProtocal协议，
+ *  若delegate为UIViewController并且实现了VTMagicProtocol协议，
  *  则主控制器(mainViewController)默认与其相同
  */
 @property (nonatomic, weak) id<VTMagicViewDelegate> delegate;
 
 /**
- *  主控制器，若delegate遵循协议VTExtensionProtocal，则默认与其相同
+ *  主控制器，若delegate遵循协议VTMagicProtocol，则默认与其相同
  *
  *  @warning 若继承自或直接实例化VTMagicController，则不需要设置该属性
  */
-@property (nonatomic, weak) UIViewController<VTExtensionProtocal> *magicController;
+@property (nonatomic, weak) UIViewController<VTMagicProtocol> *magicController;
 
 /**
  *  切换样式，默认是VTSwitchStyleDefault
@@ -321,7 +321,7 @@
  *  获取索引对应的ViewController
  *  若index超出范围或对应控制器不可见，则返回nil
  *
- *  @param index 索引
+ *  @param pageIndex 索引
  *
  *  @return UIViewController对象
  */

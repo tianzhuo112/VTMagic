@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VTExtensionProtocal.h"
+#import "VTMagicProtocol.h"
 
 /**
  *  magic重用协议
  */
-@protocol VTMagicReuseProtocal <NSObject>
+@protocol VTMagicReuseProtocol <NSObject>
 
 @optional
 /**
@@ -22,7 +22,7 @@
 
 @end
 
-@interface UIViewController (Magic)<VTMagicReuseProtocal>
+@interface UIViewController (Magic)<VTMagicReuseProtocol>
 
 /**
  *  缓存重用标识
@@ -32,6 +32,6 @@
 /**
  *  主控制器
  */
-@property (nonatomic, weak, readonly) UIViewController<VTExtensionProtocal> *magicController;
+@property (nonatomic, weak, readonly) UIViewController<VTMagicProtocol> *magicController;
 
 @end

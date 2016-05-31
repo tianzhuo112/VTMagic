@@ -10,7 +10,6 @@
 #import "VTMenuBar.h"
 #import "VTContentView.h"
 #import "VTMagicController.h"
-#import "VTExtensionProtocal.h"
 #import "UIColor+Magic.h"
 #import <objc/runtime.h>
 
@@ -263,7 +262,7 @@ static const void *kVTMagicView = &kVTMagicView;
 {
     UIViewController *viewController = [_contentView dequeueReusablePageWithIdentifier:identifier];
     if ([viewController respondsToSelector:@selector(vtm_prepareForReuse)]) {
-        [(id<VTMagicReuseProtocal>)viewController vtm_prepareForReuse];
+        [(id<VTMagicReuseProtocol>)viewController vtm_prepareForReuse];
     }
     return viewController;
 }
@@ -891,12 +890,12 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     _delegate = delegate;
     _magicFlags.viewControllerDidAppeare = [delegate respondsToSelector:@selector(magicView:viewDidAppeare:atPage:)];
     _magicFlags.viewControllerDidDisappeare = [delegate respondsToSelector:@selector(magicView:viewDidDisappeare:atPage:)];
-    if (!_magicController && [_delegate isKindOfClass:[UIViewController class]] && [delegate conformsToProtocol:@protocol(VTExtensionProtocal)]) {
-        self.magicController = (UIViewController<VTExtensionProtocal> *)delegate;
+    if (!_magicController && [_delegate isKindOfClass:[UIViewController class]] && [delegate conformsToProtocol:@protocol(VTMagicProtocol)]) {
+        self.magicController = (UIViewController<VTMagicProtocol> *)delegate;
     }
 }
 
-- (void)setMagicController:(UIViewController<VTExtensionProtocal> *)magicController
+- (void)setMagicController:(UIViewController<VTMagicProtocol> *)magicController
 {
     _magicController = magicController;
     if (!_magicController.magicView) [_magicController setMagicView:self];

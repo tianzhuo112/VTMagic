@@ -31,9 +31,9 @@ pod "VTMagic"
 {
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
-        _magicController.magicView.layoutStyle = VTLayoutStyleDivide;
-        _magicController.magicView.sliderColor = [UIColor redColor];
         _magicController.magicView.navigationColor = [UIColor whiteColor];
+        _magicController.magicView.sliderColor = [UIColor redColor];
+        _magicController.magicView.layoutStyle = VTLayoutStyleDivide;
         _magicController.magicView.switchStyle = VTSwitchStyleDefault;
         _magicController.magicView.navigationHeight = 40.f;
         _magicController.magicView.dataSource = self;
@@ -42,15 +42,42 @@ pod "VTMagic"
     return _magicController;
 }
 ```
+or like this
+```objective-c
+#import "VTMagicController.h"
+
+@interface ViewController : VTMagicController
+
+@end
+```
+
+```objective-c
+@implementation ViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.magicView.navigationColor = [UIColor whiteColor];
+    self.magicView.sliderColor = [UIColor redColor];
+    self.magicView.layoutStyle = VTLayoutStyleDefault;
+    self.magicView.switchStyle = VTSwitchStyleDefault;
+    self.magicView.navigationHeight = 40.f;
+    self.magicView.dataSource = self;
+    self.magicView.delegate = self;
+    
+    [self.magicView reloadData];
+}
+```
 
 ### Protocals
 
-You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTMagicReuseProtocal>` are optional.
+You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTMagicReuseProtocol>` are optional.
 
 ####  VTMagicViewDataSource
 
 ```objective-c
--(NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
 {
     return _menuList;
 }
@@ -70,10 +97,10 @@ You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VT
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
 {
-    static NSString *gridId = @"grid.identifier";
-    GridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
+    static NSString *gridId = @"page.identifier";
+    UIViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
     if (!viewController) {
-        viewController = [[GridViewController alloc] init];
+        viewController = [[UIViewController alloc] init];
     }
     return viewController;
 }
@@ -98,7 +125,7 @@ You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VT
 }
 ```
 
-#### VTMagicReuseProtocal
+#### VTMagicReuseProtocol
 
 ```objective-c
 - (void)vtm_prepareForReuse
@@ -109,24 +136,31 @@ You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VT
 
 ## Features
 
-#### Switch to specified page
-
-```objective-c
-[self.magicController.magicView switchToPage:3 animated:YES];
-```
-
-#### Obtain specified view controller
-
-```objective-c
-UIViewController *viewController = [self.magicController.magicView viewControllerAtPage:3];
-```
-
 #### Obtain magicController
 
-You can obtain magicController in any child view controller, after you import file `VTMagic.h`.
+You can obtain the nearest magicController in any child view controller which is conforms to `<VTMagicProtocal>`, after you import file `VTMagic.h`.
 ```objective-c
 NSInteger currentPage = [self.magicController currentPage];
 UIViewController *viewController = self.magicController.currentViewController;
+```
+
+#### Switch to specified page
+
+```objective-c
+[self.magicView switchToPage:3 animated:YES];
+```
+or like this
+```objective-c
+[self.magicController switchToPage:3 animated:YES];
+```
+#### Obtain specified view controller
+
+```objective-c
+UIViewController *viewController = [self.magicView viewControllerAtPage:3];
+```
+or like this
+```objective-c
+UIViewController *viewController = [self.magicController viewControllerAtPage:3];
 ```
 
 ## License

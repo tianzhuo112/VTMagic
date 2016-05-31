@@ -1,5 +1,5 @@
 //
-//  VTMagicViewController.m
+//  VTMagicController.m
 //  VTMagicView
 //
 //  Created by tianzhuo on 14-11-11.
@@ -45,6 +45,7 @@
         _magicView.magicController = self;
         _magicView.delegate = self;
         _magicView.dataSource = self;
+        [self.view setNeedsLayout];
     }
     return _magicView;
 }

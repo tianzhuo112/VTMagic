@@ -97,7 +97,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     NSLog(@"==didSelectItemAtIndexPath%@ \n current page is: %ld==", indexPath, (long)currentPage);
 }
 
-#pragma mark - VTMagicReuseProtocal
+#pragma mark - VTMagicReuseProtocol
 - (void)vtm_prepareForReuse
 {
     NSLog(@"clear old data if needed:%@", self);

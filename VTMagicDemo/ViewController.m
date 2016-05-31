@@ -31,7 +31,7 @@
 //    self.magicView.separatorHidden = NO;
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
-//    self.magicView.style = VTSwitchStyleStiff;
+//    self.magicView.switchStyle = VTSwitchStyleStiff;
 //    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 50);
     self.magicView.layoutStyle = kiPhoneDevice ? VTLayoutStyleDefault : VTLayoutStyleDivide;
     self.magicView.navigationColor = [UIColor whiteColor];
@@ -70,7 +70,7 @@
 }
 
 #pragma mark - VTMagicViewDataSource
--(NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
 {
     return _menuList;
 }
@@ -85,6 +85,7 @@
         [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
         menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
     }
+    // 默认会自动完成赋值
 //    NSString *title = _menuList[itemIndex];
 //    [menuItem setTitle:title forState:UIControlStateNormal];
     return menuItem;

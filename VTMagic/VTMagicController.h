@@ -1,5 +1,5 @@
 //
-//  VTMagicViewController.h
+//  VTMagicController.h
 //  VTMagicView
 //
 //  Created by tianzhuo on 14-11-11.
@@ -11,7 +11,7 @@
 #import "VTMagicView.h"
 #import "VTCommon.h"
 
-@interface VTMagicController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource,VTExtensionProtocal>
+@interface VTMagicController : UIViewController<VTMagicViewDelegate,VTMagicViewDataSource,VTMagicProtocol>
 
 /**
  *  magic view，等同于self.view
