@@ -148,7 +148,7 @@ You must conform to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTM
 
 #### Obtain magicController
 
-You can obtain the nearest magicController in any child view controller which is conforms to `<VTMagicProtocal>`, after you import file `VTMagic.h`.
+You can obtain the nearest magicController in any child view controller which is conforms to `<VTMagicProtocol>`, after you import file `VTMagic.h`.
 ```objective-c
 NSInteger currentPage = [self.magicController currentPage];
 UIViewController *viewController = self.magicController.currentViewController;

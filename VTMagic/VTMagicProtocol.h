@@ -1,5 +1,5 @@
 //
-//  VTMagicProtocal.h
+//  VTMagicProtocol.h
 //  VTMagic
 //
 //  Created by tianzhuo on 15/7/11.
