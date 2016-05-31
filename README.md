@@ -36,7 +36,6 @@ pod "VTMagic"
         _magicController.magicView.navigationColor = [UIColor whiteColor];
         _magicController.magicView.switchStyle = VTSwitchStyleDefault;
         _magicController.magicView.navigationHeight = 40.f;
-        _magicController.magicView.separatorHidden = YES;
         _magicController.magicView.dataSource = self;
         _magicController.magicView.delegate = self;
     }

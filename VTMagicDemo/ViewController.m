@@ -26,8 +26,9 @@
     
 //    self.magicView.bounces = YES;
 //    self.magicView.headerHidden = NO;
-//    self.magicView.itemSpacing = 10.f;
+//    self.magicView.itemSpacing = 20.f;
 //    self.magicView.switchEnabled = YES;
+//    self.magicView.separatorHidden = NO;
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
 //    self.magicView.style = VTSwitchStyleStiff;
