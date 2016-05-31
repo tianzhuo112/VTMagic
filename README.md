@@ -58,14 +58,14 @@ You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VT
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
 {
     static NSString *itemIdentifier = @"itemIdentifier";
-    UIButton *headerItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
-    if (!headerItem) {
-        headerItem = [UIButton buttonWithType:UIButtonTypeCustom];
-        [headerItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
-        [headerItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
-        headerItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
+    UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
+    if (!menuItem) {
+        menuItem = [UIButton buttonWithType:UIButtonTypeCustom];
+        [menuItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
+        [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
+        menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
     }
-    return headerItem;
+    return menuItem;
 }
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
