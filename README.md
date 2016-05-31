@@ -1,5 +1,6 @@
 # VTMagic
-VTMagic is page controller manager, it's easy to use.
+
+VTMagic is page controller manager, you can custom every page by different identifier if you need. It's so easy to use!
 
 ## Usage
 
@@ -97,8 +98,17 @@ You must conforms to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VT
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
 {
-    static NSString *gridId = @"page.identifier";
-    UIViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
+    if (0 == pageIndex) {
+        static NSString *recomId = @"recom.identifier";
+        RecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
+        if (!recomViewController) {
+            recomViewController = [[RecomViewController alloc] init];
+        }
+        return recomViewController;
+    }
+
+    static NSString *pageId = @"page.identifier";
+    UIViewController *viewController = [magicView dequeueReusablePageWithIdentifier:pageId];
     if (!viewController) {
         viewController = [[UIViewController alloc] init];
     }

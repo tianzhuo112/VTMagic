@@ -95,11 +95,11 @@
 {
     if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
-        RecomViewController *playerViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
-        if (!playerViewController) {
-            playerViewController = [[RecomViewController alloc] init];
+        RecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
+        if (!recomViewController) {
+            recomViewController = [[RecomViewController alloc] init];
         }
-        return playerViewController;
+        return recomViewController;
     }
     
     static NSString *gridId = @"grid.identifier";
