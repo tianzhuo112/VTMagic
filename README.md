@@ -1,6 +1,6 @@
 # VTMagic
 
-VTMagic is page controller manager, you can custom every page by different identifier if you need. It's so easy to use!
+VTMagic is a page manager library, you can custom every page controller by different identifier if you need. It's so easy to use!
 
 ## Usage
 
