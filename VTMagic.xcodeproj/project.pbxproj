@@ -7,13 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7E44B5E61CFCB2C600FEEFF8 /* UIColor+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5D51CFCB2C600FEEFF8 /* UIColor+Magic.m */; };
-		7E44B5E71CFCB2C600FEEFF8 /* UIScrollView+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5D71CFCB2C600FEEFF8 /* UIScrollView+Magic.m */; };
-		7E44B5E81CFCB2C600FEEFF8 /* UIViewController+Magic.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5D91CFCB2C600FEEFF8 /* UIViewController+Magic.m */; };
-		7E44B5E91CFCB2C600FEEFF8 /* VTContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5DC1CFCB2C600FEEFF8 /* VTContentView.m */; };
-		7E44B5EA1CFCB2C600FEEFF8 /* VTMagicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5E11CFCB2C600FEEFF8 /* VTMagicController.m */; };
-		7E44B5EB1CFCB2C600FEEFF8 /* VTMagicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5E31CFCB2C600FEEFF8 /* VTMagicView.m */; };
-		7E44B5EC1CFCB2C600FEEFF8 /* VTMenuBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B5E51CFCB2C600FEEFF8 /* VTMenuBar.m */; };
 		7E44B5EE1CFCB68100FEEFF8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7E44B5ED1CFCB68100FEEFF8 /* Podfile */; };
 		7E83177E1CF7684300436604 /* RecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E83177D1CF7684300436604 /* RecomViewController.m */; };
 		7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */; };
@@ -45,24 +38,6 @@
 		48AF73610954158967496C38 /* Pods-VTMagic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagic/Pods-VTMagic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VTMagic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E44B5D21CFCB1C200FEEFF8 /* VTMagic.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = VTMagic.podspec; sourceTree = "<group>"; };
-		7E44B5D41CFCB2C600FEEFF8 /* UIColor+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Magic.h"; sourceTree = "<group>"; };
-		7E44B5D51CFCB2C600FEEFF8 /* UIColor+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Magic.m"; sourceTree = "<group>"; };
-		7E44B5D61CFCB2C600FEEFF8 /* UIScrollView+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Magic.h"; sourceTree = "<group>"; };
-		7E44B5D71CFCB2C600FEEFF8 /* UIScrollView+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Magic.m"; sourceTree = "<group>"; };
-		7E44B5D81CFCB2C600FEEFF8 /* UIViewController+Magic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Magic.h"; sourceTree = "<group>"; };
-		7E44B5D91CFCB2C600FEEFF8 /* UIViewController+Magic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Magic.m"; sourceTree = "<group>"; };
-		7E44B5DA1CFCB2C600FEEFF8 /* VTCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCommon.h; sourceTree = "<group>"; };
-		7E44B5DB1CFCB2C600FEEFF8 /* VTContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTContentView.h; sourceTree = "<group>"; };
-		7E44B5DC1CFCB2C600FEEFF8 /* VTContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTContentView.m; sourceTree = "<group>"; };
-		7E44B5DD1CFCB2C600FEEFF8 /* VTEnumType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTEnumType.h; sourceTree = "<group>"; };
-		7E44B5DE1CFCB2C600FEEFF8 /* VTExtensionProtocal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTExtensionProtocal.h; sourceTree = "<group>"; };
-		7E44B5DF1CFCB2C600FEEFF8 /* VTMagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMagic.h; sourceTree = "<group>"; };
-		7E44B5E01CFCB2C600FEEFF8 /* VTMagicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMagicController.h; sourceTree = "<group>"; };
-		7E44B5E11CFCB2C600FEEFF8 /* VTMagicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicController.m; sourceTree = "<group>"; };
-		7E44B5E21CFCB2C600FEEFF8 /* VTMagicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMagicView.h; sourceTree = "<group>"; };
-		7E44B5E31CFCB2C600FEEFF8 /* VTMagicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicView.m; sourceTree = "<group>"; };
-		7E44B5E41CFCB2C600FEEFF8 /* VTMenuBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMenuBar.h; sourceTree = "<group>"; };
-		7E44B5E51CFCB2C600FEEFF8 /* VTMenuBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMenuBar.m; sourceTree = "<group>"; };
 		7E44B5ED1CFCB68100FEEFF8 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		7E8317781CF74E6B00436604 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7E83177C1CF7684300436604 /* RecomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecomViewController.h; sourceTree = "<group>"; };
@@ -130,31 +105,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		7E44B5D31CFCB2C600FEEFF8 /* VTMagic */ = {
-			isa = PBXGroup;
-			children = (
-				7E44B5D41CFCB2C600FEEFF8 /* UIColor+Magic.h */,
-				7E44B5D51CFCB2C600FEEFF8 /* UIColor+Magic.m */,
-				7E44B5D61CFCB2C600FEEFF8 /* UIScrollView+Magic.h */,
-				7E44B5D71CFCB2C600FEEFF8 /* UIScrollView+Magic.m */,
-				7E44B5D81CFCB2C600FEEFF8 /* UIViewController+Magic.h */,
-				7E44B5D91CFCB2C600FEEFF8 /* UIViewController+Magic.m */,
-				7E44B5DA1CFCB2C600FEEFF8 /* VTCommon.h */,
-				7E44B5DB1CFCB2C600FEEFF8 /* VTContentView.h */,
-				7E44B5DC1CFCB2C600FEEFF8 /* VTContentView.m */,
-				7E44B5DD1CFCB2C600FEEFF8 /* VTEnumType.h */,
-				7E44B5DE1CFCB2C600FEEFF8 /* VTExtensionProtocal.h */,
-				7E44B5DF1CFCB2C600FEEFF8 /* VTMagic.h */,
-				7E44B5E01CFCB2C600FEEFF8 /* VTMagicController.h */,
-				7E44B5E11CFCB2C600FEEFF8 /* VTMagicController.m */,
-				7E44B5E21CFCB2C600FEEFF8 /* VTMagicView.h */,
-				7E44B5E31CFCB2C600FEEFF8 /* VTMagicView.m */,
-				7E44B5E41CFCB2C600FEEFF8 /* VTMenuBar.h */,
-				7E44B5E51CFCB2C600FEEFF8 /* VTMenuBar.m */,
-			);
-			path = VTMagic;
-			sourceTree = "<group>";
-		};
 		7E44B5F01CFD108B00FEEFF8 /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,7 +139,6 @@
 		AEA0D4F51A11E4AB00229B72 /* VTMagicDemo */ = {
 			isa = PBXGroup;
 			children = (
-				7E44B5D31CFCB2C600FEEFF8 /* VTMagic */,
 				AEA0D4FA1A11E4AB00229B72 /* AppDelegate.h */,
 				AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */,
 				AEA0D4FD1A11E4AB00229B72 /* ViewController.h */,
@@ -436,19 +385,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E44B5EC1CFCB2C600FEEFF8 /* VTMenuBar.m in Sources */,
-				7E44B5E81CFCB2C600FEEFF8 /* UIViewController+Magic.m in Sources */,
 				7E83177E1CF7684300436604 /* RecomViewController.m in Sources */,
 				AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */,
 				7EF0684D1CF8191B00EDFC41 /* VTGridViewCell.m in Sources */,
-				7E44B5E61CFCB2C600FEEFF8 /* UIColor+Magic.m in Sources */,
 				AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */,
 				AED72D2A1A527331008E13B7 /* GridViewController.m in Sources */,
-				7E44B5E71CFCB2C600FEEFF8 /* UIScrollView+Magic.m in Sources */,
-				7E44B5EB1CFCB2C600FEEFF8 /* VTMagicView.m in Sources */,
 				AEA0D4F91A11E4AB00229B72 /* main.m in Sources */,
-				7E44B5EA1CFCB2C600FEEFF8 /* VTMagicController.m in Sources */,
-				7E44B5E91CFCB2C600FEEFF8 /* VTContentView.m in Sources */,
 				7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

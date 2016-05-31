@@ -93,7 +93,8 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didSelectItemAtIndexPath%@", indexPath);
+    NSInteger currentPage = self.magicController.currentPage;
+    NSLog(@"==didSelectItemAtIndexPath%@ \n current page is: %ld==", indexPath, (long)currentPage);
 }
 
 #pragma mark - VTMagicReuseProtocal
