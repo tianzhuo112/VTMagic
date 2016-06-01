@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RecomViewController : UITableViewController
+@interface VTRecomViewController : UITableViewController
 
 @end

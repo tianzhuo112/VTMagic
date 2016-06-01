@@ -100,17 +100,17 @@ You must conform to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTM
 {
     if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
-        RecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
+        VTRecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
         if (!recomViewController) {
-            recomViewController = [[RecomViewController alloc] init];
+            recomViewController = [[VTRecomViewController alloc] init];
         }
         return recomViewController;
     }
 
-    static NSString *pageId = @"page.identifier";
-    UIViewController *viewController = [magicView dequeueReusablePageWithIdentifier:pageId];
+    static NSString *gridId = @"page.identifier";
+    VTGridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
     if (!viewController) {
-        viewController = [[UIViewController alloc] init];
+        viewController = [[VTGridViewController alloc] init];
     }
     return viewController;
 }

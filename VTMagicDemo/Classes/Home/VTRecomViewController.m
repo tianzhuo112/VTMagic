@@ -6,16 +6,16 @@
 //  Copyright (c) 2014年 tianzhuo. All rights reserved.
 //
 
-#import "RecomViewController.h"
+#import "VTRecomViewController.h"
 #import "VTRecomCell.h"
 
-@interface RecomViewController ()
+@interface VTRecomViewController ()
 
 @property (nonatomic, strong) NSMutableArray *newsList;
 
 @end
 
-@implementation RecomViewController
+@implementation VTRecomViewController
 
 - (void)viewDidLoad
 {

@@ -6,18 +6,18 @@
 //  Copyright (c) 2014年 tianzhuo. All rights reserved.
 //
 
-#import "ViewController.h"
-#import "RecomViewController.h"
-#import "GridViewController.h"
+#import "VTHomeViewController.h"
+#import "VTRecomViewController.h"
+#import "VTGridViewController.h"
 #import "VTCommon.h"
 
-@interface ViewController ()
+@interface VTHomeViewController ()
 
 @property (nonatomic, strong)  NSArray *menuList;
 
 @end
 
-@implementation ViewController
+@implementation VTHomeViewController
 
 #pragma mark - Lifecycle
 - (void)viewDidLoad
@@ -32,16 +32,22 @@
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
 //    self.magicView.switchStyle = VTSwitchStyleStiff;
-//    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 50);
+//    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 0);
     self.magicView.layoutStyle = kiPhoneDevice ? VTLayoutStyleDefault : VTLayoutStyleDivide;
     self.magicView.navigationColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
     [self integrateComponents];
     
     [self addNotification];
-    [self generateTempData];
+    [self generateTestData];
     [self.magicView reloadData];
-    [self.magicView switchToPage:2 animated:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.magicView switchToPage:0 animated:YES];
 }
 
 - (void)dealloc
@@ -95,17 +101,17 @@
 {
     if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
-        RecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
+        VTRecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
         if (!recomViewController) {
-            recomViewController = [[RecomViewController alloc] init];
+            recomViewController = [[VTRecomViewController alloc] init];
         }
         return recomViewController;
     }
     
     static NSString *gridId = @"grid.identifier";
-    GridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
+    VTGridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
     if (!viewController) {
-        viewController = [[GridViewController alloc] init];
+        viewController = [[VTGridViewController alloc] init];
     }
     return viewController;
 }
@@ -138,21 +144,15 @@
         [self.magicView deselectMenuItem];
         self.magicView.sliderHidden = YES;
     }
-    
-    // against status bar or not
-    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
-    [UIView animateWithDuration:0.35 animations:^{
-        [self.magicView layoutIfNeeded];
-    }];
 }
 
 #pragma mark - functional methods
-- (void)generateTempData
+- (void)generateTestData
 {
     NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
     [menuList addObject:@"推荐"];
-    NSString *title = @"测试";
-    for (int index = 0; index < 10; index++) {
+    NSString *title = @"省份";
+    for (int index = 0; index < 20; index++) {
         [menuList addObject:[NSString stringWithFormat:@"%@%d",title,index]];
     }
     _menuList = menuList;

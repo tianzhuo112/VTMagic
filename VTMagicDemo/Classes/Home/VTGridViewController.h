@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GridViewController : UICollectionViewController
+@interface VTGridViewController : UICollectionViewController
 
 
 @end

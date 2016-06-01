@@ -6,20 +6,20 @@
 //  Copyright (c) 2014年 tianzhuo. All rights reserved.
 //
 
-#import "GridViewController.h"
+#import "VTGridViewController.h"
 #import "VTGridViewCell.h"
 #import "VTMagic.h"
 
 #define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
 static NSString *reuseIdentifier = @"grid.reuse.identifier";
 
-@interface GridViewController()
+@interface VTGridViewController()
 
 @property (nonatomic, strong) NSMutableArray *infoList;
 
 @end
 
-@implementation GridViewController
+@implementation VTGridViewController
 
 - (instancetype)init
 {

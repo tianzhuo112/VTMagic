@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E2E3FC41CFF337000C275F3 /* VTDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E3FC31CFF337000C275F3 /* VTDataViewController.m */; };
+		7E2E3FC71CFF33A500C275F3 /* VTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E3FC61CFF33A500C275F3 /* VTWebViewController.m */; };
+		7E2E3FC91CFF3B1800C275F3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E2E3FC81CFF3B1800C275F3 /* WebKit.framework */; };
+		7E2E3FCF1CFF3CBB00C275F3 /* VTGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E3FCC1CFF3CBB00C275F3 /* VTGridViewCell.m */; };
+		7E2E3FD01CFF3CBB00C275F3 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E3FCE1CFF3CBB00C275F3 /* VTRecomCell.m */; };
 		7E44B5EE1CFCB68100FEEFF8 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7E44B5ED1CFCB68100FEEFF8 /* Podfile */; };
-		7E83177E1CF7684300436604 /* RecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E83177D1CF7684300436604 /* RecomViewController.m */; };
-		7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */; };
-		7EF0684D1CF8191B00EDFC41 /* VTGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684C1CF8191B00EDFC41 /* VTGridViewCell.m */; };
+		7E44B68C1CFF198500FEEFF8 /* VTGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B6821CFF198500FEEFF8 /* VTGridViewController.m */; };
+		7E44B68D1CFF198500FEEFF8 /* VTRecomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B6841CFF198500FEEFF8 /* VTRecomViewController.m */; };
+		7E44B68E1CFF198500FEEFF8 /* VTHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B6861CFF198500FEEFF8 /* VTHomeViewController.m */; };
+		7E44B6931CFF199A00FEEFF8 /* VTTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B6921CFF199A00FEEFF8 /* VTTabBarController.m */; };
+		7E44B69C1CFF262600FEEFF8 /* VTCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B69B1CFF262600FEEFF8 /* VTCenterViewController.m */; };
+		7E44B6A01CFF2AA600FEEFF8 /* VTDivideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B69F1CFF2AA600FEEFF8 /* VTDivideViewController.m */; };
 		7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */; };
 		8A8752B3115AE8AAE7B7D0A9 /* libPods-VTMagicTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B05D0A986B6C3E04F8B6EA6 /* libPods-VTMagicTests.a */; };
 		991301BB0FFF835D29F7A46C /* libPods-VTMagic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */; };
 		AEA0D4F91A11E4AB00229B72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4F81A11E4AB00229B72 /* main.m */; };
 		AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */; };
-		AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEA0D4FE1A11E4AB00229B72 /* ViewController.m */; };
 		AEA0D5041A11E4AB00229B72 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEA0D5031A11E4AB00229B72 /* Images.xcassets */; };
 		AEA0D5071A11E4AB00229B72 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEA0D5051A11E4AB00229B72 /* LaunchScreen.xib */; };
-		AED72D2A1A527331008E13B7 /* GridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED72D291A527331008E13B7 /* GridViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,15 +43,30 @@
 		2FE5B38F2768CFB9EC1F1147 /* Pods-VTMagicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagicTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests.debug.xcconfig"; sourceTree = "<group>"; };
 		48AF73610954158967496C38 /* Pods-VTMagic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagic/Pods-VTMagic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VTMagic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E2E3FC21CFF337000C275F3 /* VTDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDataViewController.h; sourceTree = "<group>"; };
+		7E2E3FC31CFF337000C275F3 /* VTDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDataViewController.m; sourceTree = "<group>"; };
+		7E2E3FC51CFF33A500C275F3 /* VTWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTWebViewController.h; sourceTree = "<group>"; };
+		7E2E3FC61CFF33A500C275F3 /* VTWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTWebViewController.m; sourceTree = "<group>"; };
+		7E2E3FC81CFF3B1800C275F3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		7E2E3FCB1CFF3CBB00C275F3 /* VTGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTGridViewCell.h; sourceTree = "<group>"; };
+		7E2E3FCC1CFF3CBB00C275F3 /* VTGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTGridViewCell.m; sourceTree = "<group>"; };
+		7E2E3FCD1CFF3CBB00C275F3 /* VTRecomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRecomCell.h; sourceTree = "<group>"; };
+		7E2E3FCE1CFF3CBB00C275F3 /* VTRecomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomCell.m; sourceTree = "<group>"; };
 		7E44B5D21CFCB1C200FEEFF8 /* VTMagic.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = VTMagic.podspec; sourceTree = "<group>"; };
 		7E44B5ED1CFCB68100FEEFF8 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		7E44B6811CFF198500FEEFF8 /* VTGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTGridViewController.h; sourceTree = "<group>"; };
+		7E44B6821CFF198500FEEFF8 /* VTGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTGridViewController.m; sourceTree = "<group>"; };
+		7E44B6831CFF198500FEEFF8 /* VTRecomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRecomViewController.h; sourceTree = "<group>"; };
+		7E44B6841CFF198500FEEFF8 /* VTRecomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomViewController.m; sourceTree = "<group>"; };
+		7E44B6851CFF198500FEEFF8 /* VTHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTHomeViewController.h; sourceTree = "<group>"; };
+		7E44B6861CFF198500FEEFF8 /* VTHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTHomeViewController.m; sourceTree = "<group>"; };
+		7E44B6911CFF199A00FEEFF8 /* VTTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTTabBarController.h; sourceTree = "<group>"; };
+		7E44B6921CFF199A00FEEFF8 /* VTTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTTabBarController.m; sourceTree = "<group>"; };
+		7E44B69A1CFF262600FEEFF8 /* VTCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTCenterViewController.h; sourceTree = "<group>"; };
+		7E44B69B1CFF262600FEEFF8 /* VTCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTCenterViewController.m; sourceTree = "<group>"; };
+		7E44B69E1CFF2AA600FEEFF8 /* VTDivideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDivideViewController.h; sourceTree = "<group>"; };
+		7E44B69F1CFF2AA600FEEFF8 /* VTDivideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDivideViewController.m; sourceTree = "<group>"; };
 		7E8317781CF74E6B00436604 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		7E83177C1CF7684300436604 /* RecomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecomViewController.h; sourceTree = "<group>"; };
-		7E83177D1CF7684300436604 /* RecomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecomViewController.m; sourceTree = "<group>"; };
-		7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRecomCell.h; sourceTree = "<group>"; };
-		7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRecomCell.m; sourceTree = "<group>"; };
-		7EF0684B1CF8191B00EDFC41 /* VTGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTGridViewCell.h; sourceTree = "<group>"; };
-		7EF0684C1CF8191B00EDFC41 /* VTGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTGridViewCell.m; sourceTree = "<group>"; };
 		7EF0684E1CF81B4A00EDFC41 /* VTMagic-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTMagic-Prefix.pch"; sourceTree = "<group>"; };
 		7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicTests.m; sourceTree = "<group>"; };
 		AEA0D4F31A11E4AB00229B72 /* VTMagic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,14 +74,10 @@
 		AEA0D4F81A11E4AB00229B72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		AEA0D4FA1A11E4AB00229B72 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		AEA0D4FD1A11E4AB00229B72 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		AEA0D4FE1A11E4AB00229B72 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		AEA0D5031A11E4AB00229B72 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		AEA0D5061A11E4AB00229B72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		AEA0D50C1A11E4AB00229B72 /* VTMagic.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VTMagic.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA0D5111A11E4AB00229B72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AED72D281A527331008E13B7 /* GridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridViewController.h; sourceTree = "<group>"; };
-		AED72D291A527331008E13B7 /* GridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridViewController.m; sourceTree = "<group>"; };
 		C257C3ED11DCF16D7182329F /* Pods-VTMagicTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagicTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests.release.xcconfig"; sourceTree = "<group>"; };
 		E72AE89AE552C5B19AA31EB8 /* Pods-VTMagic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagic.release.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagic/Pods-VTMagic.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E2E3FC91CFF3B1800C275F3 /* WebKit.framework in Frameworks */,
 				991301BB0FFF835D29F7A46C /* libPods-VTMagic.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,10 +117,33 @@
 		71423596EFD85AAFFAE5B871 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E2E3FC81CFF3B1800C275F3 /* WebKit.framework */,
 				5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */,
 				0B05D0A986B6C3E04F8B6EA6 /* libPods-VTMagicTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7E2E3FC11CFF335300C275F3 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7E2E3FC21CFF337000C275F3 /* VTDataViewController.h */,
+				7E2E3FC31CFF337000C275F3 /* VTDataViewController.m */,
+				7E2E3FC51CFF33A500C275F3 /* VTWebViewController.h */,
+				7E2E3FC61CFF33A500C275F3 /* VTWebViewController.m */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		7E2E3FCA1CFF3CBB00C275F3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7E2E3FCB1CFF3CBB00C275F3 /* VTGridViewCell.h */,
+				7E2E3FCC1CFF3CBB00C275F3 /* VTGridViewCell.m */,
+				7E2E3FCD1CFF3CBB00C275F3 /* VTRecomCell.h */,
+				7E2E3FCE1CFF3CBB00C275F3 /* VTRecomCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		7E44B5F01CFD108B00FEEFF8 /* Podspec Metadata */ = {
@@ -113,6 +154,49 @@
 				7E44B5D21CFCB1C200FEEFF8 /* VTMagic.podspec */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		7E44B67B1CFF198500FEEFF8 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				7E44B6801CFF198500FEEFF8 /* Home */,
+				7E44B69D1CFF2A7F00FEEFF8 /* Divide */,
+				7E44B67C1CFF198500FEEFF8 /* Center */,
+				7E2E3FC11CFF335300C275F3 /* Data */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		7E44B67C1CFF198500FEEFF8 /* Center */ = {
+			isa = PBXGroup;
+			children = (
+				7E44B69A1CFF262600FEEFF8 /* VTCenterViewController.h */,
+				7E44B69B1CFF262600FEEFF8 /* VTCenterViewController.m */,
+			);
+			path = Center;
+			sourceTree = "<group>";
+		};
+		7E44B6801CFF198500FEEFF8 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				7E2E3FCA1CFF3CBB00C275F3 /* View */,
+				7E44B6811CFF198500FEEFF8 /* VTGridViewController.h */,
+				7E44B6821CFF198500FEEFF8 /* VTGridViewController.m */,
+				7E44B6831CFF198500FEEFF8 /* VTRecomViewController.h */,
+				7E44B6841CFF198500FEEFF8 /* VTRecomViewController.m */,
+				7E44B6851CFF198500FEEFF8 /* VTHomeViewController.h */,
+				7E44B6861CFF198500FEEFF8 /* VTHomeViewController.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		7E44B69D1CFF2A7F00FEEFF8 /* Divide */ = {
+			isa = PBXGroup;
+			children = (
+				7E44B69E1CFF2AA600FEEFF8 /* VTDivideViewController.h */,
+				7E44B69F1CFF2AA600FEEFF8 /* VTDivideViewController.m */,
+			);
+			path = Divide;
 			sourceTree = "<group>";
 		};
 		AEA0D4EA1A11E4AB00229B72 = {
@@ -139,18 +223,11 @@
 		AEA0D4F51A11E4AB00229B72 /* VTMagicDemo */ = {
 			isa = PBXGroup;
 			children = (
+				7E44B67B1CFF198500FEEFF8 /* Classes */,
 				AEA0D4FA1A11E4AB00229B72 /* AppDelegate.h */,
 				AEA0D4FB1A11E4AB00229B72 /* AppDelegate.m */,
-				AEA0D4FD1A11E4AB00229B72 /* ViewController.h */,
-				AEA0D4FE1A11E4AB00229B72 /* ViewController.m */,
-				7E83177C1CF7684300436604 /* RecomViewController.h */,
-				7E83177D1CF7684300436604 /* RecomViewController.m */,
-				AED72D281A527331008E13B7 /* GridViewController.h */,
-				AED72D291A527331008E13B7 /* GridViewController.m */,
-				7EF068481CF7F0C200EDFC41 /* VTRecomCell.h */,
-				7EF068491CF7F0C200EDFC41 /* VTRecomCell.m */,
-				7EF0684B1CF8191B00EDFC41 /* VTGridViewCell.h */,
-				7EF0684C1CF8191B00EDFC41 /* VTGridViewCell.m */,
+				7E44B6911CFF199A00FEEFF8 /* VTTabBarController.h */,
+				7E44B6921CFF199A00FEEFF8 /* VTTabBarController.m */,
 				AEA0D5031A11E4AB00229B72 /* Images.xcassets */,
 				AEA0D5051A11E4AB00229B72 /* LaunchScreen.xib */,
 				AEA0D4F61A11E4AB00229B72 /* Supporting Files */,
@@ -385,13 +462,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E83177E1CF7684300436604 /* RecomViewController.m in Sources */,
-				AEA0D4FF1A11E4AB00229B72 /* ViewController.m in Sources */,
-				7EF0684D1CF8191B00EDFC41 /* VTGridViewCell.m in Sources */,
+				7E44B69C1CFF262600FEEFF8 /* VTCenterViewController.m in Sources */,
+				7E2E3FCF1CFF3CBB00C275F3 /* VTGridViewCell.m in Sources */,
+				7E44B68E1CFF198500FEEFF8 /* VTHomeViewController.m in Sources */,
+				7E2E3FC71CFF33A500C275F3 /* VTWebViewController.m in Sources */,
+				7E2E3FC41CFF337000C275F3 /* VTDataViewController.m in Sources */,
+				7E44B68D1CFF198500FEEFF8 /* VTRecomViewController.m in Sources */,
+				7E44B68C1CFF198500FEEFF8 /* VTGridViewController.m in Sources */,
 				AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */,
-				AED72D2A1A527331008E13B7 /* GridViewController.m in Sources */,
+				7E2E3FD01CFF3CBB00C275F3 /* VTRecomCell.m in Sources */,
+				7E44B6A01CFF2AA600FEEFF8 /* VTDivideViewController.m in Sources */,
 				AEA0D4F91A11E4AB00229B72 /* main.m in Sources */,
-				7EF0684A1CF7F0C200EDFC41 /* VTRecomCell.m in Sources */,
+				7E44B6931CFF199A00FEEFF8 /* VTTabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
