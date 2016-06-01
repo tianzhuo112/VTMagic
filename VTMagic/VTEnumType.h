@@ -9,6 +9,18 @@
 #ifndef VTEnumType_h
 #define VTEnumType_h
 
+/** 导航栏布局样式 */
+typedef NS_ENUM(NSUInteger, VTLayoutStyle) {
+    /** 默认样式，item自适应文本宽度，间距由itemSpacing决定 */
+    VTLayoutStyleDefault,
+    /** items等分导航条宽度，常用于item数较少时 */
+    VTLayoutStyleDivide,
+    /** 导航栏居中布局，间距由itemSpacing决定 */
+    VTLayoutStyleCenter,
+    /** 自定义item宽度(itemWidth) */
+    VTLayoutStyleCustom,
+};
+
 /** 页面滑动切换样式 */
 typedef NS_ENUM(NSUInteger, VTSwitchStyle) {
     /** 默认样式，切换时有颜色渐变效果 */
@@ -29,16 +41,6 @@ typedef NS_ENUM(NSUInteger, VTSwitchEvent) {
     VTSwitchEventClick,
     /** 未知 */
     VTSwitchEventUnkown,
-};
-
-/** 导航条布局样式 */
-typedef NS_ENUM(NSUInteger, VTLayoutStyle) {
-    /** 默认样式，item自适应文本宽度，间距由itemSpacing决定 */
-    VTLayoutStyleDefault,
-    /** items等分导航条宽度，常用于item数较少时 */
-    VTLayoutStyleDivide,
-    /** 自定义item宽度(itemWidth) */
-    VTLayoutStyleCustom,
 };
 
 /** UIPanGestureRecognizer手势方向 */

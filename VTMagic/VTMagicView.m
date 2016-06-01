@@ -142,6 +142,7 @@ static const void *kVTMagicView = &kVTMagicView;
     _menuBar.frame = CGRectMake(leftItemWidth, topY, catWidth, _navigationHeight);
     if (!CGRectEqualToRect(_menuBar.frame, originalCatFrame)) {
         [_menuBar resetItemFrames];
+        [self updateMenuBarState];
     }
     
     CGRect sliderFrame = _sliderView.frame;

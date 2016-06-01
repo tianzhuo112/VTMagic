@@ -272,7 +272,7 @@
  *  两个导航菜单item文本之间的间距，默认是25
  *  如果分类item包含图片，则实际间距可能会更小
  *
- *  @warning 该属性仅VTLayoutStyleDefault样式下有效！
+ *  @warning 该属性仅VTLayoutStyleDefault和VTLayoutStyleCenter样式下有效！
  */
 @property (nonatomic, assign) CGFloat itemSpacing;
 

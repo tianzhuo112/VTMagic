@@ -133,7 +133,10 @@ static NSInteger const kVTMenuBarTag = 1000;
     
     switch (_layoutStyle) {
         case VTLayoutStyleDivide:
-            [self resetFramesForAutoDivide];
+            [self resetFramesForDivide];
+            break;
+        case VTLayoutStyleCenter:
+            [self resetFramesForCenter];
             break;
         case VTLayoutStyleCustom:
             [self resetFramesForCustom];
@@ -173,7 +176,7 @@ static NSInteger const kVTMenuBarTag = 1000;
     }
 }
 
-- (void)resetFramesForAutoDivide
+- (void)resetFramesForDivide
 {
     CGRect frame = CGRectZero;
     NSInteger count = _menuTitles.count;
@@ -186,6 +189,24 @@ static NSInteger const kVTMenuBarTag = 1000;
     for (int index = 0; index < count; index++) {
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         frame.origin.x += itemWidth;
+    }
+}
+
+- (void)resetFramesForCenter
+{
+    [self resetFramesForDefault];
+    CGFloat menuWidth = CGRectGetWidth(self.frame);
+    CGRect lastFame = [[_frameList lastObject] CGRectValue];
+    CGFloat contentWidth = menuWidth - _menuInset.right;
+    CGFloat itemOffset = (contentWidth - CGRectGetMaxX(lastFame))/2;
+    if (itemOffset <= 0) return;
+    CGRect frame = CGRectZero;
+    NSArray *frames = [NSArray arrayWithArray:_frameList];
+    [_frameList removeAllObjects];
+    for (NSValue *value in frames) {
+        frame = [value CGRectValue];
+        frame.origin.x += itemOffset;
+        [_frameList addObject:[NSValue valueWithCGRect:frame]];
     }
 }
 
