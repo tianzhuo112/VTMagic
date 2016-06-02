@@ -27,6 +27,23 @@
     
     NSURL *url = [NSURL URLWithString:@"https://www.baidu.com"];
     [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [self.view setNeedsUpdateConstraints];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.webView.scrollView.scrollsToTop = YES;
+    VTPRINT_METHOD
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.webView.scrollView.scrollsToTop = NO;
+    VTPRINT_METHOD
 }
 
 #pragma mark - UIPanGestureRecognizer
@@ -49,10 +66,8 @@
         _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [_webView.scrollView addGestureRecognizer:self.panRecognizer];
         _webView.scrollView.alwaysBounceHorizontal = NO;
-        _webView.scrollView.scrollEnabled = NO;
         _webView.scrollView.scrollsToTop = NO;
         _webView.layer.masksToBounds = YES;
-        _webView.layer.cornerRadius = 5.f;
     }
     return _webView;
 }

@@ -67,23 +67,21 @@
 #pragma mark - actions
 - (void)subscribeAction
 {
-    NSLog(@"subscribeAction");
-    // against status bar or not
-    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
-    [UIView animateWithDuration:0.35 animations:^{
-        [self.magicView layoutIfNeeded];
-    }];
+    NSLog(@"取消／恢复菜单栏选中状态");
+    // select/deselect menu item
+    if (self.magicView.isDeselected) {
+        [self.magicView reselectMenuItem];
+        self.magicView.sliderHidden = NO;
+    } else {
+        [self.magicView deselectMenuItem];
+        self.magicView.sliderHidden = YES;
+    }
 }
 
 #pragma mark - functional methods
 - (void)generateTestData
 {
-    NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
-    NSString *title = @"栏目";
-    for (int index = 0; index < 4; index++) {
-        [menuList addObject:[NSString stringWithFormat:@"%@%d",title,index]];
-    }
-    _menuList = menuList;
+    _menuList = @[@"国内", @"国外", @"港澳", @"台湾"];
 }
 
 - (void)integrateComponents

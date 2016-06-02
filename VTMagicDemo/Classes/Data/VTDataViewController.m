@@ -64,12 +64,7 @@
 #pragma mark - functional methods
 - (void)generateTestData
 {
-    NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
-    NSString *title = @"排行榜";
-    for (int index = 0; index < 5; index++) {
-        [menuList addObject:[NSString stringWithFormat:@"%@%d",title,index]];
-    }
-    _menuList = menuList;
+    _menuList = @[@"潜龙榜", @"美人榜", @"神功榜", @"奇物榜"];
 }
 
 #pragma mark - accessor methods

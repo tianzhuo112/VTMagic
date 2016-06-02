@@ -10,6 +10,8 @@
 #import "VTGridViewController.h"
 #import <VTMagic/VTMagic.h>
 
+#define kSearchBarWidth (60.0f)
+
 @interface VTCenterViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
 
 @property (nonatomic, strong) VTMagicController *magicController;
@@ -27,9 +29,27 @@
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];
     [_magicController didMoveToParentViewController:self];
+    [self integrateComponents];
     
     [self generateTestData];
     [_magicController.magicView reloadData];
+}
+
+#pragma mark - functional methods
+- (void)integrateComponents
+{
+    UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [searchButton setImage:[UIImage imageNamed:@"magic_search"] forState:UIControlStateNormal];
+    [searchButton addTarget:self action:@selector(searchAction:) forControlEvents:UIControlEventTouchUpInside];
+    searchButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    searchButton.frame = CGRectMake(0, 0, kSearchBarWidth, 20);
+    [self.magicController.magicView setRightNavigatoinItem:searchButton];
+}
+
+#pragma mark - actions
+- (void)searchAction:(UIButton *)sender
+{
+    NSLog(@"searchAction");
 }
 
 #pragma mark - VTMagicViewDataSource
@@ -64,7 +84,7 @@
 #pragma mark - functional methods
 - (void)generateTestData
 {
-    _menuList = @[@"专题", @"频道"];
+    _menuList = @[@"专题", @"论坛"];
 }
 
 #pragma mark - accessor methods
@@ -73,6 +93,7 @@
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
         _magicController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _magicController.magicView.navigationInset = UIEdgeInsetsMake(0, kSearchBarWidth, 0, 0);
         _magicController.magicView.navigationColor = [UIColor whiteColor];
         _magicController.magicView.sliderColor = RGBCOLOR(169, 37, 37);
         _magicController.magicView.switchStyle = VTSwitchStyleDefault;

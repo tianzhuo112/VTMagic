@@ -33,6 +33,7 @@
     self.magicView.againstStatusBar = YES;
 //    self.magicView.switchStyle = VTSwitchStyleStiff;
 //    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 0);
+    self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
     self.magicView.layoutStyle = kiPhoneDevice ? VTLayoutStyleDefault : VTLayoutStyleDivide;
     self.magicView.navigationColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -136,14 +137,9 @@
 - (void)subscribeAction
 {
     NSLog(@"subscribeAction");
-    // select/deselect menu item
-    if (self.magicView.isDeselected) {
-        [self.magicView reselectMenuItem];
-        self.magicView.sliderHidden = NO;
-    } else {
-        [self.magicView deselectMenuItem];
-        self.magicView.sliderHidden = YES;
-    }
+    // against status bar or not
+    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
+    [self.magicView setHeaderHidden:!self.magicView.isHeaderHidden duration:0.35];
 }
 
 #pragma mark - functional methods

@@ -4,7 +4,7 @@ VTMagic is a page manager library, you can custom every page controller by diffe
 
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, and run `pod install` from the Project directory first.
 
 ### Installation
 
@@ -25,6 +25,7 @@ pod "VTMagic"
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];
     [_magicController didMoveToParentViewController:self];
+
     [_magicController.magicView reloadData];
 }
 
@@ -107,12 +108,12 @@ You must conform to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTM
         return recomViewController;
     }
 
-    static NSString *gridId = @"page.identifier";
-    VTGridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
-    if (!viewController) {
-        viewController = [[VTGridViewController alloc] init];
+    static NSString *gridId = @"grid.identifier";
+    VTGridViewController *gridViewController = [magicView dequeueReusablePageWithIdentifier:gridId];
+    if (!gridViewController) {
+        gridViewController = [[VTGridViewController alloc] init];
     }
-    return viewController;
+    return gridViewController;
 }
 ```
 
