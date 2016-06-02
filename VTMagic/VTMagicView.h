@@ -186,8 +186,6 @@
 
 /**
  *  顶部导航栏是否紧贴系统状态栏，即是否需要为状态栏留出20个点的区域，默认NO
- *  需要注意的是，直接修改该属性值页面不会立即会重新布局
- *  若希望立即生效，建议使用方法setDependStatusBar:animated:
  */
 @property (nonatomic, assign, getter=isAgainstStatusBar) BOOL againstStatusBar;
 
@@ -196,12 +194,12 @@
  */
 @property (nonatomic, assign, getter=isHeaderHidden) BOOL headerHidden;
 /**
- *  是否动画显示或隐藏头部组件
+ *  显示或隐藏头部组件
  *
- *  @param dependStatusBar 隐藏或显示
- *  @param animated        是否动画执行
+ *  @param headerHidden 是否隐藏
+ *  @param duration     动画时长
  */
-- (void)setHeaderHidden:(BOOL)headerHidden animated:(BOOL)animated;
+- (void)setHeaderHidden:(BOOL)headerHidden duration:(CGFloat)duration;
 
 /**
  *  页面滑到两侧边缘时是否需要反弹效果，默认NO
@@ -217,7 +215,7 @@
 /**************************************color & size**************************************/
 
 /**
- *  导航菜单条的inset，对leftNavigatoinItem和rightNavigatoinItem无效
+ *  导航菜单栏的inset，对leftNavigatoinItem和rightNavigatoinItem无效
  */
 @property (nonatomic, assign) UIEdgeInsets navigationInset;
 
@@ -228,8 +226,6 @@
 
 /**
  *  顶部导航条的高度，默认是44
- *  默认情况下修改导航高度会同步修改item的高度
- *  若不希望两者高度保持一致，建议item的高度在导航之后修改
  */
 @property (nonatomic, assign) CGFloat navigationHeight;
 

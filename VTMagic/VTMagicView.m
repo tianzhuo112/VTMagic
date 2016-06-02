@@ -112,16 +112,6 @@ static const void *kVTMagicView = &kVTMagicView;
     }
 }
 
-- (void)updateFramesWithAnimated:(BOOL)animated
-{
-    CGFloat duration = animated ? 0.3 : 0;
-    [UIView animateWithDuration:duration animations:^{
-        [self updateFrameForSubviews];
-    } completion:^(BOOL finished) {
-        _headerView.hidden = _headerHidden;
-    }];
-}
-
 - (void)updateFrameForSubviews
 {
     CGSize size = self.frame.size;
@@ -972,11 +962,15 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     [self updateFrameForSubviews];
 }
 
-- (void)setHeaderHidden:(BOOL)headerHidden animated:(BOOL)animated
+- (void)setHeaderHidden:(BOOL)headerHidden duration:(CGFloat)duration
 {
     _headerView.hidden = NO;
     _headerHidden = headerHidden;
-    [self updateFramesWithAnimated:animated];
+    [UIView animateWithDuration:duration animations:^{
+        [self updateFrameForSubviews];
+    } completion:^(BOOL finished) {
+        _headerView.hidden = _headerHidden;
+    }];
 }
 
 - (void)setLeftNavigatoinItem:(UIView *)leftNavigatoinItem
