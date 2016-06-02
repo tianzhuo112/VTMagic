@@ -269,12 +269,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AEA0D5161A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagic" */;
 			buildPhases = (
-				66BF1575B7B15449532CCDAD /* 📦 Check Pods Manifest.lock */,
+				66BF1575B7B15449532CCDAD /* [CP] Check Pods Manifest.lock */,
 				AEA0D4EF1A11E4AB00229B72 /* Sources */,
 				AEA0D4F01A11E4AB00229B72 /* Frameworks */,
 				AEA0D4F11A11E4AB00229B72 /* Resources */,
-				8EF54AFA0A161D46B27B164D /* 📦 Embed Pods Frameworks */,
-				E7D1A3E9D0E7B3B66AF8C870 /* 📦 Copy Pods Resources */,
+				8EF54AFA0A161D46B27B164D /* [CP] Embed Pods Frameworks */,
+				E7D1A3E9D0E7B3B66AF8C870 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -289,12 +289,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AEA0D5191A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicTests" */;
 			buildPhases = (
-				4DAE3C363202CC25F0AA762B /* 📦 Check Pods Manifest.lock */,
+				4DAE3C363202CC25F0AA762B /* [CP] Check Pods Manifest.lock */,
 				AEA0D5081A11E4AB00229B72 /* Sources */,
 				AEA0D5091A11E4AB00229B72 /* Frameworks */,
 				AEA0D50A1A11E4AB00229B72 /* Resources */,
-				647A3C4767E14EF47F900DC8 /* 📦 Embed Pods Frameworks */,
-				5AAE86AAB7EB4C6AE4566442 /* 📦 Copy Pods Resources */,
+				647A3C4767E14EF47F900DC8 /* [CP] Embed Pods Frameworks */,
+				5AAE86AAB7EB4C6AE4566442 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -365,14 +365,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4DAE3C363202CC25F0AA762B /* 📦 Check Pods Manifest.lock */ = {
+		4DAE3C363202CC25F0AA762B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,14 +380,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		5AAE86AAB7EB4C6AE4566442 /* 📦 Copy Pods Resources */ = {
+		5AAE86AAB7EB4C6AE4566442 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,14 +395,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		647A3C4767E14EF47F900DC8 /* 📦 Embed Pods Frameworks */ = {
+		647A3C4767E14EF47F900DC8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,14 +410,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		66BF1575B7B15449532CCDAD /* 📦 Check Pods Manifest.lock */ = {
+		66BF1575B7B15449532CCDAD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,14 +425,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8EF54AFA0A161D46B27B164D /* 📦 Embed Pods Frameworks */ = {
+		8EF54AFA0A161D46B27B164D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,14 +440,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VTMagic/Pods-VTMagic-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E7D1A3E9D0E7B3B66AF8C870 /* 📦 Copy Pods Resources */ = {
+		E7D1A3E9D0E7B3B66AF8C870 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,7 +1,7 @@
 PODS:
-  - VTMagic (1.0.1):
-    - VTMagic/Core (= 1.0.1)
-  - VTMagic/Core (1.0.1)
+  - VTMagic (1.0.2):
+    - VTMagic/Core (= 1.0.2)
+  - VTMagic/Core (1.0.2)
 
 DEPENDENCIES:
   - VTMagic (from `./`)
@@ -11,8 +11,8 @@ EXTERNAL SOURCES:
     :path: ./
 
 SPEC CHECKSUMS:
-  VTMagic: 4417fca0b5e18f6cf75bc494c80c7aa9600df45c
+  VTMagic: 3bbd5998dc5efa53e1b897ebc65fbb59d9aa7150
 
 PODFILE CHECKSUM: 9904a30729e9a4e8ceff7f85b5976ad299be7ee4
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1
