@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E02F5521D02B69E00394AAA /* VTBubbleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E02F5511D02B69E00394AAA /* VTBubbleViewController.m */; };
 		7E2E3FC41CFF337000C275F3 /* VTDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E3FC31CFF337000C275F3 /* VTDataViewController.m */; };
 		7E2E3FC71CFF33A500C275F3 /* VTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E2E3FC61CFF33A500C275F3 /* VTWebViewController.m */; };
 		7E2E3FC91CFF3B1800C275F3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E2E3FC81CFF3B1800C275F3 /* WebKit.framework */; };
@@ -43,6 +44,8 @@
 		2FE5B38F2768CFB9EC1F1147 /* Pods-VTMagicTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagicTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests.debug.xcconfig"; sourceTree = "<group>"; };
 		48AF73610954158967496C38 /* Pods-VTMagic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VTMagic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VTMagic/Pods-VTMagic.debug.xcconfig"; sourceTree = "<group>"; };
 		5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VTMagic.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E02F5501D02B69E00394AAA /* VTBubbleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTBubbleViewController.h; sourceTree = "<group>"; };
+		7E02F5511D02B69E00394AAA /* VTBubbleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTBubbleViewController.m; sourceTree = "<group>"; };
 		7E2E3FC21CFF337000C275F3 /* VTDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDataViewController.h; sourceTree = "<group>"; };
 		7E2E3FC31CFF337000C275F3 /* VTDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDataViewController.m; sourceTree = "<group>"; };
 		7E2E3FC51CFF33A500C275F3 /* VTWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTWebViewController.h; sourceTree = "<group>"; };
@@ -124,6 +127,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7E02F54F1D02B67600394AAA /* Bubble */ = {
+			isa = PBXGroup;
+			children = (
+				7E02F5501D02B69E00394AAA /* VTBubbleViewController.h */,
+				7E02F5511D02B69E00394AAA /* VTBubbleViewController.m */,
+			);
+			path = Bubble;
+			sourceTree = "<group>";
+		};
 		7E2E3FC11CFF335300C275F3 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				7E44B6801CFF198500FEEFF8 /* Home */,
+				7E02F54F1D02B67600394AAA /* Bubble */,
 				7E44B69D1CFF2A7F00FEEFF8 /* Divide */,
 				7E44B67C1CFF198500FEEFF8 /* Center */,
 				7E2E3FC11CFF335300C275F3 /* Data */,
@@ -465,6 +478,7 @@
 				7E44B69C1CFF262600FEEFF8 /* VTCenterViewController.m in Sources */,
 				7E2E3FCF1CFF3CBB00C275F3 /* VTGridViewCell.m in Sources */,
 				7E44B68E1CFF198500FEEFF8 /* VTHomeViewController.m in Sources */,
+				7E02F5521D02B69E00394AAA /* VTBubbleViewController.m in Sources */,
 				7E2E3FC71CFF33A500C275F3 /* VTWebViewController.m in Sources */,
 				7E2E3FC41CFF337000C275F3 /* VTDataViewController.m in Sources */,
 				7E44B68D1CFF198500FEEFF8 /* VTRecomViewController.m in Sources */,

@@ -10,6 +10,7 @@
 #import "VTHomeViewController.h"
 #import "VTCenterViewController.h"
 #import "VTDivideViewController.h"
+#import "VTBubbleViewController.h"
 #import "VTDataViewController.h"
 
 @implementation VTTabBarController
@@ -24,11 +25,11 @@
     UITabBarItem *homeItem = [self creatTabBarItemWithTitle:@"首页"];
     homeNav.tabBarItem = homeItem;
     
-    VTDivideViewController *divideVC = [[VTDivideViewController alloc] init];
-    UINavigationController *divideNav = [[UINavigationController alloc]initWithRootViewController:divideVC];
-    divideNav.navigationBarHidden = YES;
-    UITabBarItem *divideItem = [self creatTabBarItemWithTitle:@"平分"];
-    divideNav.tabBarItem = divideItem;
+    VTBubbleViewController *bubbleVC = [[VTBubbleViewController alloc] init];
+    UINavigationController *bubbleNav = [[UINavigationController alloc]initWithRootViewController:bubbleVC];
+    bubbleNav.navigationBarHidden = YES;
+    UITabBarItem *bubbleItem = [self creatTabBarItemWithTitle:@"气泡"];
+    bubbleNav.tabBarItem = bubbleItem;
     
     VTCenterViewController *centerVC = [[VTCenterViewController alloc] init];
     UINavigationController *centerNav = [[UINavigationController alloc]initWithRootViewController:centerVC];
@@ -36,13 +37,19 @@
     UITabBarItem *centerItem = [self creatTabBarItemWithTitle:@"居中"];
     centerNav.tabBarItem = centerItem;
     
+    VTDivideViewController *divideVC = [[VTDivideViewController alloc] init];
+    UINavigationController *divideNav = [[UINavigationController alloc]initWithRootViewController:divideVC];
+    divideNav.navigationBarHidden = YES;
+    UITabBarItem *divideItem = [self creatTabBarItemWithTitle:@"平分"];
+    divideNav.tabBarItem = divideItem;
+    
     VTDataViewController*dataVC = [[VTDataViewController alloc] init];
     UINavigationController *dataNav = [[UINavigationController alloc]initWithRootViewController:dataVC];
     dataNav.navigationBarHidden = YES;
     UITabBarItem *dataItem = [self creatTabBarItemWithTitle:@"webview"];
     dataNav.tabBarItem = dataItem;
     
-    self.viewControllers = @[homeNav, divideNav, centerNav, dataNav];
+    self.viewControllers = @[homeNav, bubbleNav, centerNav, divideNav, dataNav];
     
     self.tabBar.barTintColor = RGBCOLOR(239, 239, 239);
     self.tabBar.alpha = 0.97;
