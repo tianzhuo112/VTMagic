@@ -104,7 +104,7 @@
 
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
 {
-    VTLog(@"didSelectItemAtIndex:%ld", (long).itemIndex);
+    VTLog(@"didSelectItemAtIndex:%ld", (long)itemIndex);
 }
 
 #pragma mark - accessor methods
