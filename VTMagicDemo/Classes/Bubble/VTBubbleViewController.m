@@ -25,7 +25,7 @@
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
-    self.magicView.layoutStyle = kiPhoneDevice ? VTLayoutStyleDefault : VTLayoutStyleDivide;
+    self.magicView.layoutStyle = VTLayoutStyleDefault;
     self.magicView.navigationColor = [UIColor whiteColor];
     self.magicView.sliderStyle = VTSliderStyleBubble;
     self.magicView.sliderColor = RGBCOLOR(229, 229, 229);

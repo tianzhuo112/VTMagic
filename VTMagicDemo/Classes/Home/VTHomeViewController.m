@@ -34,8 +34,8 @@
 //    self.magicView.switchStyle = VTSwitchStyleStiff;
 //    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 0);
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
-    self.magicView.layoutStyle = kiPhoneDevice ? VTLayoutStyleDefault : VTLayoutStyleDivide;
     self.magicView.navigationColor = [UIColor whiteColor];
+    self.magicView.layoutStyle = VTLayoutStyleDefault;
     self.view.backgroundColor = [UIColor whiteColor];
     [self integrateComponents];
     
