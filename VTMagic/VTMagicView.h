@@ -112,6 +112,11 @@
 @property (nonatomic, assign) VTLayoutStyle layoutStyle;
 
 /**
+ *  导航栏滑块样式，默认显示下划线
+ */
+@property (nonatomic, assign) VTSliderStyle sliderStyle;
+
+/**
  *  导航菜单item的预览数，默认为1
  */
 @property (nonatomic, assign) NSUInteger previewItems;
@@ -246,21 +251,41 @@
 
 /**
  *  顶部导航栏滑块高度，默认2
+ *
+ *  @warning 非VTSliderStyleDefault样式，该属性无效
  */
 @property (nonatomic, assign) CGFloat sliderHeight;
 
 /**
- *  顶部导航栏滑块宽度，默认与item宽度一致
+ *  顶部导航栏滑块宽度，VTSliderStyleDefault样式下默认与item宽度一致
+ *
+ *  @warning 非VTSliderStyleDefault样式，该属性无效
  */
 @property (nonatomic, assign) CGFloat sliderWidth;
 
 /**
  *  顶部导航栏滑块相对导航底部的偏移量，默认0，上偏为负
+ *
+ *  @warning 非VTSliderStyleDefault样式，该属性无效
  */
 @property (nonatomic, assign) CGFloat sliderOffset;
 
 /**
- *  头部组件的高度，默认64
+ *  气泡相对menuItem文本的edgeInsets，默认(2, 5, 2, 5)
+ *
+ *  @warning 该属性用于VTSliderStyleBubble样式下
+ */
+@property (nonatomic, assign) UIEdgeInsets bubbleInset;
+
+/**
+ *  滑块的圆角半径，默认10
+ *
+ *  @warning 该属性用于VTSliderStyleBubble样式下
+ */
+@property (nonatomic, assign) CGFloat bubbleRadius;
+
+/**
+ *  头部组件的高度默认64
  */
 @property (nonatomic, assign) CGFloat headerHeight;
 

@@ -51,7 +51,7 @@
 - (UITabBarItem *)creatTabBarItemWithTitle:(NSString*)title
 {
     UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:title image:nil selectedImage:nil];
-    [item setTitleTextAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(169, 37, 37)}  forState:UIControlStateHighlighted];
+    [item setTitleTextAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(169, 37, 37)}  forState:UIControlStateSelected];
     [item setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateNormal];
 //    item.imageInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     return item;

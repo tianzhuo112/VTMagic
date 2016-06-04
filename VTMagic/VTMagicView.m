@@ -71,6 +71,7 @@ static const void *kVTMagicView = &kVTMagicView;
         _previewItems = 1;
         _sliderHeight = 2;
         _headerHeight = 64;
+        _bubbleRadius = 10;
         _separatorHeight = 0.5;
         _navigationHeight = 44;
         _headerHidden = YES;
@@ -136,10 +137,14 @@ static const void *kVTMagicView = &kVTMagicView;
     }
     
     CGRect sliderFrame = _sliderView.frame;
-    sliderFrame.size.height = _sliderHeight;
-    sliderFrame.origin.y = _navigationHeight  - _sliderHeight + _sliderOffset;
-    CGRect itemFrame = [_menuBar itemFrameAtIndex:_currentPage];
-    if (!_sliderWidth) sliderFrame.size.width = itemFrame.size.width;
+    if (VTSliderStyleBubble == _sliderStyle) {
+        sliderFrame = [_menuBar bubbleFrameAtIndex:_currentPage];
+    } else {
+        sliderFrame.size.height = _sliderHeight;
+        sliderFrame.origin.y = _navigationHeight  - _sliderHeight + _sliderOffset;
+        CGRect itemFrame = [_menuBar itemFrameAtIndex:_currentPage];
+        if (!_sliderWidth) sliderFrame.size.width = itemFrame.size.width;
+    }
     _sliderView.frame = sliderFrame;
     
     self.needSkipUpdate = YES;
@@ -371,12 +376,16 @@ static const void *kVTMagicView = &kVTMagicView;
     // update slider frame
     updateBlock(_currentPage);
     CGRect sliderFrame = _sliderView.frame;
-    if (_sliderWidth) {
-        sliderFrame.origin.x = itemMinX + (itemFrame.size.width - _sliderWidth) * 0.5;
-        sliderFrame.size.width = _sliderWidth;
+    if (VTSliderStyleBubble == _sliderStyle) {
+        sliderFrame = [_menuBar bubbleFrameAtIndex:_currentPage];
     } else {
-        sliderFrame.origin.x = itemMinX;
-        sliderFrame.size.width = itemFrame.size.width;
+        if (_sliderWidth) {
+            sliderFrame.origin.x = itemMinX + (itemFrame.size.width - _sliderWidth) * 0.5;
+            sliderFrame.size.width = _sliderWidth;
+        } else {
+            sliderFrame.origin.x = itemMinX;
+            sliderFrame.size.width = itemFrame.size.width;
+        }
     }
     _sliderView.frame = sliderFrame;
     
@@ -551,25 +560,33 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     UIColor *selectedColor = [UIColor vtm_compositeColor:_selectedVTColor anoColor:_normalVTColor scale:absScale];
     UIButton *currentItem = [_menuBar itemAtIndex:_currentPage];
     [currentItem setTitleColor:selectedColor forState:UIControlStateSelected];
-    CGRect currentFrame = [_menuBar itemFrameAtIndex:_currentPage];
     UIButton *nextItem = [_menuBar itemAtIndex:_nextPageIndex];
     [nextItem setTitleColor:nextColor forState:UIControlStateNormal];
-    CGRect nextFrame  = [_menuBar itemFrameAtIndex:_nextPageIndex];
     
-    if (_sliderWidth) {
+    CGRect nextFrame  = CGRectZero;
+    CGRect currentFrame = CGRectZero;
+    if (VTSliderStyleBubble == _sliderStyle) {
+        nextFrame  = [_menuBar bubbleFrameAtIndex:_nextPageIndex];
+        currentFrame = [_menuBar bubbleFrameAtIndex:_currentPage];
+    } else {
+        nextFrame = [_menuBar itemFrameAtIndex:_nextPageIndex];
+        currentFrame = [_menuBar itemFrameAtIndex:_currentPage];
+    }
+    
+    if (VTSliderStyleBubble == _sliderStyle || !_sliderWidth) {
+        CGRect sliderFrame = _sliderView.frame;
+        CGFloat nextWidth = nextFrame.size.width;
+        CGFloat currentWidth = currentFrame.size.width;
+        sliderFrame.size.width = currentWidth - (currentWidth - nextWidth) * absScale;
+        CGFloat offset = ABS(currentFrame.origin.x - nextFrame.origin.x) * scale;
+        sliderFrame.origin.x = currentFrame.origin.x + offset;
+        _sliderView.frame = sliderFrame;
+    } else {
         CGFloat nextCenterX = CGRectGetMidX(nextFrame);
         CGFloat currentCenterX = CGRectGetMidX(currentFrame);
         CGPoint center = _sliderView.center;
         center.x = currentCenterX + (nextCenterX - currentCenterX) * absScale;
         _sliderView.center = center;
-    } else {
-        CGRect sliderFrame = _sliderView.frame;
-        CGFloat nextWidth = nextFrame.size.width;
-        CGFloat currentWidth = currentFrame.size.width;
-        CGFloat offset = (scale > 0 ? currentWidth : nextWidth) * scale;
-        sliderFrame.origin.x = currentFrame.origin.x + offset;
-        sliderFrame.size.width = currentWidth - (currentWidth - nextWidth) * absScale;
-        _sliderView.frame = sliderFrame;
     }
 }
 
@@ -790,6 +807,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 }
 
 #pragma mark - accessor methods
+#pragma mark subviews
 - (UIView *)headerView
 {
     if (!_headerView) {
@@ -863,11 +881,32 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     return _contentView;
 }
 
+- (void)setLeftNavigatoinItem:(UIView *)leftNavigatoinItem
+{
+    _leftNavigatoinItem = leftNavigatoinItem;
+    [_navigationView addSubview:leftNavigatoinItem];
+    [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_menuBar];
+    leftNavigatoinItem.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+    [self updateFrameForLeftNavigationItem];
+}
+
+- (void)setRightNavigatoinItem:(UIView *)rightNavigatoinItem
+{
+    _rightNavigatoinItem = rightNavigatoinItem;
+    [_navigationView addSubview:rightNavigatoinItem];
+    [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_menuBar];
+    rightNavigatoinItem.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    [self updateFrameForRightNavigationItem];
+}
+
 - (NSArray<UIViewController *> *)viewControllers
 {
     return [_contentView visibleList];
 }
 
+#pragma mark basic configurations
 - (void)setDataSource:(id<VTMagicViewDataSource>)dataSource
 {
     _dataSource = dataSource;
@@ -901,6 +940,27 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     _menuBar.layoutStyle = layoutStyle;
 }
 
+- (void)setSliderStyle:(VTSliderStyle)sliderStyle
+{
+    _sliderStyle = sliderStyle;
+    self.sliderView.backgroundColor = _sliderColor ?: RGBCOLOR(229, 229, 229);
+    self.bubbleRadius = _bubbleRadius;
+}
+
+- (void)setCurrentPage:(NSInteger)currentPage
+{
+//    if (_currentPage == _nextPageIndex) return;
+    if (currentPage < 0) return;
+    NSInteger disIndex = _currentPage;
+    _currentPage = currentPage;
+    _previousIndex = disIndex;
+    
+    [self displayPageHasChanged:currentPage disIndex:disIndex];
+    [self viewControllerDidDisappear:disIndex];
+    [self viewControllerDidAppear:currentPage];
+}
+
+#pragma mark bool configurations
 - (void)setScrollEnabled:(BOOL)scrollEnabled
 {
     _scrollEnabled = scrollEnabled;
@@ -973,24 +1033,11 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     }];
 }
 
-- (void)setLeftNavigatoinItem:(UIView *)leftNavigatoinItem
+#pragma mark color & size configurations
+- (void)setNavigationInset:(UIEdgeInsets)navigationInset
 {
-    _leftNavigatoinItem = leftNavigatoinItem;
-    [_navigationView addSubview:leftNavigatoinItem];
-    [_navigationView bringSubviewToFront:_separatorLine];
-    [_navigationView bringSubviewToFront:_menuBar];
-    leftNavigatoinItem.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-    [self updateFrameForLeftNavigationItem];
-}
-
-- (void)setRightNavigatoinItem:(UIView *)rightNavigatoinItem
-{
-    _rightNavigatoinItem = rightNavigatoinItem;
-    [_navigationView addSubview:rightNavigatoinItem];
-    [_navigationView bringSubviewToFront:_separatorLine];
-    [_navigationView bringSubviewToFront:_menuBar];
-    rightNavigatoinItem.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [self updateFrameForRightNavigationItem];
+    _navigationInset = navigationInset;
+    _menuBar.menuInset = navigationInset;
 }
 
 - (void)setNavigationColor:(UIColor *)navigationColor
@@ -1011,6 +1058,23 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     _sliderView.backgroundColor = sliderColor;
 }
 
+- (void)setBubbleInset:(UIEdgeInsets)bubbleInset
+{
+    [_menuBar setBubbleInset:bubbleInset];
+}
+
+- (UIEdgeInsets)bubbleInset
+{
+    return [_menuBar bubbleInset];
+}
+
+- (void)setBubbleRadius:(CGFloat)bubbleRadius
+{
+    _bubbleRadius = bubbleRadius;
+    self.sliderView.layer.cornerRadius = bubbleRadius;
+    self.sliderView.layer.masksToBounds = YES;
+}
+
 - (void)setItemSpacing:(CGFloat)itemSpacing
 {
     _itemSpacing = itemSpacing;
@@ -1021,25 +1085,6 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 {
     _itemWidth = itemWidth;
     _menuBar.itemWidth = itemWidth;
-}
-
-- (void)setNavigationInset:(UIEdgeInsets)navigationInset
-{
-    _navigationInset = navigationInset;
-    _menuBar.menuInset = navigationInset;
-}
-
-- (void)setCurrentPage:(NSInteger)currentPage
-{
-//    if (_currentPage == _nextPageIndex) return;
-    if (currentPage < 0) return;
-    NSInteger disIndex = _currentPage;
-    _currentPage = currentPage;
-    _previousIndex = disIndex;
-    
-    [self displayPageHasChanged:currentPage disIndex:disIndex];
-    [self viewControllerDidDisappear:disIndex];
-    [self viewControllerDidAppear:currentPage];
 }
 
 @end

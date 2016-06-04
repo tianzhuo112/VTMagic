@@ -88,6 +88,11 @@
  */
 @property (nonatomic, assign) UIEdgeInsets menuInset;
 
+/**
+ *  气泡相对menuItem文本的edgeInsets，默认(2, 5, 2, 5)
+ */
+@property (nonatomic, assign) UIEdgeInsets bubbleInset;
+
 #pragma mark - public methods
 /**
  *  刷新数据
@@ -122,6 +127,15 @@
  *  @return 当前索引对应item的frame
  */
 - (CGRect)itemFrameAtIndex:(NSUInteger)index;
+
+/**
+ *  根据索引获取对应item的气泡大小
+ *
+ *  @param index 索引
+ *
+ *  @return 当前索引对应的气泡大小
+ */
+- (CGRect)bubbleFrameAtIndex:(NSUInteger)index;
 
 /**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil

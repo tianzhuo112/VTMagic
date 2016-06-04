@@ -43,6 +43,14 @@ typedef NS_ENUM(NSUInteger, VTSwitchEvent) {
     VTSwitchEventUnkown,
 };
 
+/** 导航栏滑块样式 */
+typedef NS_ENUM(NSUInteger, VTSliderStyle) {
+    /** 默认显示下划线 */
+    VTSliderStyleDefault,
+    /** 气泡样式，该样式下需结合bubbleInset和bubbleRadius使用 */
+    VTSliderStyleBubble,
+};
+
 /** UIPanGestureRecognizer手势方向 */
 typedef NS_ENUM(NSUInteger, VTPanRecognizerDirection) {
     VTPanRecognizerDirectionUndefined,  // 初始

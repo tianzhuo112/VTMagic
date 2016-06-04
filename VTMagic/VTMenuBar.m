@@ -15,6 +15,7 @@ static NSInteger const kVTMenuBarTag = 1000;
 @interface VTMenuBar()
 
 @property (nonatomic, strong) NSMutableArray *frameList; // frame数组
+@property (nonatomic, strong) NSMutableArray *bubbleList;
 @property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的items
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
@@ -31,8 +32,10 @@ static NSInteger const kVTMenuBarTag = 1000;
     self = [super initWithFrame:frame];
     if (self) {
         _itemSpacing = 25.f;
+        _bubbleInset = UIEdgeInsetsMake(2, 5, 2, 5);
         _indexList = [[NSMutableArray alloc] init];
         _frameList = [[NSMutableArray alloc] init];
+        _bubbleList = [[NSMutableArray alloc] init];
         _visibleDict = [[NSMutableDictionary alloc] init];
         _cacheSet = [[NSMutableSet alloc] init];
     }
@@ -69,8 +72,7 @@ static NSInteger const kVTMenuBarTag = 1000;
         }
     }
     
-    _selectedItem = _visibleDict[@(_currentIndex)];
-    _selectedItem.selected = _deselected ? NO : YES;
+    [self updateSelectedItem];
 }
 
 #pragma mark - update menuItem state
@@ -119,6 +121,29 @@ static NSInteger const kVTMenuBarTag = 1000;
     [_visibleDict removeAllObjects];
 }
 
+- (void)resetBubbleFrames
+{
+    [_bubbleList removeAllObjects];
+    if (!_menuTitles.count) return;
+    
+    NSInteger index = 0;
+    CGSize size = CGSizeZero;
+    CGRect frame = CGRectZero;
+    CGRect itemFrame = CGRectZero;
+    CGPoint bubblePoint = CGPointZero;
+    for (NSString *title in _menuTitles) {
+        size = [self sizeWithTitle:title];
+        index = [_menuTitles indexOfObject:title];
+        itemFrame = [self itemFrameAtIndex:index];
+        size.width += _bubbleInset.left + _bubbleInset.right;
+        size.height += _bubbleInset.top + _bubbleInset.bottom;
+        bubblePoint.x = CGRectGetMidX(itemFrame) - size.width/2;
+        bubblePoint.y = CGRectGetMidY(itemFrame) - size.height/2;
+        frame = CGRectMake(bubblePoint.x, bubblePoint.y, size.width, size.height);
+        [_bubbleList addObject:[NSValue valueWithCGRect:frame]];
+    }
+}
+
 - (void)resetItemFrames
 {
     [_frameList removeAllObjects];
@@ -152,6 +177,8 @@ static NSInteger const kVTMenuBarTag = 1000;
     if (menuItem && _currentIndex < _frameList.count) {
         menuItem.frame = [_frameList[_currentIndex] CGRectValue];
     }
+    
+    [self resetBubbleFrames];
 }
 
 - (void)resetFramesForDefault
@@ -162,14 +189,7 @@ static NSInteger const kVTMenuBarTag = 1000;
     CGFloat height = self.frame.size.height;
     height -= _menuInset.top + _menuInset.bottom;
     for (NSString *title in _menuTitles) {
-        if ([title respondsToSelector:@selector(sizeWithAttributes:)]) {
-            size = [title sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
-        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            size = [title sizeWithFont:_itemFont];
-#pragma clang diagnostic pop
-        }
+        size = [self sizeWithTitle:title];
         frame = CGRectMake(itemX, _menuInset.top, size.width + _itemSpacing, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
@@ -224,6 +244,20 @@ static NSInteger const kVTMenuBarTag = 1000;
     }
 }
 
+- (CGSize)sizeWithTitle:(NSString *)title
+{
+    CGSize size = CGSizeZero;
+    if ([title respondsToSelector:@selector(sizeWithAttributes:)]) {
+        size = [title sizeWithAttributes:@{NSFontAttributeName : _itemFont}];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        size = [title sizeWithFont:_itemFont];
+#pragma clang diagnostic pop
+    }
+    return size;
+}
+
 #pragma mark - 查询
 - (CGRect)itemFrameAtIndex:(NSUInteger)index
 {
@@ -266,6 +300,12 @@ static NSInteger const kVTMenuBarTag = 1000;
         [_visibleDict setObject:itemBtn forKey:@(index)];
     }
     return itemBtn;
+}
+
+- (CGRect)bubbleFrameAtIndex:(NSUInteger)index
+{
+    if (_bubbleList.count <= index) return CGRectZero;
+    return [_bubbleList[index] CGRectValue];
 }
 
 - (UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier

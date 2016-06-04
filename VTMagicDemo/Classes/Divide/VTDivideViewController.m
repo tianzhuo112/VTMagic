@@ -88,7 +88,7 @@
 {
     UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     [rightButton addTarget:self action:@selector(subscribeAction) forControlEvents:UIControlEventTouchUpInside];
-    [rightButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateHighlighted];
+    [rightButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateSelected];
     [rightButton setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateNormal];
     [rightButton setTitle:@"+" forState:UIControlStateNormal];
     rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:28];
