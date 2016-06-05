@@ -1,6 +1,6 @@
 # VTMagic
 
-VTMagic is a page manager library, you can custom every page controller by different identifier if you need. It's so easy to use!
+VTMagic is a page manager library, you can custom every page controller by different identifier if you need. It's so easy to use!（[中文手册传送门](http://www.jianshu.com/p/cb2edb21055f)）
 
 ## Usage
 
@@ -122,12 +122,12 @@ You must conform to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTM
 ```objective-c
 - (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    NSLog(@"index:%ld viewDidAppeare:%@",pageIndex, viewController.view);
+    NSLog(@"pageIndex:%ld viewDidAppeare:%@",pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    NSLog(@"index:%ld viewDidDisappeare:%@",pageIndex, viewController.view);
+    NSLog(@"pageIndex:%ld viewDidDisappeare:%@",pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
