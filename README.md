@@ -74,7 +74,7 @@ or like this
 
 ### Protocals
 
-You must conform to `<VTMagicViewDataSource>`, `<VTMagicViewDelegate>` and `<VTMagicReuseProtocol>` are optional.
+You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTMagicReuseProtocol>` are optional.
 
 ####  VTMagicViewDataSource
 
