@@ -121,16 +121,18 @@ static const void *kVTMagicView = &kVTMagicView;
     _headerView.frame = CGRectMake(0, headerY, size.width, _headerHeight);
     
     CGFloat navigationY = _headerHidden ? 0 : CGRectGetMaxY(_headerView.frame);
-    _navigationView.frame = CGRectMake(0, navigationY, size.width, _navigationHeight + topY);
+    CGFloat navigationH = _navigationHeight + (_headerHidden ? topY : 0);
+    _navigationView.frame = CGRectMake(0, navigationY, size.width, navigationH);
     
     CGFloat separatorY = CGRectGetHeight(_navigationView.frame) - _separatorHeight;
     _separatorLine.frame = CGRectMake(0, separatorY, size.width, _separatorHeight);
     
     CGRect originalCatFrame = _menuBar.frame;
+    CGFloat menuBarY = _headerHidden ? topY : 0;
     CGFloat leftItemWidth = CGRectGetWidth(_leftNavigatoinItem.frame);
     CGFloat rightItemWidth = CGRectGetWidth(_rightNavigatoinItem.frame);
     CGFloat catWidth = size.width - leftItemWidth - rightItemWidth;
-    _menuBar.frame = CGRectMake(leftItemWidth, topY, catWidth, _navigationHeight);
+    _menuBar.frame = CGRectMake(leftItemWidth, menuBarY, catWidth, _navigationHeight);
     if (!CGRectEqualToRect(_menuBar.frame, originalCatFrame)) {
         [_menuBar resetItemFrames];
         [self updateMenuBarState];
@@ -164,20 +166,19 @@ static const void *kVTMagicView = &kVTMagicView;
 - (void)updateFrameForLeftNavigationItem
 {
     CGRect leftFrame = _leftNavigatoinItem.bounds;
-    CGFloat maxNavY = _navigationHeight + (_againstStatusBar ? 20 : 0);
-    leftFrame.size.height = _navigationView.frame.size.height;
-    leftFrame.origin.y = (maxNavY - leftFrame.size.height) * 0.5;
-    if (_againstStatusBar) leftFrame.origin.y += 10;
+    CGFloat offset = CGRectGetHeight(leftFrame)/2;
+    leftFrame.origin.y = CGRectGetMidY(_navigationView.bounds) - offset;
+    if (_againstStatusBar && _headerHidden) leftFrame.origin.y += 10;
     _leftNavigatoinItem.frame = leftFrame;
 }
 
 - (void)updateFrameForRightNavigationItem
 {
     CGRect rightFrame = _rightNavigatoinItem.bounds;
-    CGFloat maxNavY = _navigationHeight + (_againstStatusBar ? 20 : 0);
+    CGFloat offset = CGRectGetHeight(rightFrame)/2;
     rightFrame.origin.x = _navigationView.frame.size.width - rightFrame.size.width;
-    rightFrame.origin.y = (maxNavY - rightFrame.size.height) * 0.5;
-    if (_againstStatusBar) rightFrame.origin.y += 10;
+    rightFrame.origin.y = CGRectGetMidY(_navigationView.bounds) - offset;
+    if (_againstStatusBar && _headerHidden) rightFrame.origin.y += 10;
     _rightNavigatoinItem.frame = rightFrame;
 }
 

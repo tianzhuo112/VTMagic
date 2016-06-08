@@ -29,6 +29,7 @@
 //    self.magicView.itemSpacing = 20.f;
 //    self.magicView.switchEnabled = YES;
 //    self.magicView.separatorHidden = NO;
+    self.magicView.headerHeight = 40;
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
 //    self.magicView.switchStyle = VTSwitchStyleStiff;
@@ -36,7 +37,7 @@
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
     self.magicView.navigationColor = [UIColor whiteColor];
     self.magicView.layoutStyle = VTLayoutStyleDefault;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = RGBCOLOR(243, 40, 47);
     [self integrateComponents];
     
     [self addNotification];
@@ -138,7 +139,7 @@
 {
     NSLog(@"subscribeAction");
     // against status bar or not
-    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
+//    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
     [self.magicView setHeaderHidden:!self.magicView.isHeaderHidden duration:0.35];
 }
 
