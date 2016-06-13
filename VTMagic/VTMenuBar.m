@@ -15,7 +15,7 @@ static NSInteger const kVTMenuBarTag = 1000;
 @interface VTMenuBar()
 
 @property (nonatomic, strong) NSMutableArray *frameList; // frame数组
-@property (nonatomic, strong) NSMutableArray *bubbleList;
+@property (nonatomic, strong) NSMutableArray *sliderList;   // slider frames
 @property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的items
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
@@ -32,10 +32,12 @@ static NSInteger const kVTMenuBarTag = 1000;
     self = [super initWithFrame:frame];
     if (self) {
         _itemSpacing = 25.f;
+        _sliderHeight = 2.0f;
+        _sliderExtension = CGFLOAT_MAX;
         _bubbleInset = UIEdgeInsetsMake(2, 5, 2, 5);
         _indexList = [[NSMutableArray alloc] init];
         _frameList = [[NSMutableArray alloc] init];
-        _bubbleList = [[NSMutableArray alloc] init];
+        _sliderList = [[NSMutableArray alloc] init];
         _visibleDict = [[NSMutableDictionary alloc] init];
         _cacheSet = [[NSMutableSet alloc] init];
     }
@@ -121,29 +123,7 @@ static NSInteger const kVTMenuBarTag = 1000;
     [_visibleDict removeAllObjects];
 }
 
-- (void)resetBubbleFrames
-{
-    [_bubbleList removeAllObjects];
-    if (!_menuTitles.count) return;
-    
-    NSInteger index = 0;
-    CGSize size = CGSizeZero;
-    CGRect frame = CGRectZero;
-    CGRect itemFrame = CGRectZero;
-    CGPoint bubblePoint = CGPointZero;
-    for (NSString *title in _menuTitles) {
-        size = [self sizeWithTitle:title];
-        index = [_menuTitles indexOfObject:title];
-        itemFrame = [self itemFrameAtIndex:index];
-        size.width += _bubbleInset.left + _bubbleInset.right;
-        size.height += _bubbleInset.top + _bubbleInset.bottom;
-        bubblePoint.x = CGRectGetMidX(itemFrame) - size.width/2;
-        bubblePoint.y = CGRectGetMidY(itemFrame) - size.height/2;
-        frame = CGRectMake(bubblePoint.x, bubblePoint.y, size.width, size.height);
-        [_bubbleList addObject:[NSValue valueWithCGRect:frame]];
-    }
-}
-
+#pragma mark reset item frames
 - (void)resetItemFrames
 {
     [_frameList removeAllObjects];
@@ -171,14 +151,13 @@ static NSInteger const kVTMenuBarTag = 1000;
             break;
     }
     
+    [self resetSliderFrames];
     CGFloat contentWidth = CGRectGetMaxX([[_frameList lastObject] CGRectValue]);
     contentWidth += _menuInset.right;
     self.contentSize = CGSizeMake(contentWidth, 0);
     if (menuItem && _currentIndex < _frameList.count) {
         menuItem.frame = [_frameList[_currentIndex] CGRectValue];
     }
-    
-    [self resetBubbleFrames];
 }
 
 - (void)resetFramesForDefault
@@ -244,6 +223,63 @@ static NSInteger const kVTMenuBarTag = 1000;
     }
 }
 
+#pragma mark reset slider frames
+- (void)resetSliderFrames
+{
+    [_sliderList removeAllObjects];
+    if (!_menuTitles.count) return;
+    switch (_sliderStyle) {
+        case VTSliderStyleBubble:
+            [self resetSliderForBubble];
+            break;
+        default:
+            [self resetSliderForDefault];
+            break;
+    }
+}
+
+- (void)resetSliderForDefault
+{
+    NSInteger index = 0;
+    CGRect itemFrame = CGRectZero;
+    CGFloat sliderY = CGRectGetHeight(self.frame) - _sliderHeight + _sliderOffset;
+    CGRect frame = CGRectMake(0, sliderY, 0, _sliderHeight);
+    for (NSString *title in _menuTitles) {
+        index = [_menuTitles indexOfObject:title];
+        itemFrame = [self itemFrameAtIndex:index];
+        if (_sliderWidth) {
+            frame.size.width = _sliderWidth;
+        } else if (CGFLOAT_MAX != _sliderExtension) {
+            frame.size.width = [self sizeWithTitle:title].width;
+            frame.size.width += _sliderExtension * 2;
+        } else {
+            frame.size.width = itemFrame.size.width;
+        }
+        frame.origin.x = CGRectGetMidX(itemFrame) - frame.size.width/2;
+        [_sliderList addObject:[NSValue valueWithCGRect:frame]];
+    }
+}
+
+- (void)resetSliderForBubble
+{
+    NSInteger index = 0;
+    CGSize size = CGSizeZero;
+    CGRect frame = CGRectZero;
+    CGRect itemFrame = CGRectZero;
+    CGPoint bubblePoint = CGPointZero;
+    for (NSString *title in _menuTitles) {
+        size = [self sizeWithTitle:title];
+        index = [_menuTitles indexOfObject:title];
+        itemFrame = [self itemFrameAtIndex:index];
+        size.width += _bubbleInset.left + _bubbleInset.right;
+        size.height += _bubbleInset.top + _bubbleInset.bottom;
+        bubblePoint.x = CGRectGetMidX(itemFrame) - size.width/2;
+        bubblePoint.y = CGRectGetMidY(itemFrame) - size.height/2;
+        frame = (CGRect){bubblePoint, size};
+        [_sliderList addObject:[NSValue valueWithCGRect:frame]];
+    }
+}
+
 - (CGSize)sizeWithTitle:(NSString *)title
 {
     CGSize size = CGSizeZero;
@@ -302,10 +338,10 @@ static NSInteger const kVTMenuBarTag = 1000;
     return itemBtn;
 }
 
-- (CGRect)bubbleFrameAtIndex:(NSUInteger)index
+- (CGRect)sliderFrameAtIndex:(NSUInteger)index
 {
-    if (_bubbleList.count <= index) return CGRectZero;
-    return [_bubbleList[index] CGRectValue];
+    if (_sliderList.count <= index) return CGRectZero;
+    return [_sliderList[index] CGRectValue];
 }
 
 - (UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier

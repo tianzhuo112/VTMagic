@@ -12,7 +12,6 @@
 
 @interface VTDivideViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
 
-@property (nonatomic, strong) VTMagicController *magicController;
 @property (nonatomic, strong)  NSArray *menuList;
 
 @end
@@ -27,8 +26,9 @@
     self.magicView.navigationColor = [UIColor whiteColor];
     self.magicView.sliderColor = RGBCOLOR(169, 37, 37);
     self.magicView.layoutStyle = VTLayoutStyleDivide;
-    self.magicView.navigationHeight = 40.f;
     self.magicView.againstStatusBar = YES;
+    self.magicView.navigationHeight = 40.f;
+    self.magicView.sliderExtension = 10.0;
     [self integrateComponents];
     
     [self generateTestData];

@@ -264,6 +264,13 @@
 @property (nonatomic, assign) CGFloat sliderWidth;
 
 /**
+ *  滑块宽度延长量，0表示滑块宽度与文本宽度一致，该属性优先级低于sliderWidth
+ *
+ *  @warning 非VTSliderStyleDefault样式或sliderWidth有效时，该属性无效
+ */
+@property (nonatomic, assign) CGFloat sliderExtension;
+
+/**
  *  顶部导航栏滑块相对导航底部的偏移量，默认0，上偏为负
  *
  *  @warning 非VTSliderStyleDefault样式，该属性无效

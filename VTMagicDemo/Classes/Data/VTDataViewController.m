@@ -79,6 +79,7 @@
         _magicController.magicView.layoutStyle = VTLayoutStyleDivide;
         _magicController.magicView.navigationHeight = 40.f;
         _magicController.magicView.againstStatusBar = YES;
+        _magicController.magicView.sliderExtension = 10.0;
         _magicController.magicView.dataSource = self;
         _magicController.magicView.delegate = self;
     }

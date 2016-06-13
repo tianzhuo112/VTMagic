@@ -72,7 +72,7 @@
     if (!cell) {
         cell = [[VTRecomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
-    NSString *imageName = [NSString stringWithFormat:@"image_%ld", indexPath.row%13];
+    NSString *imageName = [NSString stringWithFormat:@"image_%ld", (long)indexPath.row%13];
     [cell.iconView setImage:[UIImage imageNamed:imageName]];
     cell.titleLabel.text = @"标题标题";
     cell.descLabel.text = @"景点描述景点描述景点描述景点描述景点描述";

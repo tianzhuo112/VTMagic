@@ -32,6 +32,7 @@
     self.magicView.headerHeight = 40;
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
+//    self.magicView.sliderExtension = 5.0;
 //    self.magicView.switchStyle = VTSwitchStyleStiff;
 //    self.magicView.navigationInset = UIEdgeInsetsMake(0, 50, 0, 0);
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
@@ -121,12 +122,12 @@
 #pragma mark - VTMagicViewDelegate
 - (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-//    NSLog(@"index:%ld viewDidAppeare:%@",pageIndex, viewController.view);
+//    NSLog(@"index:%ld viewDidAppeare:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-//    NSLog(@"index:%ld viewDidDisappeare:%@",pageIndex, viewController.view);
+//    NSLog(@"index:%ld viewDidDisappeare:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex

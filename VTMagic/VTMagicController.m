@@ -8,9 +8,6 @@
 
 #import "VTMagicController.h"
 
-#define NOTICENTER [NSNotificationCenter defaultCenter]
-#define USERDEFAULTS [NSUserDefaults standardUserDefaults]
-
 @interface VTMagicController ()
 
 
@@ -94,12 +91,12 @@
 #pragma mark - VTMagicViewDelegate
 - (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    VTLog(@"index:%ld viewControllerDidAppeare:%@",(long)index, viewController.view);
+    VTLog(@"index:%ld viewControllerDidAppeare:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    VTLog(@"index:%ld viewControllerDidDisappeare:%@",(long)index, viewController.view);
+    VTLog(@"index:%ld viewControllerDidDisappeare:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex

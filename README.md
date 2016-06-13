@@ -122,12 +122,12 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 ```objective-c
 - (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    NSLog(@"pageIndex:%ld viewDidAppeare:%@",pageIndex, viewController.view);
+    NSLog(@"pageIndex:%ld viewDidAppeare:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    NSLog(@"pageIndex:%ld viewDidDisappeare:%@",pageIndex, viewController.view);
+    NSLog(@"pageIndex:%ld viewDidDisappeare:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex

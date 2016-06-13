@@ -4,7 +4,7 @@
 //
 //  Created by tianzhuo on 15/1/6.
 //  Copyright (c) 2015年 tianzhuo. All rights reserved.
-//  分类栏
+//  菜单栏
 
 #import <UIKit/UIKit.h>
 #import "VTEnumType.h"
@@ -59,6 +59,11 @@
 @property (nonatomic, assign) VTLayoutStyle layoutStyle;
 
 /**
+ *  导航栏滑块样式，默认显示下划线
+ */
+@property (nonatomic, assign) VTSliderStyle sliderStyle;
+
+/**
  *  当前选中item对应的索引
  */
 @property (nonatomic, assign) NSUInteger currentIndex;
@@ -92,6 +97,34 @@
  *  气泡相对menuItem文本的edgeInsets，默认(2, 5, 2, 5)
  */
 @property (nonatomic, assign) UIEdgeInsets bubbleInset;
+
+/**
+ *  顶部导航栏滑块高度，默认2
+ *
+ *  @warning 非VTSliderStyleDefault样式，该属性无效
+ */
+@property (nonatomic, assign) CGFloat sliderHeight;
+
+/**
+ *  顶部导航栏滑块宽度，VTSliderStyleDefault样式下滑块宽度默认与item宽度一致
+ *
+ *  @warning 非VTSliderStyleDefault样式，该属性无效
+ */
+@property (nonatomic, assign) CGFloat sliderWidth;
+
+/**
+ *  滑块宽度延长量，0表示滑块宽度与文本宽度一致，该属性优先级低于sliderWidth
+ *
+ *  @warning 非VTSliderStyleDefault样式或sliderWidth有效时，该属性无效
+ */
+@property (nonatomic, assign) CGFloat sliderExtension;
+
+/**
+ *  顶部导航栏滑块相对导航底部的偏移量，默认0，上偏为负
+ *
+ *  @warning 非VTSliderStyleDefault样式，该属性无效
+ */
+@property (nonatomic, assign) CGFloat sliderOffset;
 
 #pragma mark - public methods
 /**
@@ -129,13 +162,13 @@
 - (CGRect)itemFrameAtIndex:(NSUInteger)index;
 
 /**
- *  根据索引获取对应item的气泡大小
+ *  根据索引获取slider当前的frame
  *
  *  @param index 索引
  *
- *  @return 当前索引对应的气泡大小
+ *  @return 当前索引对应的slider的frame
  */
-- (CGRect)bubbleFrameAtIndex:(NSUInteger)index;
+- (CGRect)sliderFrameAtIndex:(NSUInteger)index;
 
 /**
  *  根据索引获取当前页面显示的item，不在窗口上显示的则为nil

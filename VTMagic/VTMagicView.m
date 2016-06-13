@@ -40,7 +40,7 @@ static const void *kVTMagicView = &kVTMagicView;
 
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTMenuBarDatasource,VTMenuBarDelegate>
 
-@property (nonatomic, strong) VTMenuBar *menuBar; // 顶部导航分类视图
+@property (nonatomic, strong) VTMenuBar *menuBar; // 顶部导航菜单视图
 @property (nonatomic, strong) VTContentView *contentView; // 容器视图
 @property (nonatomic, strong) UIView *sliderView; // 顶部导航栏滑块
 @property (nonatomic, strong) UIView *separatorLine; // 导航模块底部分割线
@@ -127,26 +127,18 @@ static const void *kVTMagicView = &kVTMagicView;
     CGFloat separatorY = CGRectGetHeight(_navigationView.frame) - _separatorHeight;
     _separatorLine.frame = CGRectMake(0, separatorY, size.width, _separatorHeight);
     
-    CGRect originalCatFrame = _menuBar.frame;
+    CGRect originalMenuFrame = _menuBar.frame;
     CGFloat menuBarY = _headerHidden ? topY : 0;
     CGFloat leftItemWidth = CGRectGetWidth(_leftNavigatoinItem.frame);
     CGFloat rightItemWidth = CGRectGetWidth(_rightNavigatoinItem.frame);
     CGFloat catWidth = size.width - leftItemWidth - rightItemWidth;
     _menuBar.frame = CGRectMake(leftItemWidth, menuBarY, catWidth, _navigationHeight);
-    if (!CGRectEqualToRect(_menuBar.frame, originalCatFrame)) {
+    if (!CGRectEqualToRect(_menuBar.frame, originalMenuFrame)) {
         [_menuBar resetItemFrames];
         [self updateMenuBarState];
     }
     
-    CGRect sliderFrame = _sliderView.frame;
-    if (VTSliderStyleBubble == _sliderStyle) {
-        sliderFrame = [_menuBar bubbleFrameAtIndex:_currentPage];
-    } else {
-        sliderFrame.size.height = _sliderHeight;
-        sliderFrame.origin.y = _navigationHeight  - _sliderHeight + _sliderOffset;
-        CGRect itemFrame = [_menuBar itemFrameAtIndex:_currentPage];
-        if (!_sliderWidth) sliderFrame.size.width = itemFrame.size.width;
-    }
+    CGRect sliderFrame = [_menuBar sliderFrameAtIndex:_currentPage];
     _sliderView.frame = sliderFrame;
     
     self.needSkipUpdate = YES;
@@ -376,48 +368,37 @@ static const void *kVTMagicView = &kVTMagicView;
     
     // update slider frame
     updateBlock(_currentPage);
-    CGRect sliderFrame = _sliderView.frame;
-    if (VTSliderStyleBubble == _sliderStyle) {
-        sliderFrame = [_menuBar bubbleFrameAtIndex:_currentPage];
-    } else {
-        if (_sliderWidth) {
-            sliderFrame.origin.x = itemMinX + (itemFrame.size.width - _sliderWidth) * 0.5;
-            sliderFrame.size.width = _sliderWidth;
-        } else {
-            sliderFrame.origin.x = itemMinX;
-            sliderFrame.size.width = itemFrame.size.width;
-        }
-    }
+    CGRect sliderFrame = [_menuBar sliderFrameAtIndex:_currentPage];
     _sliderView.frame = sliderFrame;
     
     // update contentOffset
-    CGFloat catWidth = _menuBar.frame.size.width;
+    CGFloat menuWidth = _menuBar.frame.size.width;
     CGFloat offsetX = _menuBar.contentOffset.x;
-    CGFloat catOffsetX = offsetX;
-    if (itemMaxX < catOffsetX) {// 位于屏幕左侧
+    CGFloat menuOffsetX = offsetX;
+    if (itemMaxX < menuOffsetX) {// 位于屏幕左侧
         updateBlock(_currentPage - _previewItems);
-        offsetX = itemMinX - catWidth;
+        offsetX = itemMinX - menuWidth;
         offsetX = offsetX < 0 ?: 0;
-    } else if (catOffsetX + catWidth < itemMinX) {// 位于屏幕右侧
+    } else if (menuOffsetX + menuWidth < itemMinX) {// 位于屏幕右侧
         updateBlock(_currentPage + _previewItems);
-        offsetX = itemMaxX - catWidth;
+        offsetX = itemMaxX - menuWidth;
     } else {
         NSInteger itemIndex = _currentPage;
         BOOL needAddition = _previousIndex <= _currentPage;
-        if (catWidth + catOffsetX <= itemMaxX) needAddition = YES;
-        if (itemMinX < catOffsetX) needAddition = NO;
+        if (menuWidth + menuOffsetX <= itemMaxX) needAddition = YES;
+        if (itemMinX < menuOffsetX) needAddition = NO;
         itemIndex += needAddition ? _previewItems : -_previewItems;
         updateBlock(itemIndex);
     }
     
     if (UIInterfaceOrientationIsPortrait([UIApplication sharedApplication].statusBarOrientation)) {
-        CGFloat diffX = (CGRectGetMaxX(itemFrame) - catWidth);
-        catOffsetX = (diffX < 0 || catOffsetX > diffX) ? catOffsetX : diffX;
+        CGFloat diffX = (CGRectGetMaxX(itemFrame) - menuWidth);
+        menuOffsetX = (diffX < 0 || menuOffsetX > diffX) ? menuOffsetX : diffX;
     }
     
-    if (catWidth + catOffsetX <= itemMaxX) {
-        offsetX = itemMaxX - catWidth;
-    } else if (itemMinX < catOffsetX) {
+    if (menuWidth + menuOffsetX <= itemMaxX) {
+        offsetX = itemMaxX - menuWidth;
+    } else if (itemMinX < menuOffsetX) {
         offsetX = itemMinX;
     }
     
@@ -435,7 +416,7 @@ static const void *kVTMagicView = &kVTMagicView;
 static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer
 {
-    BOOL isPanGesture = [recognizer isKindOfClass:[UIPanGestureRecognizer class]];
+    __unused BOOL isPanGesture = [recognizer isKindOfClass:[UIPanGestureRecognizer class]];
     NSAssert(isPanGesture, @"The Class of recognizer:%@ must be UIPanGestureRecognizer", recognizer);
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan: {
@@ -464,15 +445,14 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 
 - (void)handlePanGestureBegin:(UIPanGestureRecognizer *)recognizer
 {
-    if (direction == VTPanRecognizerDirectionUndefined) {
-        CGPoint velocity = [recognizer velocityInView:recognizer.view];
-        BOOL isHorizontalGesture = fabs(velocity.y) < fabs(velocity.x);
-        if (isHorizontalGesture) {
-            direction = VTPanRecognizerDirectionHorizontal;
-            [self handlePanGestureMove:recognizer];
-        } else {
-            direction = VTPanRecognizerDirectionVertical;
-        }
+    if (direction != VTPanRecognizerDirectionUndefined) return;
+    CGPoint velocity = [recognizer velocityInView:recognizer.view];
+    BOOL isHorizontalGesture = fabs(velocity.y) < fabs(velocity.x);
+    if (isHorizontalGesture) {
+        direction = VTPanRecognizerDirectionHorizontal;
+        [self handlePanGestureMove:recognizer];
+    } else {
+        direction = VTPanRecognizerDirectionVertical;
     }
 }
 
@@ -564,31 +544,16 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     UIButton *nextItem = [_menuBar itemAtIndex:_nextPageIndex];
     [nextItem setTitleColor:nextColor forState:UIControlStateNormal];
     
-    CGRect nextFrame  = CGRectZero;
-    CGRect currentFrame = CGRectZero;
-    if (VTSliderStyleBubble == _sliderStyle) {
-        nextFrame  = [_menuBar bubbleFrameAtIndex:_nextPageIndex];
-        currentFrame = [_menuBar bubbleFrameAtIndex:_currentPage];
-    } else {
-        nextFrame = [_menuBar itemFrameAtIndex:_nextPageIndex];
-        currentFrame = [_menuBar itemFrameAtIndex:_currentPage];
-    }
+    CGRect nextFrame  = [_menuBar sliderFrameAtIndex:_nextPageIndex];
+    CGRect currentFrame = [_menuBar sliderFrameAtIndex:_currentPage];
+    CGRect sliderFrame = _sliderView.frame;
+    CGFloat nextWidth = nextFrame.size.width;
+    CGFloat currentWidth = currentFrame.size.width;
+    sliderFrame.size.width = currentWidth - (currentWidth - nextWidth) * absScale;
+    CGFloat offset = ABS(currentFrame.origin.x - nextFrame.origin.x) * scale;
+    sliderFrame.origin.x = currentFrame.origin.x + offset;
+    _sliderView.frame = sliderFrame;
     
-    if (VTSliderStyleBubble == _sliderStyle || !_sliderWidth) {
-        CGRect sliderFrame = _sliderView.frame;
-        CGFloat nextWidth = nextFrame.size.width;
-        CGFloat currentWidth = currentFrame.size.width;
-        sliderFrame.size.width = currentWidth - (currentWidth - nextWidth) * absScale;
-        CGFloat offset = ABS(currentFrame.origin.x - nextFrame.origin.x) * scale;
-        sliderFrame.origin.x = currentFrame.origin.x + offset;
-        _sliderView.frame = sliderFrame;
-    } else {
-        CGFloat nextCenterX = CGRectGetMidX(nextFrame);
-        CGFloat currentCenterX = CGRectGetMidX(currentFrame);
-        CGPoint center = _sliderView.center;
-        center.x = currentCenterX + (nextCenterX - currentCenterX) * absScale;
-        _sliderView.center = center;
-    }
 }
 
 - (void)resetMenuItemColor
@@ -642,7 +607,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         [_magicController addChildViewController:viewController];
         [contentView addSubview:viewController.view];
         [viewController didMoveToParentViewController:_magicController];
-        // 设置默认的currentViewController，并触发viewControllerDidAppeare
+        // 设置默认的currentViewController，并触发viewDidAppeare
         if (pageIndex == _currentPage && VTSwitchEventLoad == _switchEvent) {
             [_magicController setCurrentViewController:viewController];
             if (_magicFlags.viewControllerDidAppeare) {
@@ -683,18 +648,11 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         _switchEvent = VTSwitchEventScroll;
         self.currentPage = newIndex;
         switch (_switchStyle) {
-            case VTSwitchStyleDefault:
-                [self updateItemStateForDefaultStyle];
-                break;
             case VTSwitchStyleStiff:
                 [self updateMenuBarWhenUserScrolled];
                 break;
-            case VTSwitchStyleUnknown:
-                //TODO:缺失
-                VTLog(@"VTSwitchStyleUnknown");
-                break;
             default:
-                VTLog(@"VTSwitchStyleError");
+                [self updateItemStateForDefaultStyle];
                 break;
         }
     }
@@ -944,6 +902,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)setSliderStyle:(VTSliderStyle)sliderStyle
 {
     _sliderStyle = sliderStyle;
+    _menuBar.sliderStyle = sliderStyle;
     self.sliderView.backgroundColor = _sliderColor ?: RGBCOLOR(229, 229, 229);
     self.bubbleRadius = _bubbleRadius;
 }
@@ -1057,6 +1016,28 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 {
     _sliderColor = sliderColor;
     _sliderView.backgroundColor = sliderColor;
+}
+
+- (void)setSliderWidth:(CGFloat)sliderWidth
+{
+    _sliderWidth = sliderWidth;
+    _menuBar.sliderWidth = sliderWidth;
+}
+
+- (CGFloat)sliderExtension
+{
+    return [_menuBar sliderExtension];
+}
+
+- (void)setSliderExtension:(CGFloat)sliderExtension
+{
+    _menuBar.sliderExtension = sliderExtension;
+}
+
+- (void)setSliderOffset:(CGFloat)sliderOffset
+{
+    _sliderOffset = sliderOffset;
+    _menuBar.sliderOffset = sliderOffset;
 }
 
 - (void)setBubbleInset:(UIEdgeInsets)bubbleInset
