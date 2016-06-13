@@ -8,13 +8,13 @@
 
 Pod::Spec.new do |s|
     s.name       = 'VTMagic'
-    s.version    = '1.1.0'
+    s.version    = '1.2.0'
     s.license    = { :type => 'MIT' }
     s.homepage   = 'https://github.com/tianzhuo112/VTMagic'
     s.authors    = { 'tianzhuo' => 'tianzhuo112@163.com' }
-    s.summary    = 'Page controller manager for iOS.'
+    s.summary    = 'A page container for iOS.'
     s.description = <<-DESC
-                        VTMagic is a container manager, it can manage many different pages. VTMagicView contains a menu bar and a content view, all pages are add to content view.
+                        VTMagic is a page container, it can manage many different pages. VTMagicView contains a menu bar and a content view, all pages are add to content view.
                      DESC
     s.source     = { :git => 'https://github.com/tianzhuo112/VTMagic.git', :tag => s.version.to_s }
 
@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
 
     s.subspec 'Core' do |ss|
         ss.ios.deployment_target = '6.0'
-        ss..exclude_files = 'VTMagic/VTMagic.h'
+        ss.exclude_files = 'VTMagic/VTMagic.h'
         ss.source_files = 'VTMagic/**/*.{h,m}'
     end
 end

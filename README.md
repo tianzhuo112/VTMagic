@@ -1,10 +1,10 @@
 # VTMagic
 
-VTMagic is a page manager library, you can custom every page controller by different identifier if you need. It's so easy to use!（[中文手册传送门](http://www.jianshu.com/p/cb2edb21055f)）
+VTMagic is a page container library, you can custom every page controller by different identifier if you need. It's so easy to use!（[中文手册传送门](http://www.jianshu.com/p/cb2edb21055f)）
 
 ## Usage
 
-To run the example project, clone the repo, and run `pod install` from the Project directory first.
+To run the example project, clone the repo, and run `pod install` from the project directory first.
 
 ### Installation
 
@@ -15,7 +15,7 @@ it, simply add the following line to your Podfile:
 pod "VTMagic"
 ```
 
-### Integrate
+### Integration
 
 ```objective-c
 - (void)viewDidLoad
@@ -146,6 +146,27 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 ```
 
 ## Features
+
+#### Appearance methods
+
+VTMagic will automatically calls appearance methods when user switches the page, you should do something in here, e.g. refresh page info.
+
+```objective-c
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    // do something...
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // do something...
+}
+
+```
 
 #### Obtain magicController
 
