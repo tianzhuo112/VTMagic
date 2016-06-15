@@ -72,7 +72,7 @@ or like this
 }
 ```
 
-### Protocals
+### Protocols
 
 You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTMagicReuseProtocol>` are optional.
 
