@@ -2,11 +2,12 @@
 
 VTMagic is a page container library, you can custom every page controller by different identifier if you need. It's so easy to use!（[中文手册传送门](http://www.jianshu.com/p/cb2edb21055f)）
 
-## Usage
+[change log][CHANGELOG_EN]\([修改日志][CHANGELOG_CN])
 
-To run the example project, clone the repo, and run `pod install` from the project directory first.
 
-### Installation
+## Installation
+
+### CocoaPods
 
 VTMagic is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
@@ -14,6 +15,22 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod "VTMagic"
 ```
+
+### Manually
+
+1. Download the project and drop folder VTMagic into your project.
+2. Import file VTMagic.h.
+
+```objective-c
+#import "VTMagic.h"
+```
+
+## Requirements
+- iOS 6.0
+
+## Usage
+
+To run the example project, clone the repo, and run `pod install` from the project directory first.
 
 ### Integration
 
@@ -138,6 +155,8 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 
 #### VTMagicReuseProtocol
 
+This method will be called when page is reused, you should clear old data or reset content offset in here.
+
 ```objective-c
 - (void)vtm_prepareForReuse
 {
@@ -149,7 +168,7 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 
 #### Appearance methods
 
-VTMagic will automatically calls appearance methods when user switches the page, maybe you should do something in here, e.g. refresh page info.
+VTMagic will automatically calls the appearance methods when user switches the page, maybe you should do something in here, e.g. refresh page info.
 
 ```objective-c
 - (void)viewDidAppear:(BOOL)animated
@@ -168,15 +187,18 @@ VTMagic will automatically calls appearance methods when user switches the page,
 
 ```
 
-#### Obtain magicController
+#### Get magicController
 
-You can obtain the nearest magicController in any child view controller which is conforms to `<VTMagicProtocol>`, after you import file `VTMagic.h`.
+You can get the nearest magicController in any child view controller which is conforms to `<VTMagicProtocol>`, after you import file `VTMagic.h`.
+
 ```objective-c
 NSInteger currentPage = [self.magicController currentPage];
 UIViewController *viewController = self.magicController.currentViewController;
 ```
 
 #### Switch to specified page
+
+You can switch to some specified page.
 
 ```objective-c
 [self.magicView switchToPage:3 animated:YES];
@@ -185,7 +207,9 @@ or like this
 ```objective-c
 [self.magicController switchToPage:3 animated:YES];
 ```
-#### Obtain specified view controller
+#### Get specified view controller
+
+You can get any page controller by page index, it will return nil if the page is not on the screen.
 
 ```objective-c
 UIViewController *viewController = [self.magicView viewControllerAtPage:3];
@@ -198,3 +222,11 @@ UIViewController *viewController = [self.magicController viewControllerAtPage:3]
 ## License
 
 VTMagic is released under the MIT license. See LICENSE for details.
+
+
+
+<!-- external links -->
+
+[CHANGELOG_CN]: CHANGELOG_CN.md
+[CHANGELOG_EN]: CHANGELOG_EN.md
+
