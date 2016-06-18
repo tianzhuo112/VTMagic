@@ -3,15 +3,15 @@
 
 --- 
 
-## [1.2.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.1) (06/18/2016)
-发布于2016年六月18日，周六
+## [1.2.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.1)
+发布于2016年六月19日，周日
 
 ### 更新
 - 优化菜单栏显示逻辑，以便menuItem消失时更加自然；
 - 新增属性`itemScale`，以使menuItem在切换时能有放大缩小的效果。
 
 
-## [1.2.0](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.0) (06/13/2016)
+## [1.2.0](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.0)
 发布于2016年六月13日，周一
 
 ### 更新
@@ -19,7 +19,7 @@
 - 优化VTMagicView内部子视图布局逻辑。
 
 
-## [1.1.0](https://github.com/tianzhuo112/VTMagic/releases/tag/1.1.0) (06/04/2016)
+## [1.1.0](https://github.com/tianzhuo112/VTMagic/releases/tag/1.1.0)
 发布于2016年六月4日，周六
 
 ### 更新
@@ -27,7 +27,7 @@
 - demo中新增**气泡**模块。
 
 
-## [1.0.2](https://github.com/tianzhuo112/VTMagic/releases/tag/1.0.2) (06/02/2016)
+## [1.0.2](https://github.com/tianzhuo112/VTMagic/releases/tag/1.0.2)
 发布于2016年六月2日，周四
 
 ### 更新
@@ -35,14 +35,14 @@
 - 优化了`headerView`的隐藏和显示逻辑；
 - demo中新增**居中**、**平分**、**webview**等模块。
 
-## [1.0.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.0.1) (06/01/2016)
+## [1.0.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.0.1)
 发布于2016年六月1日，周三
 
 ### 更新
 - 调整了VTMagic在Pods中显示的文件结构。
 
 
-## [1.0.0](https://github.com/tianzhuo112/VTMagic/releases/tag/1.0.0) (03/31/2016)
+## [1.0.0](https://github.com/tianzhuo112/VTMagic/releases/tag/1.0.0)
 初始版发布于2016年五月31日，周二
 
 ### 特性概要
