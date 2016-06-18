@@ -46,7 +46,7 @@
         menuItem = [UIButton buttonWithType:UIButtonTypeCustom];
         [menuItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
         [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
-        menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
+        menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];
     }
     return menuItem;
 }

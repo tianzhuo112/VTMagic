@@ -46,6 +46,14 @@
     VTPRINT_METHOD
 }
 
+#pragma mark - VTMagicReuseProtocol
+- (void)vtm_prepareForReuse
+{
+    // reset content offset
+    NSLog(@"clear old data if needed:%@", self);
+    [self.webView.scrollView setContentOffset:CGPointZero];
+}
+
 #pragma mark - UIPanGestureRecognizer
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer
 {

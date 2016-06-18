@@ -79,6 +79,11 @@
 @property (nonatomic, assign, getter=isDeselected) BOOL deselected;
 
 /**
+ *  是否需要跳过layout，菜单栏被滑动时该属性无效，强制布局
+ */
+@property (nonatomic, assign) BOOL needSkipLayout;
+
+/**
  *  自定义item宽度，仅VTLayoutStyleCustom样式下有效
  */
 @property (nonatomic, assign) CGFloat itemWidth;
@@ -87,6 +92,12 @@
  *  item按钮文字的内边距（文字距离两侧边框的距离），默认是25
  */
 @property (nonatomic, assign) CGFloat itemSpacing;
+
+/**
+ *  menuItem被选中时文本的放大倍数，默认1.0
+ *  可根据需要设置合适的数值，通常不宜超过1.5
+ */
+@property (nonatomic, assign) CGFloat itemScale;
 
 /**
  *  导航菜单的inset，对leftHeaderView和rightHeaderView无效
@@ -138,9 +149,11 @@
 - (void)resetItemFrames;
 
 /**
- *  更新选中按钮
+ *  更新被选中按钮，并根据需要决定是否调整menuItem文本的大小
+ *
+ *  @param transformScale 是否改变scale
  */
-- (void)updateSelectedItem;
+- (void)updateSelectedItem:(BOOL)transformScale;
 
 /**
  *  取消导航菜单item的选中状态

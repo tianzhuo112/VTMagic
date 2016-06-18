@@ -29,6 +29,7 @@
 //    self.magicView.itemSpacing = 20.f;
 //    self.magicView.switchEnabled = YES;
 //    self.magicView.separatorHidden = NO;
+    self.magicView.itemScale = 1.2;
     self.magicView.headerHeight = 40;
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
@@ -92,7 +93,7 @@
         menuItem = [UIButton buttonWithType:UIButtonTypeCustom];
         [menuItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
         [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
-        menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:16.f];
+        menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];
     }
     // 默认会自动完成赋值
 //    NSString *title = _menuList[itemIndex];

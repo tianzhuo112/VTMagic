@@ -305,6 +305,12 @@
 @property (nonatomic, assign) CGFloat itemSpacing;
 
 /**
+ *  menuItem被选中时文本的放大倍数，默认1.0
+ *  可根据需要设置合适的数值，通常不宜超过1.5
+ */
+@property (nonatomic, assign) CGFloat itemScale;
+
+/**
  *  自定义item宽度
  *
  *  @warning 仅VTLayoutStyleCustom样式下有效

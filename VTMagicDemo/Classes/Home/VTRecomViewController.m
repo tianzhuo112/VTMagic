@@ -79,6 +79,14 @@
     return cell;
 }
 
+#pragma mark - VTMagicReuseProtocol
+- (void)vtm_prepareForReuse
+{
+    // reset content offset
+    NSLog(@"clear old data if needed:%@", self);
+    [self.tableView setContentOffset:CGPointZero];
+}
+
 #pragma mark - functional methods
 - (void)fetchNewsData
 {

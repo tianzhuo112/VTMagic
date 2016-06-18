@@ -31,6 +31,7 @@ static NSInteger const kVTMenuBarTag = 1000;
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _itemScale = 1.0;
         _itemSpacing = 25.f;
         _sliderHeight = 2.0f;
         _sliderExtension = CGFLOAT_MAX;
@@ -48,20 +49,21 @@ static NSInteger const kVTMenuBarTag = 1000;
 {
     [super layoutSubviews];
     
-    UIButton *itemBtn = nil;
+    if (_needSkipLayout && !self.isDecelerating) return;
+    UIButton *menuItem = nil;
     CGRect frame = CGRectZero;
     NSArray *indexList = [_visibleDict allKeys];
     for (NSNumber *index in indexList) {
-        itemBtn = _visibleDict[index];
+        menuItem = _visibleDict[index];
         frame = [_frameList[[index integerValue]] CGRectValue];
         if (![self vtm_isItemNeedDisplayWithFrame:frame]) {
-            [itemBtn setSelected:NO];
-            [itemBtn removeFromSuperview];
+            [menuItem setSelected:NO];
+            [menuItem removeFromSuperview];
             [_visibleDict removeObjectForKey:index];
-            [_cacheSet addObject:itemBtn];
+            [_cacheSet addObject:menuItem];
         } else {
-            itemBtn.selected = NO;
-            itemBtn.frame = frame;
+            menuItem.selected = NO;
+            menuItem.frame = frame;
         }
     }
     
@@ -74,15 +76,22 @@ static NSInteger const kVTMenuBarTag = 1000;
         }
     }
     
-    [self updateSelectedItem];
+    BOOL transformScale = !self.isDecelerating || !_needSkipLayout;
+    [self updateSelectedItem:transformScale];
 }
 
 #pragma mark - update menuItem state
-- (void)updateSelectedItem
+- (void)updateSelectedItem:(BOOL)transformScale
 {
     _selectedItem.selected = NO;
+    UIButton *originalItem = _selectedItem;
     _selectedItem = _visibleDict[@(_currentIndex)];
     _selectedItem.selected = _deselected ? NO : YES;
+    if (!transformScale || 1.0 == _itemScale) return;
+    _selectedItem.titleLabel.layer.transform = CATransform3DMakeScale(_itemScale, _itemScale, _itemScale);
+    if (![originalItem isEqual:_selectedItem]) {
+        originalItem.titleLabel.layer.transform = CATransform3DIdentity;
+    }
 }
 
 - (void)deselectMenuItem
@@ -115,10 +124,10 @@ static NSInteger const kVTMenuBarTag = 1000;
     }
     
     NSArray *visibleItems = [_visibleDict allValues];
-    for (UIButton *itemBtn in visibleItems) {
-        [itemBtn setSelected:NO];
-        [itemBtn removeFromSuperview];
-        [_cacheSet addObject:itemBtn];
+    for (UIButton *menuItem in visibleItems) {
+        [menuItem setSelected:NO];
+        [menuItem removeFromSuperview];
+        [_cacheSet addObject:menuItem];
     }
     [_visibleDict removeAllObjects];
 }
@@ -152,7 +161,8 @@ static NSInteger const kVTMenuBarTag = 1000;
     }
     
     [self resetSliderFrames];
-    CGFloat contentWidth = CGRectGetMaxX([[_frameList lastObject] CGRectValue]);
+    CGRect lastFrame = [[_frameList lastObject] CGRectValue];
+    CGFloat contentWidth = CGRectGetMaxX(lastFrame);
     contentWidth += _menuInset.right;
     self.contentSize = CGSizeMake(contentWidth, 0);
     if (menuItem && _currentIndex < _frameList.count) {
@@ -323,19 +333,20 @@ static NSInteger const kVTMenuBarTag = 1000;
 
 - (UIButton *)loadItemAtIndex:(NSInteger)index
 {
-    UIButton *itemBtn = [_datasource menuBar:self menuItemAtIndex:index];
-    NSAssert([itemBtn isKindOfClass:[UIButton class]], @"item:%@ must be a kind of UIButton", itemBtn);
-    if (itemBtn) {
-        [itemBtn addTarget:self action:@selector(menuItemClick:) forControlEvents:UIControlEventTouchUpInside];
-        itemBtn.tag = index + kVTMenuBarTag;
+    UIButton *menuItem = [_datasource menuBar:self menuItemAtIndex:index];
+    NSAssert([menuItem isKindOfClass:[UIButton class]], @"item:%@ must be a kind of UIButton", menuItem);
+    if (menuItem) {
+        [menuItem addTarget:self action:@selector(menuItemClick:) forControlEvents:UIControlEventTouchUpInside];
+        menuItem.titleLabel.layer.transform = CATransform3DIdentity;
+        menuItem.tag = index + kVTMenuBarTag;
         if (index < _frameList.count) {
-            itemBtn.frame = [_frameList[index] CGRectValue];
+            menuItem.frame = [_frameList[index] CGRectValue];
         }
-        [itemBtn setSelected:NO];
-        [self addSubview:itemBtn];
-        [_visibleDict setObject:itemBtn forKey:@(index)];
+        [menuItem setSelected:NO];
+        [self addSubview:menuItem];
+        [_visibleDict setObject:menuItem forKey:@(index)];
     }
-    return itemBtn;
+    return menuItem;
 }
 
 - (CGRect)sliderFrameAtIndex:(NSUInteger)index

@@ -149,7 +149,7 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 
 #### Appearance methods
 
-VTMagic will automatically calls appearance methods when user switches the page, you should do something in here, e.g. refresh page info.
+VTMagic will automatically calls appearance methods when user switches the page, maybe you should do something in here, e.g. refresh page info.
 
 ```objective-c
 - (void)viewDidAppear:(BOOL)animated

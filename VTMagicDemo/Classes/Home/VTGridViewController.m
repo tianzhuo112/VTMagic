@@ -100,7 +100,9 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 #pragma mark - VTMagicReuseProtocol
 - (void)vtm_prepareForReuse
 {
+    // reset content offset
     NSLog(@"clear old data if needed:%@", self);
+    [self.collectionView setContentOffset:CGPointZero];
 }
 
 #pragma functional methods

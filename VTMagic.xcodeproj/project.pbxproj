@@ -173,8 +173,8 @@
 			children = (
 				7E44B6801CFF198500FEEFF8 /* Home */,
 				7E02F54F1D02B67600394AAA /* Bubble */,
-				7E44B69D1CFF2A7F00FEEFF8 /* Divide */,
 				7E44B67C1CFF198500FEEFF8 /* Center */,
+				7E44B69D1CFF2A7F00FEEFF8 /* Divide */,
 				7E2E3FC11CFF335300C275F3 /* Data */,
 			);
 			path = Classes;

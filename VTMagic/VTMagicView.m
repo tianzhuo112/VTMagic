@@ -68,6 +68,7 @@ static const void *kVTMagicView = &kVTMagicView;
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _itemScale = 1.0;
         _previewItems = 1;
         _sliderHeight = 2;
         _headerHeight = 64;
@@ -78,6 +79,7 @@ static const void *kVTMagicView = &kVTMagicView;
         _scrollEnabled = YES;
         _switchEnabled = YES;
         _switchAnimated = YES;
+        _menuScrollEnabled = YES;
         [self addMagicSubviews];
         [self addNotification];
     }
@@ -104,10 +106,7 @@ static const void *kVTMagicView = &kVTMagicView;
 {
     [super layoutSubviews];
     
-    if (!_menuBar.isDragging) {
-        [self updateFrameForSubviews];
-    }
-    
+    [self updateFrameForSubviews];
     if (CGRectIsEmpty(_sliderView.frame)) {
         [self updateMenuBarState];
     }
@@ -244,7 +243,9 @@ static const void *kVTMagicView = &kVTMagicView;
 
 - (UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier
 {
-    return [_menuBar dequeueReusableItemWithIdentifier:identifier];
+    UIButton *menuItem = [_menuBar dequeueReusableItemWithIdentifier:identifier];
+    [menuItem setTitleColor:_normalColor forState:UIControlStateNormal];
+    return menuItem;
 }
 
 - (UIViewController *)dequeueReusablePageWithIdentifier:(NSString *)identifier
@@ -338,7 +339,7 @@ static const void *kVTMagicView = &kVTMagicView;
     _previousIndex = disIndex;
     _menuBar.currentIndex = pageIndex;
     [UIView animateWithDuration:0.25 animations:^{
-        [_menuBar updateSelectedItem];
+        [_menuBar updateSelectedItem:YES];
         [self updateMenuBarState];
         _contentView.contentOffset = CGPointMake(contentWidth * pageIndex, 0);
     } completion:^(BOOL finished) {
@@ -554,6 +555,11 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     sliderFrame.origin.x = currentFrame.origin.x + offset;
     _sliderView.frame = sliderFrame;
     
+    if (1.0 == _itemScale || 0 == absScale) return;
+    CGFloat nextScale = 1.0 + absScale * (_itemScale - 1);
+    CGFloat currentScale = 1.0 + (1 - absScale) * (_itemScale - 1);
+    currentItem.titleLabel.layer.transform = CATransform3DMakeScale(currentScale, currentScale, currentScale);
+    nextItem.titleLabel.layer.transform = CATransform3DMakeScale(nextScale, nextScale, nextScale);
 }
 
 - (void)resetMenuItemColor
@@ -568,17 +574,17 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (UIButton *)menuBar:(VTMenuBar *)menuBar menuItemAtIndex:(NSUInteger)index
 {
     if (!_magicFlags.dataSourceMenuItem) return nil;
-    UIButton *catItem = [_dataSource magicView:self menuItemAtIndex:index];
-    [catItem setTitle:_menuTitles[index] forState:UIControlStateNormal];
+    UIButton *menuItem = [_dataSource magicView:self menuItemAtIndex:index];
+    [menuItem setTitle:_menuTitles[index] forState:UIControlStateNormal];
     if (VTColorIsZero(_normalVTColor)) {
-        _normalColor = [catItem titleColorForState:UIControlStateNormal];
+        _normalColor = [menuItem titleColorForState:UIControlStateNormal];
         _normalVTColor = [_normalColor vtm_changeToVTColor];
     }
     if (VTColorIsZero(_selectedVTColor)) {
-        _selectedColor = [catItem titleColorForState:UIControlStateSelected];
+        _selectedColor = [menuItem titleColorForState:UIControlStateSelected];
         _selectedVTColor = [_selectedColor vtm_changeToVTColor];
     }
-    return catItem;
+    return menuItem;
 }
 
 - (void)menuBar:(VTMenuBar *)menuBar didSelectItemAtIndex:(NSUInteger)itemIndex
@@ -625,13 +631,20 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    _isViewWillAppeare = NO;
+    if (_menuBar.isTracking) {
+        _contentView.scrollEnabled = NO;
+    } else if (_contentView.isTracking) {
+        _menuBar.needSkipLayout = 1.0 != _itemScale;
+        _menuBar.scrollEnabled = NO;
+        _isViewWillAppeare = NO;
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     NSInteger newIndex;
     NSInteger tempIndex;
+    if (![scrollView isEqual:_contentView]) return;
     if (_needSkipUpdate || CGRectIsEmpty(self.frame)) return;
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat scrollWidth = scrollView.frame.size.width;
@@ -681,6 +694,8 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    _menuBar.scrollEnabled = _menuScrollEnabled;
+    _contentView.scrollEnabled = _scrollEnabled;
     if (!decelerate) {
 //        VTLog(@"scrollViewDidEndDragging");
     }
@@ -688,6 +703,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    if (![scrollView isEqual:_contentView]) return;
     if (VTSwitchEventClick == _switchEvent) {
         CGFloat contentWidth = CGRectGetWidth(_contentView.frame);
         CGPoint offset = CGPointMake(contentWidth * _currentPage, 0);
@@ -701,8 +717,9 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 
 - (void)updateMenuBarWhenUserScrolled
 {
+    _menuBar.needSkipLayout = NO;
     [UIView animateWithDuration:0.25 animations:^{
-        [_menuBar updateSelectedItem];
+        [_menuBar updateSelectedItem:YES];
         [self updateMenuBarState];
     }];
 }
@@ -710,10 +727,10 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)updateItemStateForDefaultStyle
 {
     UIButton *seletedItem = [_menuBar selectedItem];
-    UIButton *catItem = [_menuBar itemAtIndex:_currentPage];
-    [catItem setTitleColor:_normalColor forState:UIControlStateNormal];
+    UIButton *menuItem = [_menuBar itemAtIndex:_currentPage];
+    [menuItem setTitleColor:_normalColor forState:UIControlStateNormal];
     [seletedItem setTitleColor:_selectedColor forState:UIControlStateSelected];
-    [_menuBar updateSelectedItem];
+    [_menuBar updateSelectedItem:NO];
 }
 
 #pragma mark - 视图即将显示
@@ -811,13 +828,13 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     if (!_menuBar) {
         _menuBar = [[VTMenuBar alloc] init];
         _menuBar.backgroundColor = [UIColor clearColor];
-//        _menuBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _menuBar.showsHorizontalScrollIndicator = NO;
         _menuBar.showsVerticalScrollIndicator = NO;
         _menuBar.clipsToBounds = YES;
         _menuBar.scrollsToTop = NO;
         _menuBar.menuDelegate = self;
         _menuBar.datasource = self;
+        _menuBar.delegate = self;
     }
     return _menuBar;
 }
@@ -828,7 +845,6 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         _contentView = [[VTContentView alloc] init];
         _contentView.showsVerticalScrollIndicator = NO;
         _contentView.showsHorizontalScrollIndicator = NO;
-//        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _contentView.pagingEnabled = YES;
         _contentView.delegate = self;
         _contentView.dataSource = self;
@@ -1059,6 +1075,12 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 {
     _itemSpacing = itemSpacing;
     _menuBar.itemSpacing = itemSpacing;
+}
+
+- (void)setItemScale:(CGFloat)itemScale
+{
+    _itemScale = itemScale;
+    _menuBar.itemScale = itemScale;
 }
 
 - (void)setItemWidth:(CGFloat)itemWidth
