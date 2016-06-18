@@ -24,6 +24,7 @@
     
     self.magicView.navigationHeight = 40;
     self.magicView.againstStatusBar = YES;
+    self.view.backgroundColor = [UIColor whiteColor];
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
     self.magicView.layoutStyle = VTLayoutStyleDefault;
     self.magicView.navigationColor = [UIColor whiteColor];
@@ -31,7 +32,6 @@
     self.magicView.sliderColor = RGBCOLOR(229, 229, 229);
     self.magicView.bubbleInset = UIEdgeInsetsMake(2, 7, 2, 7);
     self.magicView.bubbleRadius = 10;
-    self.view.backgroundColor = [UIColor whiteColor];
     [self integrateComponents];
     
     [self addNotification];

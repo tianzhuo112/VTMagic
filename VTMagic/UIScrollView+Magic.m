@@ -18,4 +18,15 @@
     return isOnScreen;
 }
 
+- (BOOL)vtm_isItemNeedDisplayWithFrame:(CGRect)frame
+{
+    frame.size.width *= 2;
+    BOOL isOnScreen = [self vtm_isNeedDisplayWithFrame:frame];
+    if (isOnScreen) return YES;
+    frame.size.width *= 0.5;
+    frame.origin.x -= frame.size.width;
+    isOnScreen = [self vtm_isNeedDisplayWithFrame:frame];
+    return isOnScreen;
+}
+
 @end

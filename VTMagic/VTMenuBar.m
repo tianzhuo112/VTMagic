@@ -54,7 +54,7 @@ static NSInteger const kVTMenuBarTag = 1000;
     for (NSNumber *index in indexList) {
         itemBtn = _visibleDict[index];
         frame = [_frameList[[index integerValue]] CGRectValue];
-        if (![self vtm_isNeedDisplayWithFrame:frame]) {
+        if (![self vtm_isItemNeedDisplayWithFrame:frame]) {
             [itemBtn setSelected:NO];
             [itemBtn removeFromSuperview];
             [_visibleDict removeObjectForKey:index];
@@ -69,7 +69,7 @@ static NSInteger const kVTMenuBarTag = 1000;
     [leftIndexList removeObjectsInArray:indexList];
     for (NSNumber *index in leftIndexList) {
         frame = [_frameList[[index integerValue]] CGRectValue];
-        if ([self vtm_isNeedDisplayWithFrame:frame]) {
+        if ([self vtm_isItemNeedDisplayWithFrame:frame]) {
             [self loadItemAtIndex:[index integerValue]];
         }
     }

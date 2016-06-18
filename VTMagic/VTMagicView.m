@@ -695,9 +695,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     }
     if (VTSwitchStyleDefault == _switchStyle) {
         if (_isPanValid) return;
-        [UIView animateWithDuration:0.25 animations:^{
-            [self updateMenuBarState];
-        }];
+        [self updateMenuBarWhenUserScrolled];
     }
 }
 
