@@ -46,7 +46,7 @@
 /**
  *  代理
  */
-@property (nonatomic, weak) id <VTMenuBarDelegate> menuDelegate;
+@property (nonatomic, weak) id <VTMenuBarDelegate, UIScrollViewDelegate> delegate;
 
 /**
  *  分类名数组，字符串类型

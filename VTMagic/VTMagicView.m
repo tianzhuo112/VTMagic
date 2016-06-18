@@ -832,7 +832,6 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         _menuBar.showsVerticalScrollIndicator = NO;
         _menuBar.clipsToBounds = YES;
         _menuBar.scrollsToTop = NO;
-        _menuBar.menuDelegate = self;
         _menuBar.datasource = self;
         _menuBar.delegate = self;
     }

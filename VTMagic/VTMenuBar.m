@@ -26,6 +26,7 @@ static NSInteger const kVTMenuBarTag = 1000;
 @end
 
 @implementation VTMenuBar
+@dynamic delegate;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -369,8 +370,8 @@ static NSInteger const kVTMenuBarTag = 1000;
 - (void)menuItemClick:(id)sender
 {
     NSInteger itemIndex = [(UIButton *)sender tag] - kVTMenuBarTag;
-    if ([_menuDelegate respondsToSelector:@selector(menuBar:didSelectItemAtIndex:)]) {
-        [_menuDelegate menuBar:self didSelectItemAtIndex:itemIndex];
+    if ([self.delegate respondsToSelector:@selector(menuBar:didSelectItemAtIndex:)]) {
+        [self.delegate menuBar:self didSelectItemAtIndex:itemIndex];
     }
 }
 
