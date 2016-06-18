@@ -1,6 +1,6 @@
 {
   "name": "VTMagic",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": {
     "type": "MIT"
   },
@@ -12,7 +12,7 @@
   "description": "VTMagic is a page container, it can manage many different pages. VTMagicView contains a menu bar and a content view, all pages are add to content view.",
   "source": {
     "git": "https://github.com/tianzhuo112/VTMagic.git",
-    "tag": "1.2.0"
+    "tag": "1.2.1"
   },
   "public_header_files": "VTMagic/VTMagic.h",
   "source_files": "VTMagic/VTMagic.h",
