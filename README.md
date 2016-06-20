@@ -20,8 +20,8 @@ pod "VTMagic"
 
 ### Manually
 
-1. Download the project and drop folder VTMagic into your project.
-2. Import file VTMagic.h.
+1. Download the project and drop folder `VTMagic` into your project.
+2. Import file `VTMagic.h`.
 
 ```objective-c
 #import "VTMagic.h"
@@ -194,7 +194,7 @@ VTMagic will automatically calls the appearance methods when user switches the p
 You can get the nearest magicController in any child view controller which is conforms to `<VTMagicProtocol>`, after you import file `VTMagic.h`.
 
 ```objective-c
-NSInteger currentPage = [self.magicController currentPage];
+NSInteger currentPage = self.magicController.currentPage;
 UIViewController *viewController = self.magicController.currentViewController;
 ```
 

@@ -19,8 +19,6 @@
 		7E44B6931CFF199A00FEEFF8 /* VTTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B6921CFF199A00FEEFF8 /* VTTabBarController.m */; };
 		7E44B69C1CFF262600FEEFF8 /* VTCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B69B1CFF262600FEEFF8 /* VTCenterViewController.m */; };
 		7E44B6A01CFF2AA600FEEFF8 /* VTDivideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B69F1CFF2AA600FEEFF8 /* VTDivideViewController.m */; };
-		7E832EB91D15472E00EFCC03 /* CHANGELOG_CN.md in Sources */ = {isa = PBXBuildFile; fileRef = 7E832EB71D15472E00EFCC03 /* CHANGELOG_CN.md */; };
-		7E832EBA1D15472E00EFCC03 /* CHANGELOG_EN.md in Sources */ = {isa = PBXBuildFile; fileRef = 7E832EB81D15472E00EFCC03 /* CHANGELOG_EN.md */; };
 		7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */; };
 		8A8752B3115AE8AAE7B7D0A9 /* libPods-VTMagicTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B05D0A986B6C3E04F8B6EA6 /* libPods-VTMagicTests.a */; };
 		991301BB0FFF835D29F7A46C /* libPods-VTMagic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */; };
@@ -480,13 +478,11 @@
 				7E44B69C1CFF262600FEEFF8 /* VTCenterViewController.m in Sources */,
 				7E2E3FCF1CFF3CBB00C275F3 /* VTGridViewCell.m in Sources */,
 				7E44B68E1CFF198500FEEFF8 /* VTHomeViewController.m in Sources */,
-				7E832EBA1D15472E00EFCC03 /* CHANGELOG_EN.md in Sources */,
 				7E02F5521D02B69E00394AAA /* VTBubbleViewController.m in Sources */,
 				7E2E3FC71CFF33A500C275F3 /* VTWebViewController.m in Sources */,
 				7E2E3FC41CFF337000C275F3 /* VTDataViewController.m in Sources */,
 				7E44B68D1CFF198500FEEFF8 /* VTRecomViewController.m in Sources */,
 				7E44B68C1CFF198500FEEFF8 /* VTGridViewController.m in Sources */,
-				7E832EB91D15472E00EFCC03 /* CHANGELOG_CN.md in Sources */,
 				AEA0D4FC1A11E4AB00229B72 /* AppDelegate.m in Sources */,
 				7E2E3FD01CFF3CBB00C275F3 /* VTRecomCell.m in Sources */,
 				7E44B6A01CFF2AA600FEEFF8 /* VTDivideViewController.m in Sources */,

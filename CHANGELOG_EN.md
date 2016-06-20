@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 --- 
 
 ## [1.2.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.1) (06/19/2016)
-Released on Saturday, June 19, 2016.
+Released on Sunday, June 19, 2016.
 
 ### changed
 - Add property `itemScale`, if you change it, menuItem will have zoom effect when switching.
