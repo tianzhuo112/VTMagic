@@ -28,7 +28,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];
-    [_magicController didMoveToParentViewController:self];
     [self integrateComponents];
     
     [self generateTestData];

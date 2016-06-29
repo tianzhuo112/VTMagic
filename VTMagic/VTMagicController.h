@@ -24,6 +24,11 @@
 @property (nonatomic, assign) NSUInteger currentPage;
 
 /**
+ *  生命周期状态
+ */
+@property (nonatomic, assign) VTAppearanceState appearanceState;
+
+/**
  *  当前显示的控制器
  */
 @property (nonatomic, strong) __kindof UIViewController *currentViewController;

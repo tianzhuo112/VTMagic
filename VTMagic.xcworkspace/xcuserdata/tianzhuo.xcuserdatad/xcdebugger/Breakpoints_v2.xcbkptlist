@@ -22,16 +22,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VTMagic/VTMagicView.m"
-            timestampString = "488726414.39422"
+            timestampString = "488896827.854243"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "783"
-            endingLineNumber = "783"
-            landmarkName = "-viewControllerDidDisappear:"
+            startingLineNumber = "946"
+            endingLineNumber = "946"
+            landmarkName = "-setCurrentPage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

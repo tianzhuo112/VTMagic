@@ -56,7 +56,7 @@
  *  @param viewController 当前页面展示的控制器
  *  @param index          当前控控制器对应的索引
  */
-- (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex;
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
 /**
  *  视图控制器从屏幕上消失时触发
@@ -65,7 +65,7 @@
  *  @param viewController 消失的视图控制器
  *  @param index          当前控制器对应的索引
  */
-- (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex;
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
 /**
  *  选中导航菜单item时触发

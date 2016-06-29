@@ -61,4 +61,16 @@ typedef NS_ENUM(NSUInteger, VTPanRecognizerDirection) {
     VTPanRecognizerDirectionHorizontal,
 };
 
+/** 页面生命周期状态状态 */
+typedef NS_ENUM(NSUInteger, VTAppearanceState) {
+    /** 默认状态，已经消失 */
+    VTAppearanceStateDidDisappear,
+    /** 即将消失 */
+    VTAppearanceStateWillDisappear,
+    /** 即将显示 */
+    VTAppearanceStateWillAppear,
+    /** 已经显示 */
+    VTAppearanceStateDidAppear,
+};
+
 #endif /* VTEnumType_h */

@@ -17,8 +17,8 @@ typedef struct {
     unsigned int dataSourceMenuItem : 1;
     unsigned int dataSourceMenuTitles : 1;
     unsigned int dataSourceViewController : 1;
-    unsigned int viewControllerDidAppeare : 1;
-    unsigned int viewControllerDidDisappeare : 1;
+    unsigned int viewControllerDidAppear : 1;
+    unsigned int viewControllerDidDisappear : 1;
     unsigned int shouldManualForwardAppearanceMethods : 1;
 } MagicFlags;
 
@@ -48,7 +48,7 @@ static const void *kVTMagicView = &kVTMagicView;
 @property (nonatomic, assign) NSInteger nextPageIndex; // 下一个页面的索引
 @property (nonatomic, assign) NSInteger currentPage; //当前页面的索引
 @property (nonatomic, assign) NSInteger previousIndex; // 上一个页面的索引
-@property (nonatomic, assign) BOOL isViewWillAppeare;
+@property (nonatomic, assign) BOOL isViewWillAppear;
 @property (nonatomic, assign) BOOL needSkipUpdate; // 是否是跳页切换
 @property (nonatomic, assign) MagicFlags magicFlags;
 @property (nonatomic, assign) VTColor normalVTColor;
@@ -206,12 +206,12 @@ static const void *kVTMagicView = &kVTMagicView;
     });
 }
 
-#pragma mark - funcational methods
+#pragma mark - functional methods
 - (void)reloadData
 {
     UIViewController *viewController = [self viewControllerAtPage:_currentPage];
-    if (viewController && _magicFlags.viewControllerDidDisappeare) {
-        [_delegate magicView:self viewDidDisappeare:viewController atPage:_currentPage];
+    if (viewController && _magicFlags.viewControllerDidDisappear) {
+        [_delegate magicView:self viewDidDisappear:viewController atPage:_currentPage];
     }
     [self viewControllerWillDisappear:_currentPage];
     [self viewControllerDidDisappear:_currentPage];
@@ -315,7 +315,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (_menuTitles.count <= pageIndex) return;
     [_contentView creatViewControllerAtPage:_currentPage];
     [_contentView creatViewControllerAtPage:pageIndex];
-    [self subviewWillAppeareAtPage:pageIndex];
+    [self subviewWillAppearAtPage:pageIndex];
     CGFloat offset = _contentView.frame.size.width * pageIndex;
     _contentView.contentOffset = CGPointMake(offset, 0);
     _menuBar.currentIndex = pageIndex;
@@ -330,14 +330,14 @@ static const void *kVTMagicView = &kVTMagicView;
     BOOL isNotAdjacent = abs((int)(_currentPage - pageIndex)) > 1;
     if (isNotAdjacent) {// 当前按钮与选中按钮不相邻时
         self.needSkipUpdate = YES;
-        _isViewWillAppeare = YES;
+        _isViewWillAppear = YES;
         [self displayPageHasChanged:pageIndex disIndex:_currentPage];
-        [self subviewWillAppeareAtPage:pageIndex];
+        [self subviewWillAppearAtPage:pageIndex];
         [self viewControllerDidDisappear:disIndex];
         [_magicController setCurrentViewController:nil];
         NSInteger tempIndex = pageIndex + (_currentPage < pageIndex ? -1 : 1);
         _contentView.contentOffset = CGPointMake(contentWidth * tempIndex, 0);
-        _isViewWillAppeare = NO;
+        _isViewWillAppear = NO;
     } else {
         [self viewControllerWillDisappear:disIndex];
         [self viewControllerWillAppear:pageIndex];
@@ -522,21 +522,26 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)displayPageHasChanged:(NSInteger)pageIndex disIndex:(NSInteger)disIndex
 {
     _menuBar.currentIndex = pageIndex;
-    UIViewController *appearViewController = [_contentView viewControllerAtPage:pageIndex autoCreate:!_needSkipUpdate];
-    UIViewController *disappearViewController = [_contentView viewControllerAtPage:disIndex autoCreate:!_needSkipUpdate];
+    UIViewController *appearViewController = [self autoCreateViewControllAtPage:pageIndex];
+    UIViewController *disappearViewController = [self autoCreateViewControllAtPage:disIndex];
     
     if (appearViewController) {
         [_magicController setCurrentPage:pageIndex];
         [_magicController setCurrentViewController:appearViewController];
     }
     
-    if (disappearViewController && _magicFlags.viewControllerDidDisappeare) {
-        [_delegate magicView:self viewDidDisappeare:disappearViewController atPage:disIndex];
+    if (disappearViewController && _magicFlags.viewControllerDidDisappear) {
+        [_delegate magicView:self viewDidDisappear:disappearViewController atPage:disIndex];
     }
     
-    if (appearViewController && _magicFlags.viewControllerDidAppeare) {
-        [_delegate magicView:self viewDidAppeare:appearViewController atPage:pageIndex];
+    if (appearViewController && _magicFlags.viewControllerDidAppear) {
+        [_delegate magicView:self viewDidAppear:appearViewController atPage:pageIndex];
     }
+}
+
+- (UIViewController *)autoCreateViewControllAtPage:(NSInteger)pageIndex
+{
+    return [_contentView viewControllerAtPage:pageIndex autoCreate:!_needSkipUpdate];
 }
 
 #pragma mark - change color
@@ -621,13 +626,13 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         [_magicController addChildViewController:viewController];
         [contentView addSubview:viewController.view];
         [viewController didMoveToParentViewController:_magicController];
-        // 设置默认的currentViewController，并触发viewDidAppeare
+        // 设置默认的currentViewController，并触发viewDidAppear
         if (pageIndex == _currentPage && VTSwitchEventLoad == _switchEvent) {
             [_magicController setCurrentViewController:viewController];
-            if (_magicFlags.viewControllerDidAppeare) {
-                [_delegate magicView:self viewDidAppeare:viewController atPage:_currentPage];
+            if (_magicFlags.viewControllerDidAppear) {
+                [_delegate magicView:self viewDidAppear:viewController atPage:_currentPage];
             }
-            if (_magicFlags.shouldManualForwardAppearanceMethods) {
+            if ([self shouldForwardAppearanceMethods]) {
                 [viewController beginAppearanceTransition:YES animated:YES];
                 [viewController endAppearanceTransition];
             }
@@ -643,8 +648,9 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         _contentView.scrollEnabled = NO;
     } else if (_contentView.isTracking) {
         _menuBar.needSkipLayout = 1.0 != _itemScale;
+        _switchEvent = VTSwitchEventScroll;
         _menuBar.scrollEnabled = NO;
-        _isViewWillAppeare = NO;
+        _isViewWillAppear = NO;
     }
 }
 
@@ -666,7 +672,6 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     }
     
     if (!_needSkipUpdate && newIndex != _currentPage) {
-        _switchEvent = VTSwitchEventScroll;
         self.currentPage = newIndex;
         switch (_switchStyle) {
             case VTSwitchStyleStiff:
@@ -678,15 +683,16 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         }
     }
     
-    if (_nextPageIndex != tempIndex) _isViewWillAppeare = NO;
-    if (!_isViewWillAppeare && newIndex != tempIndex) {
-        _isViewWillAppeare = YES;
+    if (_nextPageIndex != tempIndex) _isViewWillAppear = NO;
+    if (!_isViewWillAppear && newIndex != tempIndex) {
+        _isViewWillAppear = YES;
         NSInteger nextPageIndex = newIndex + (isSwipeToLeft ? 1 : -1);
-        [self subviewWillAppeareAtPage:nextPageIndex];
+        [self subviewWillAppearAtPage:nextPageIndex];
     }
     
     if (tempIndex == _currentPage) { // 重置_nextPageIndex
-        if (_nextPageIndex != _currentPage) {
+        if (_nextPageIndex != _currentPage &&
+            VTSwitchEventScroll == _switchEvent) {
             [self viewControllerWillDisappear:_nextPageIndex];
             [self viewControllerWillAppear:_currentPage];
             [self viewControllerDidDisappear:_nextPageIndex];
@@ -742,7 +748,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 }
 
 #pragma mark - 视图即将显示
-- (void)subviewWillAppeareAtPage:(NSInteger)pageIndex
+- (void)subviewWillAppearAtPage:(NSInteger)pageIndex
 {
     if (_nextPageIndex == pageIndex) return;
     if (_contentView.isDragging && 1 < ABS(_nextPageIndex - pageIndex)) {
@@ -785,7 +791,8 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 
 - (BOOL)shouldForwardAppearanceMethods
 {
-    return _magicFlags.shouldManualForwardAppearanceMethods;// && [_magicController magicHasAppeared];
+    return _magicFlags.shouldManualForwardAppearanceMethods &&
+      VTAppearanceStateDidAppear == _magicController.appearanceState;
 }
 
 #pragma mark - accessor methods
@@ -898,8 +905,8 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)setDelegate:(id<VTMagicViewDelegate>)delegate
 {
     _delegate = delegate;
-    _magicFlags.viewControllerDidAppeare = [delegate respondsToSelector:@selector(magicView:viewDidAppeare:atPage:)];
-    _magicFlags.viewControllerDidDisappeare = [delegate respondsToSelector:@selector(magicView:viewDidDisappeare:atPage:)];
+    _magicFlags.viewControllerDidAppear = [delegate respondsToSelector:@selector(magicView:viewDidAppear:atPage:)];
+    _magicFlags.viewControllerDidDisappear = [delegate respondsToSelector:@selector(magicView:viewDidDisappear:atPage:)];
     if (!_magicController && [_delegate isKindOfClass:[UIViewController class]] && [delegate conformsToProtocol:@protocol(VTMagicProtocol)]) {
         self.magicController = (UIViewController<VTMagicProtocol> *)delegate;
     }
@@ -936,6 +943,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     _currentPage = currentPage;
     _previousIndex = disIndex;
     
+    if (VTSwitchEventScroll != _switchEvent) return;
     [self displayPageHasChanged:currentPage disIndex:disIndex];
     [self viewControllerDidDisappear:disIndex];
     [self viewControllerDidAppear:currentPage];
