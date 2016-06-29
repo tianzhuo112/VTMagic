@@ -241,6 +241,14 @@ static const void *kVTMagicView = &kVTMagicView;
     [self layoutIfNeeded];
 }
 
+- (void)reloadDataToPage:(NSUInteger)page
+{
+    _currentPage = page;
+    _menuBar.currentIndex = page;
+    _contentView.currentPage = page;
+    [self reloadData];
+}
+
 - (UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier
 {
     UIButton *menuItem = [_menuBar dequeueReusableItemWithIdentifier:identifier];

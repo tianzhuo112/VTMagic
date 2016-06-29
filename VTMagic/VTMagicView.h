@@ -334,6 +334,13 @@
 - (void)reloadData;
 
 /**
+ *  重新加载所有数据，同时定位到指定页面，若page越界，则自动修正为0
+ *
+ *  @param page 被定位的页面
+ */
+- (void)reloadDataToPage:(NSUInteger)page;
+
+/**
  *  查询可重用menuItem
  *
  *  @param identifier 重用标识

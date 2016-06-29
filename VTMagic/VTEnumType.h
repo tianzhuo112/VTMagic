@@ -53,9 +53,12 @@ typedef NS_ENUM(NSUInteger, VTSliderStyle) {
 
 /** UIPanGestureRecognizer手势方向 */
 typedef NS_ENUM(NSUInteger, VTPanRecognizerDirection) {
-    VTPanRecognizerDirectionUndefined,  // 初始
-    VTPanRecognizerDirectionVertical,   // 垂直
-    VTPanRecognizerDirectionHorizontal, // 水平
+    /** 初始方向 */
+    VTPanRecognizerDirectionUndefined,
+    /** 垂直方向 */
+    VTPanRecognizerDirectionVertical,
+    /** 水平方向 */
+    VTPanRecognizerDirectionHorizontal,
 };
 
 #endif /* VTEnumType_h */

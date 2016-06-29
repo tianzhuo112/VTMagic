@@ -18,7 +18,6 @@ static NSInteger const kVTMenuBarTag = 1000;
 @property (nonatomic, strong) NSMutableArray *sliderList;   // slider frames
 @property (nonatomic, strong) NSMutableDictionary *visibleDict; // 屏幕上可见的items
 @property (nonatomic, strong) NSMutableSet *cacheSet; // 缓存池
-@property (nonatomic, strong) NSMutableDictionary *cacheDict; // 缓存池
 @property (nonatomic, strong) NSString *identifier; // 重用标识符
 @property (nonatomic, strong) NSMutableArray *indexList; // 索引集合
 @property (nonatomic, strong) UIFont *itemFont;

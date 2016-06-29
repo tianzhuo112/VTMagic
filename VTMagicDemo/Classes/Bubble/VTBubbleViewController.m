@@ -36,7 +36,7 @@
     
     [self addNotification];
     [self generateTestData];
-    [self.magicView reloadData];
+    [self.magicView reloadDataToPage:2];
 }
 
 - (void)dealloc

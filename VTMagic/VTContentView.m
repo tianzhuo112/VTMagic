@@ -114,8 +114,8 @@
 - (void)moveViewControllerToCache:(UIViewController *)viewController
 {
     [viewController willMoveToParentViewController:nil];
-    [viewController removeFromParentViewController];
     [viewController.view removeFromSuperview];
+    [viewController removeFromParentViewController];
     
     // 添加到缓存池
     NSMutableSet *cacheSet = [_pageCache objectForKey:viewController.reuseIdentifier];
