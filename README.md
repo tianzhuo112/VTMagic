@@ -43,7 +43,6 @@ To run the example project, clone the repo, and run `pod install` from the proje
 
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];
-    [_magicController didMoveToParentViewController:self];
 
     [_magicController.magicView reloadData];
 }
@@ -139,14 +138,14 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 #### VTMagicViewDelegate
 
 ```objective-c
-- (void)magicView:(VTMagicView *)magicView viewDidAppeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    NSLog(@"pageIndex:%ld viewDidAppeare:%@", (long)pageIndex, viewController.view);
+    NSLog(@"pageIndex:%ld viewDidAppear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewDidDisappeare:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
-    NSLog(@"pageIndex:%ld viewDidDisappeare:%@", (long)pageIndex, viewController.view);
+    NSLog(@"pageIndex:%ld viewDidDisappear:%@", (long)pageIndex, viewController.view);
 }
 
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
