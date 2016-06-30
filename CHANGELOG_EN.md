@@ -7,9 +7,9 @@ All notable changes to this project will be documented in this file.
 Released on Wednesday, June 29, 2016.
 
 ### changed
-- Add new method reloadDataToPage:, support reload data and switch to specified page at the same time.
-- Optimize appearance logic, fix bug that multiple calls appearance methods(viewWillAppear,etc), optimize multiple nesting.
-- Modify protocol VTMagicViewDelegate, modify method viewDidAppeare: to viewDidAppear:, modify method viewDidDisappeare: to viewDidDisappear:.
+- Add new method `reloadDataToPage:`, support reload data and switch to specified page at the same time.
+- Optimize appearance logic, fix bug that multiple calls appearance methods(`viewWillAppear:`,etc), optimize multiple nesting.
+- Modify protocol `VTMagicViewDelegate`, modify method `viewDidAppeare:` to `viewDidAppear:`, modify method `viewDidDisappeare:` to `viewDidDisappear:`.
 
 
 ## [1.2.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.1) (06/19/2016)

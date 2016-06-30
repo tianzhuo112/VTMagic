@@ -7,9 +7,9 @@
 发布于2016年六月29日，周三
 
 ### 更新
-- 新增方法reloadDataToPage:，支持刷新数据时直接定位到指定页面，简化逻辑；
-- 优化生命周期逻辑，修复多次调用viewDidAppear:等方法的问题，完善了多级嵌套VTMagic时，生命周期方法触发异常的问题；
-- 调整VTMagicViewDelegate代理方法名，viewDidAppeare:改为viewDidAppear:，viewDidDisappeare:改为viewDidDisappear:。
+- 新增方法`reloadDataToPage:`，支持刷新数据时直接定位到指定页面，简化逻辑；
+- 优化生命周期逻辑，修复多次调用`viewDidAppear:`等方法的问题，完善了多级嵌套VTMagic时，生命周期方法触发异常的问题；
+- 调整`VTMagicViewDelegate`代理方法名，`viewDidAppeare:`改为`viewDidAppear:`，`viewDidDisappeare:`改为`viewDidDisappear:`。
 
 
 ## [1.2.1](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.1)
