@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class MenuInfo;
 @interface VTGridViewController : UICollectionViewController
 
+/**
+ *  菜单信息
+ */
+@property (nonatomic, strong) MenuInfo *menuInfo;
 
 @end

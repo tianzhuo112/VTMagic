@@ -9,6 +9,7 @@
 #import "VTDivideViewController.h"
 #import "VTGridViewController.h"
 #import <VTMagic/VTMagic.h>
+#import "MenuInfo.h"
 
 @interface VTDivideViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
 
@@ -38,7 +39,11 @@
 #pragma mark - VTMagicViewDataSource
 - (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
 {
-    return _menuList;
+    NSMutableArray *titleList = [NSMutableArray array];
+    for (MenuInfo *menu in _menuList) {
+        [titleList addObject:menu.title];
+    }
+    return titleList;
 }
 
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
@@ -61,6 +66,7 @@
     if (!viewController) {
         viewController = [[VTGridViewController alloc] init];
     }
+    viewController.menuInfo = _menuList[pageIndex];
     return viewController;
 }
 
@@ -81,7 +87,8 @@
 #pragma mark - functional methods
 - (void)generateTestData
 {
-    _menuList = @[@"国内", @"国外", @"港澳", @"台湾"];
+    _menuList = @[[MenuInfo menuInfoWithTitl:@"国内"], [MenuInfo menuInfoWithTitl:@"国外"],
+                  [MenuInfo menuInfoWithTitl:@"港澳"], [MenuInfo menuInfoWithTitl:@"台湾"]];
 }
 
 - (void)integrateComponents

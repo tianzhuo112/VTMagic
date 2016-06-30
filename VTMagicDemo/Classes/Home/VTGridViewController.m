@@ -8,6 +8,7 @@
 
 #import "VTGridViewController.h"
 #import "VTGridViewCell.h"
+#import "MenuInfo.h"
 #import "VTMagic.h"
 
 #define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
@@ -37,11 +38,9 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     [super viewDidLoad];
     
-    [self generateData];
     self.collectionView.scrollsToTop = NO;
     self.collectionView.backgroundColor = RGBCOLOR(239, 239, 239);
     [self.collectionView registerClass:[VTGridViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    [self.collectionView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -55,6 +54,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     [super viewDidAppear:animated];
     
+    [self refreshPageIfNeeded];
     self.collectionView.scrollsToTop = YES;
     VTPRINT_METHOD
 }
@@ -63,6 +63,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     [super viewWillDisappear:animated];
     
+    [self cancelNetworkRequest];
     self.collectionView.scrollsToTop = NO;
     VTPRINT_METHOD
 }
@@ -84,7 +85,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     VTGridViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = [UIColor whiteColor];
-    NSString *imageName = [NSString stringWithFormat:@"image_%ld", (long)indexPath.row%13];
+    NSString *imageName = _infoList[indexPath.item];
     [cell.imageView setImage:[UIImage imageNamed:imageName]];
     cell.commentLabel.text = [NSString stringWithFormat:@"%d人出游", arc4random_uniform(9999)];
     cell.titleLabel.text = @"景点介绍，景点介绍，景点介绍。。";
@@ -102,16 +103,54 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     // reset content offset
     NSLog(@"clear old data if needed:%@", self);
+    [_infoList removeAllObjects];
+    [self.collectionView reloadData];
     [self.collectionView setContentOffset:CGPointZero];
 }
 
-#pragma functional methods
-- (void)generateData
+#pragma mark - functional methods
+- (void)refreshPageIfNeeded
+{
+    NSTimeInterval currentStamp = [[NSDate date] timeIntervalSince1970];
+    if (currentStamp - _menuInfo.lastTime < 60 * 60) return;
+    // 延时处理，模拟网络请求
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // request success
+        _menuInfo.lastTime = currentStamp;
+        [self handleNetworkSuccess];
+    });
+}
+
+- (void)cancelNetworkRequest
+{
+    // 由于页面可能会被重用，需要取消不必要的网络请求
+//    NSLog(@"maybe you should cancel network request in here");
+}
+
+- (void)handleNetworkSuccess
+{
+    NSLog(@"==模拟网络请求成功后刷新页面==");
+    _infoList = [[NSMutableArray alloc] init];
+    for (NSInteger index = 0; index < 50; index++) {
+        [_infoList addObject:[NSString stringWithFormat:@"image_%d", arc4random_uniform(13)]];
+    }
+    [self.collectionView reloadData];
+}
+
+- (void)loadLocalData
 {
     _infoList = [[NSMutableArray alloc] init];
     for (NSInteger index = 0; index < 50; index++) {
-        [_infoList addObject:[NSString stringWithFormat:@"消息%ld", (long)index]];
+        [_infoList addObject:[NSString stringWithFormat:@"image_%d", arc4random_uniform(13)]];
     }
+    [self.collectionView reloadData];
+}
+
+#pragma mark - accessor methods
+- (void)setMenuInfo:(MenuInfo *)menuInfo
+{
+    _menuInfo = menuInfo;
+    [self loadLocalData];
 }
 
 @end

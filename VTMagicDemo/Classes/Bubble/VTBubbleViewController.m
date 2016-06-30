@@ -8,6 +8,7 @@
 
 #import "VTBubbleViewController.h"
 #import "VTGridViewController.h"
+#import "MenuInfo.h"
 
 @interface VTBubbleViewController ()
 
@@ -67,7 +68,11 @@
 #pragma mark - VTMagicViewDataSource
 - (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
 {
-    return _menuList;
+    NSMutableArray *titleList = [NSMutableArray array];
+    for (MenuInfo *menu in _menuList) {
+        [titleList addObject:menu.title];
+    }
+    return titleList;
 }
 
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
@@ -90,6 +95,7 @@
     if (!viewController) {
         viewController = [[VTGridViewController alloc] init];
     }
+    viewController.menuInfo = _menuList[pageIndex];
     return viewController;
 }
 
@@ -120,7 +126,9 @@
     NSString *title = @"省份";
     NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
     for (int index = 0; index < 20; index++) {
-        [menuList addObject:[NSString stringWithFormat:@"%@%d",title,index]];
+        title = [NSString stringWithFormat:@"省份%d", index];
+        MenuInfo *menu = [MenuInfo menuInfoWithTitl:title];
+        [menuList addObject:menu];
     }
     _menuList = menuList;
 }

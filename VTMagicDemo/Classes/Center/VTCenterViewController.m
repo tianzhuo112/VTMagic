@@ -9,6 +9,7 @@
 #import "VTCenterViewController.h"
 #import "VTGridViewController.h"
 #import <VTMagic/VTMagic.h>
+#import "MenuInfo.h"
 
 #define kSearchBarWidth (60.0f)
 
@@ -54,7 +55,11 @@
 #pragma mark - VTMagicViewDataSource
 - (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
 {
-    return _menuList;
+    NSMutableArray *titleList = [NSMutableArray array];
+    for (MenuInfo *menu in _menuList) {
+        [titleList addObject:menu.title];
+    }
+    return titleList;
 }
 
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
@@ -77,13 +82,14 @@
     if (!viewController) {
         viewController = [[VTGridViewController alloc] init];
     }
+    viewController.menuInfo = _menuList[pageIndex];
     return viewController;
 }
 
 #pragma mark - functional methods
 - (void)generateTestData
 {
-    _menuList = @[@"专题", @"论坛"];
+    _menuList = @[[MenuInfo menuInfoWithTitl:@"专题"], [MenuInfo menuInfoWithTitl:@"论坛"]];
 }
 
 #pragma mark - accessor methods

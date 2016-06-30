@@ -10,6 +10,7 @@
 #import "VTRecomViewController.h"
 #import "VTGridViewController.h"
 #import "VTCommon.h"
+#import "MenuInfo.h"
 
 @interface VTHomeViewController ()
 
@@ -41,7 +42,7 @@
     self.magicView.layoutStyle = VTLayoutStyleDefault;
     self.view.backgroundColor = RGBCOLOR(243, 40, 47);
     [self integrateComponents];
-    
+    [self.magicView reloadData];
     [self addNotification];
     [self generateTestData];
     [self.magicView reloadData];
@@ -82,7 +83,11 @@
 #pragma mark - VTMagicViewDataSource
 - (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
 {
-    return _menuList;
+    NSMutableArray *titleList = [NSMutableArray array];
+    for (MenuInfo *menu in _menuList) {
+        [titleList addObject:menu.title];
+    }
+    return titleList;
 }
 
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
@@ -103,12 +108,14 @@
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
 {
+    MenuInfo *menuInfo = _menuList[pageIndex];
     if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
         VTRecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
         if (!recomViewController) {
             recomViewController = [[VTRecomViewController alloc] init];
         }
+        recomViewController.menuInfo = menuInfo;
         return recomViewController;
     }
     
@@ -117,6 +124,7 @@
     if (!viewController) {
         viewController = [[VTGridViewController alloc] init];
     }
+    viewController.menuInfo = menuInfo;
     return viewController;
 }
 
@@ -148,11 +156,13 @@
 #pragma mark - functional methods
 - (void)generateTestData
 {
+    NSString *title = @"推荐";
     NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
-    [menuList addObject:@"推荐"];
-    NSString *title = @"省份";
+    [menuList addObject:[MenuInfo menuInfoWithTitl:title]];
     for (int index = 0; index < 20; index++) {
-        [menuList addObject:[NSString stringWithFormat:@"%@%d",title,index]];
+        title = [NSString stringWithFormat:@"省份%d", index];
+        MenuInfo *menu = [MenuInfo menuInfoWithTitl:title];
+        [menuList addObject:menu];
     }
     _menuList = menuList;
 }
