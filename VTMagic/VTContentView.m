@@ -136,6 +136,17 @@
     self.contentOffset = CGPointMake(CGRectGetWidth(frame)*_currentPage, 0);
 }
 
+#pragma mark - 根据页面控制器获取对应的索引
+- (NSInteger)pageIndexForViewController:(UIViewController *)viewController
+{
+    for (NSIndexPath *indexPath in _visibleDict.allKeys) {
+        if ([viewController isEqual:_visibleDict[indexPath]]) {
+            return indexPath.row;
+        }
+    }
+    return NSNotFound;
+}
+
 #pragma mark - 根据索引获取页面控制器
 - (UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex
 {

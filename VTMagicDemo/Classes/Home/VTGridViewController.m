@@ -56,6 +56,8 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     
     [self refreshPageIfNeeded];
     self.collectionView.scrollsToTop = YES;
+    NSInteger pageIndex = [self vtm_pageIndex];
+    NSLog(@"current page index is: %ld", (long)pageIndex);
     VTPRINT_METHOD
 }
 

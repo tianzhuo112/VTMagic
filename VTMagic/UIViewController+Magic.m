@@ -8,6 +8,7 @@
 
 #import "UIViewController+Magic.h"
 #import <objc/runtime.h>
+#import "VTMagicView.h"
 
 static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
 
@@ -32,6 +33,11 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
         viewController = viewController.parentViewController;
     }
     return (UIViewController<VTMagicProtocol> *)viewController;
+}
+
+- (NSInteger)vtm_pageIndex
+{
+    return [self.magicController.magicView pageIndexForViewController:self];
 }
 
 @end

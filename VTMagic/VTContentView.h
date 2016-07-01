@@ -60,6 +60,16 @@
 - (void)resetPageFrames;
 
 /**
+ *  根据控制器获取对应的页面索引，仅当前显示的和预加载的控制器有相应索引，
+ *  若没有找到相应索引则返回NSNotFound
+ *
+ *  @param viewController 页面控制器
+ *
+ *  @return 页面索引
+ */
+- (NSInteger)pageIndexForViewController:(UIViewController *)viewController;
+
+/**
  *  获取索引对应的ViewController
  *  若index超出范围或对应控制器不可见，则返回nil
  *

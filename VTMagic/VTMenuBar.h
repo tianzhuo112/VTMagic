@@ -49,7 +49,7 @@
 @property (nonatomic, weak) id <VTMenuBarDelegate, UIScrollViewDelegate> delegate;
 
 /**
- *  分类名数组，字符串类型
+ *  菜单名数组，字符串类型
  */
 @property (nonatomic, strong) NSArray<__kindof NSString *> *menuTitles;
 

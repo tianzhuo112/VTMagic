@@ -15,7 +15,7 @@
 /****************************************data source****************************************/
 @protocol VTMagicViewDataSource <NSObject>
 /**
- *  获取所有分类名，数组中存放字符串类型对象
+ *  获取所有菜单名，数组中存放字符串类型对象
  *
  *  @param magicView self
  *
@@ -56,7 +56,7 @@
  *  @param viewController 当前页面展示的控制器
  *  @param index          当前控控制器对应的索引
  */
-- (void)magicView:(VTMagicView *)magicView viewDidAppear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex;
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
 /**
  *  视图控制器从屏幕上消失时触发
@@ -65,13 +65,13 @@
  *  @param viewController 消失的视图控制器
  *  @param index          当前控制器对应的索引
  */
-- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex;
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
 /**
  *  选中导航菜单item时触发
  *
  *  @param magicView self
- *  @param itemIndex 分类索引
+ *  @param itemIndex menuItem索引
  */
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex;
 
@@ -298,7 +298,7 @@
 
 /**
  *  两个导航菜单item文本之间的间距，默认是25
- *  如果分类item包含图片，则实际间距可能会更小
+ *  如果菜单item包含图片，则实际间距可能会更小
  *
  *  @warning 该属性仅VTLayoutStyleDefault和VTLayoutStyleCenter样式下有效！
  */
@@ -359,6 +359,16 @@
 - (__kindof UIViewController *)dequeueReusablePageWithIdentifier:(NSString *)identifier;
 
 /**
+ *  根据控制器获取对应的页面索引，仅当前显示的和预加载的控制器有相应索引，
+ *  若没有找到相应索引则返回NSNotFound
+ *
+ *  @param viewController 页面控制器
+ *
+ *  @return 页面索引
+ */
+- (NSInteger)pageIndexForViewController:(UIViewController *)viewController;
+
+/**
  *  获取索引对应的ViewController
  *  若index超出范围或对应控制器不可见，则返回nil
  *
@@ -394,7 +404,7 @@
 
 /**
  *  更新菜单标题，但不重新加载页面
- *  仅限于分类顺序和页数不改变的情况下
+ *  仅限于菜单顺序和页数不改变的情况下
  *  一般情况下建议使用reloadData方法
  */
 - (void)updateMenuTitles;

@@ -34,4 +34,12 @@
  */
 @property (nonatomic, weak, readonly) UIViewController<VTMagicProtocol> *magicController;
 
+/**
+ *  当前控制器的页面索引，仅当前显示的和预加载的控制器有相应索引，
+ *  若没有找到相应索引则返回NSNotFound
+ *
+ *  @return 页面索引
+ */
+- (NSInteger)vtm_pageIndex;
+
 @end

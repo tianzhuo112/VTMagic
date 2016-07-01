@@ -101,8 +101,8 @@
         menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];
     }
     // 默认会自动完成赋值
-//    NSString *title = _menuList[itemIndex];
-//    [menuItem setTitle:title forState:UIControlStateNormal];
+//    MenuInfo *menuInfo = _menuList[itemIndex];
+//    [menuItem setTitle:menuInfo.title forState:UIControlStateNormal];
     return menuItem;
 }
 

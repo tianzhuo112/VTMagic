@@ -265,6 +265,11 @@ static const void *kVTMagicView = &kVTMagicView;
     return viewController;
 }
 
+- (NSInteger)pageIndexForViewController:(UIViewController *)viewController
+{
+    return [_contentView pageIndexForViewController:viewController];
+}
+
 - (UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex
 {
     return [_contentView viewControllerAtPage:pageIndex];
