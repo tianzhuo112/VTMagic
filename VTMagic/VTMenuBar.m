@@ -334,7 +334,7 @@ static NSInteger const kVTMenuBarTag = 1000;
 - (UIButton *)loadItemAtIndex:(NSInteger)index
 {
     UIButton *menuItem = [_datasource menuBar:self menuItemAtIndex:index];
-    NSAssert([menuItem isKindOfClass:[UIButton class]], @"item:%@ must be a kind of UIButton", menuItem);
+    NSAssert([menuItem isKindOfClass:[UIButton class]], @"The class of menu item:%@ must be UIButton", menuItem);
     if (menuItem) {
         [menuItem addTarget:self action:@selector(menuItemClick:) forControlEvents:UIControlEventTouchUpInside];
         menuItem.titleLabel.layer.transform = CATransform3DIdentity;

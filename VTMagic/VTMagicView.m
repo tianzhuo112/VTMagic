@@ -191,6 +191,7 @@ static const void *kVTMagicView = &kVTMagicView;
 - (void)statusBarOrientationChange:(NSNotification *)notification
 {
     self.needSkipUpdate = YES;
+    _menuBar.needSkipLayout = NO;
     [self updateFrameForSubviews];
     [self updateMenuBarState];
     self.needSkipUpdate = NO;
@@ -219,6 +220,8 @@ static const void *kVTMagicView = &kVTMagicView;
     if (_magicFlags.dataSourceMenuTitles) {
         _menuTitles = [_dataSource menuTitlesForMagicView:self];
         _menuBar.menuTitles = _menuTitles;
+        NSString *title = [_menuTitles firstObject];
+        NSAssert(!title || [title isKindOfClass:[NSString class]], @"The class of menu title must be NSString");
     }
     
     BOOL needReset = _menuTitles.count <= _currentPage;
@@ -463,6 +466,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     CGPoint velocity = [recognizer velocityInView:recognizer.view];
     BOOL isHorizontalGesture = fabs(velocity.y) < fabs(velocity.x);
     if (isHorizontalGesture) {
+        _switchEvent = VTSwitchEventScroll;
         direction = VTPanRecognizerDirectionHorizontal;
         [self handlePanGestureMove:recognizer];
     } else {
@@ -526,7 +530,6 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 #pragma mark - 当前页面控制器改变时触发，传递disappearViewController & appearViewController
 - (void)displayPageHasChanged:(NSInteger)pageIndex disIndex:(NSInteger)disIndex
 {
-    _menuBar.currentIndex = pageIndex;
     UIViewController *appearViewController = [self autoCreateViewControllAtPage:pageIndex];
     UIViewController *disappearViewController = [self autoCreateViewControllAtPage:disIndex];
     
@@ -947,6 +950,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     NSInteger disIndex = _currentPage;
     _currentPage = currentPage;
     _previousIndex = disIndex;
+    _menuBar.currentIndex = currentPage;
     
     if (VTSwitchEventScroll != _switchEvent) return;
     [self displayPageHasChanged:currentPage disIndex:disIndex];
