@@ -62,6 +62,7 @@ static const void *kVTMagicView = &kVTMagicView;
 @implementation VTMagicView
 @synthesize navigationView = _navigationView;
 @synthesize headerView = _headerView;
+@synthesize sliderView = _sliderView;
 
 #pragma mark - lifecycle
 - (instancetype)initWithFrame:(CGRect)frame
@@ -846,6 +847,13 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     return _sliderView;
 }
 
+- (void)setSliderView:(UIView *)sliderView
+{
+    [_sliderView removeFromSuperview];
+    _sliderView = sliderView;
+    [_menuBar addSubview:sliderView];
+}
+
 - (VTMenuBar *)menuBar
 {
     if (!_menuBar) {
@@ -868,9 +876,9 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         _contentView.showsVerticalScrollIndicator = NO;
         _contentView.showsHorizontalScrollIndicator = NO;
         _contentView.pagingEnabled = YES;
-        _contentView.delegate = self;
-        _contentView.dataSource = self;
         _contentView.scrollsToTop = NO;
+        _contentView.dataSource = self;
+        _contentView.delegate = self;
         _contentView.bounces = NO;
     }
     return _contentView;
@@ -1054,6 +1062,12 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 {
     _sliderColor = sliderColor;
     _sliderView.backgroundColor = sliderColor;
+}
+
+- (void)setSliderHeight:(CGFloat)sliderHeight
+{
+    _sliderHeight = sliderHeight;
+    _menuBar.sliderHeight = sliderHeight;
 }
 
 - (void)setSliderWidth:(CGFloat)sliderWidth

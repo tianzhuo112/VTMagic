@@ -29,8 +29,8 @@
     self.magicView.layoutStyle = VTLayoutStyleDivide;
     self.magicView.againstStatusBar = YES;
     self.magicView.navigationHeight = 40.f;
-    self.magicView.sliderExtension = 10.0;
     [self integrateComponents];
+    [self configCustomSlider];
     
     [self generateTestData];
     [self.magicView reloadData];
@@ -101,6 +101,16 @@
     rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:28];
     rightButton.center = self.view.center;
     self.magicView.rightNavigatoinItem = rightButton;
+}
+
+- (void)configCustomSlider
+{
+    UIImageView *sliderView = [[UIImageView alloc] init];
+    [sliderView setImage:[UIImage imageNamed:@"magic_arrow"]];
+    sliderView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.magicView setSliderView:sliderView];
+    self.magicView.sliderHeight = 5.f;
+    self.magicView.sliderOffset = -2;
 }
 
 @end

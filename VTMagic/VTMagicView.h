@@ -150,6 +150,11 @@
  */
 @property (nonatomic, strong, readonly) NSArray<__kindof UIViewController *> *viewControllers;
 
+/**
+ *  自定义滑块视图
+ */
+- (void)setSliderView:(UIView *)sliderView;
+
 #pragma mark - bool configurations
 /****************************************bool configurations****************************************/
 
