@@ -42,6 +42,7 @@
     self.magicView.layoutStyle = VTLayoutStyleDefault;
     self.view.backgroundColor = RGBCOLOR(243, 40, 47);
     [self integrateComponents];
+    [self configSeparatorView];
     [self.magicView reloadData];
     [self addNotification];
     [self generateTestData];
@@ -177,6 +178,18 @@
     rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:28];
     rightButton.center = self.view.center;
     self.magicView.rightNavigatoinItem = rightButton;
+}
+
+- (void)configSeparatorView
+{
+//    UIImageView *separatorView = [[UIImageView alloc] init];
+//    [self.magicView setSeparatorView:separatorView];
+    self.magicView.separatorHeight = 2.f;
+    self.magicView.separatorColor = RGBCOLOR(22, 146, 211);
+    self.magicView.navigationView.layer.shadowColor = RGBCOLOR(22, 146, 211).CGColor;
+    self.magicView.navigationView.layer.shadowOffset = CGSizeMake(0, 0.5);
+    self.magicView.navigationView.layer.shadowOpacity = 0.8;
+    self.magicView.navigationView.clipsToBounds = NO;
 }
 
 @end

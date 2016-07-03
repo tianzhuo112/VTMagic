@@ -121,6 +121,7 @@
  */
 @property (nonatomic, assign) NSUInteger previewItems;
 
+
 #pragma mark - subviews
 /****************************************subviews****************************************/
 
@@ -154,6 +155,12 @@
  *  自定义滑块视图
  */
 - (void)setSliderView:(UIView *)sliderView;
+
+/**
+ *  自定义导航分割线视图
+ */
+- (void)setSeparatorView:(UIView *)separatorView;
+
 
 #pragma mark - bool configurations
 /****************************************bool configurations****************************************/
@@ -220,6 +227,7 @@
  *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
 @property (nonatomic, assign) BOOL needExtendedBottom;
+
 
 #pragma mark - color & size configurations
 /**************************************color & size**************************************/
@@ -322,6 +330,7 @@
  */
 @property (nonatomic, assign) CGFloat itemWidth;
 
+
 #pragma mark - other properties
 /**************************************other properties**************************************/
 
@@ -329,6 +338,7 @@
  *  页面切换事件，用于行为统计
  */
 @property (nonatomic, assign, readonly) VTSwitchEvent switchEvent;
+
 
 #pragma mark - public method
 /**************************************public method**************************************/

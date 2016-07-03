@@ -40,10 +40,11 @@ static const void *kVTMagicView = &kVTMagicView;
 
 @interface VTMagicView()<UIScrollViewDelegate,VTContentViewDataSource,VTMenuBarDatasource,VTMenuBarDelegate>
 
+@property (nonatomic, strong) UIView *reviseView; // 避免系统自动调整contentView的inset
 @property (nonatomic, strong) VTMenuBar *menuBar; // 顶部导航菜单视图
 @property (nonatomic, strong) VTContentView *contentView; // 容器视图
 @property (nonatomic, strong) UIView *sliderView; // 顶部导航栏滑块
-@property (nonatomic, strong) UIView *separatorLine; // 导航模块底部分割线
+@property (nonatomic, strong) UIView *separatorView; // 导航模块底部分割线
 @property (nonatomic, strong) NSArray *menuTitles; // 顶部分类名数组
 @property (nonatomic, assign) NSInteger nextPageIndex; // 下一个页面的索引
 @property (nonatomic, assign) NSInteger currentPage; //当前页面的索引
@@ -61,6 +62,7 @@ static const void *kVTMagicView = &kVTMagicView;
 
 @implementation VTMagicView
 @synthesize navigationView = _navigationView;
+@synthesize separatorView = _separatorView;
 @synthesize headerView = _headerView;
 @synthesize sliderView = _sliderView;
 
@@ -89,12 +91,13 @@ static const void *kVTMagicView = &kVTMagicView;
 
 - (void)addMagicSubviews
 {
-    [self addSubview:self.headerView];
+    [self addSubview:self.reviseView];
+    [self addSubview:self.contentView];
     [self addSubview:self.navigationView];
-    [_navigationView addSubview:self.separatorLine];
+    [self addSubview:self.headerView];
+    [_navigationView addSubview:self.separatorView];
     [_navigationView addSubview:self.menuBar];
     [_menuBar addSubview:self.sliderView];
-    [self addSubview:self.contentView];
 }
 
 - (void)dealloc
@@ -125,7 +128,7 @@ static const void *kVTMagicView = &kVTMagicView;
     _navigationView.frame = CGRectMake(0, navigationY, size.width, navigationH);
     
     CGFloat separatorY = CGRectGetHeight(_navigationView.frame) - _separatorHeight;
-    _separatorLine.frame = CGRectMake(0, separatorY, size.width, _separatorHeight);
+    _separatorView.frame = CGRectMake(0, separatorY, size.width, _separatorHeight);
     
     CGRect originalMenuFrame = _menuBar.frame;
     CGFloat menuBarY = _headerHidden ? topY : 0;
@@ -828,14 +831,14 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     return _navigationView;
 }
 
-- (UIView *)separatorLine
+- (UIView *)separatorView
 {
-    if (!_separatorLine) {
-        _separatorLine = [[UIView alloc] init];
-        _separatorLine.backgroundColor = RGBCOLOR(188, 188, 188);
-        _separatorLine.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    if (!_separatorView) {
+        _separatorView = [[UIView alloc] init];
+        _separatorView.backgroundColor = RGBCOLOR(188, 188, 188);
+        _separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
-    return _separatorLine;
+    return _separatorView;
 }
 
 - (UIView *)sliderView
@@ -852,6 +855,14 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     [_sliderView removeFromSuperview];
     _sliderView = sliderView;
     [_menuBar addSubview:sliderView];
+}
+
+- (void)setSeparatorView:(UIView *)separatorView
+{
+    [_separatorView removeFromSuperview];
+    _separatorView = separatorView;
+    [_navigationView addSubview:separatorView];
+    [_navigationView bringSubviewToFront:_menuBar];
 }
 
 - (VTMenuBar *)menuBar
@@ -884,11 +895,19 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     return _contentView;
 }
 
+- (UIView *)reviseView
+{
+    if (!_reviseView) {
+        _reviseView = [[UIView alloc] init];
+    }
+    return _reviseView;
+}
+
 - (void)setLeftNavigatoinItem:(UIView *)leftNavigatoinItem
 {
     _leftNavigatoinItem = leftNavigatoinItem;
     [_navigationView addSubview:leftNavigatoinItem];
-    [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_separatorView];
     [_navigationView bringSubviewToFront:_menuBar];
     leftNavigatoinItem.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     [self updateFrameForLeftNavigationItem];
@@ -898,7 +917,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 {
     _rightNavigatoinItem = rightNavigatoinItem;
     [_navigationView addSubview:rightNavigatoinItem];
-    [_navigationView bringSubviewToFront:_separatorLine];
+    [_navigationView bringSubviewToFront:_separatorView];
     [_navigationView bringSubviewToFront:_menuBar];
     rightNavigatoinItem.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [self updateFrameForRightNavigationItem];
@@ -995,7 +1014,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)setSeparatorHidden:(BOOL)separatorHidden
 {
     _separatorHidden = separatorHidden;
-    _separatorLine.hidden = separatorHidden;
+    _separatorView.hidden = separatorHidden;
 }
 
 - (void)setBounces:(BOOL)bounces
@@ -1055,7 +1074,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)setSeparatorColor:(UIColor *)separatorColor
 {
     _separatorColor = separatorColor;
-    _separatorLine.backgroundColor = separatorColor;
+    _separatorView.backgroundColor = separatorColor;
 }
 
 - (void)setSliderColor:(UIColor *)sliderColor
