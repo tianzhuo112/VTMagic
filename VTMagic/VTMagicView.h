@@ -442,4 +442,9 @@
  */
 - (void)reselectMenuItem;
 
+/**
+ *  清除所有缓存的页面
+ */
+- (void)clearMemoryCache;
+
 @end

@@ -315,6 +315,11 @@ static const void *kVTMagicView = &kVTMagicView;
     [_menuBar reselectMenuItem];
 }
 
+- (void)clearMemoryCache
+{
+    [_contentView clearMemoryCache];
+}
+
 #pragma mark - switch to specified page
 - (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated
 {

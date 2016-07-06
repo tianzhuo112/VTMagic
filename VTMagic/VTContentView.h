@@ -65,6 +65,11 @@
 - (void)resetPageFrames;
 
 /**
+ *  清除所有缓存的页面
+ */
+- (void)clearMemoryCache;
+
+/**
  *  根据控制器获取对应的页面索引，仅当前显示的和预加载的控制器有相应索引，
  *  若没有找到相应索引则返回NSNotFound
  *
