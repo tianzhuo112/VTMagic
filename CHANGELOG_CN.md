@@ -3,6 +3,18 @@
 
 --- 
 
+## [1.2.3](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.3)
+发布于2016年七月6日，周三
+
+### 更新
+- 修复调用`handlePanGesture:`方法时无法准确聚焦菜单栏的问题；
+- 新增预加载开关，通过修改属性`needPreloading`可控制页面是否需要预加载；
+- 新增自定义`sliderView`和`separatoreView`的逻辑；
+- 新增方法`clearMemoryCache`，以便可以在需要的时候手动清除所有缓存；
+- 新增方法`pageIndexForViewController:`以获取任意页面对应的索引；同时新增分类方法`vtm_pageIndex`，以便可以快速获取当前页面的索引；
+- 将方法`updateMenuTitles`调整为`reloadMenuTitles`，使其更符合见名知意规范，将属性`needExtendedBottom`重命名为`needExtendBottom`；
+
+
 ## [1.2.2](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.2)
 发布于2016年六月29日，周三
 

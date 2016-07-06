@@ -7,6 +7,12 @@ VTMagic is a page container library, you can custom every page controller by dif
 ![preview image](Gif/magic.gif)
 
 
+## Communication
+- If you **found a bug**, *and can provide steps to reliably reproduce it*, open an issue.
+- If you **have a feature request**, open an issue.
+- If you **want to contribute**, submit a pull request.
+
+
 ## Installation
 
 ### CocoaPods
@@ -219,6 +225,12 @@ or like this
 ```objective-c
 UIViewController *viewController = [self.magicController viewControllerAtPage:3];
 ```
+
+
+## Author
+
+**VictorTian** *Email: tianzhuo112@163.com*
+
 
 ## License
 
