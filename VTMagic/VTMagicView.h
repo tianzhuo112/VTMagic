@@ -233,7 +233,7 @@
 /**
  *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
-@property (nonatomic, assign) BOOL needExtendedBottom;
+@property (nonatomic, assign) BOOL needExtendBottom;
 
 
 #pragma mark - color & size configurations
@@ -363,6 +363,13 @@
 - (void)reloadDataToPage:(NSUInteger)page;
 
 /**
+ *  更新菜单标题，但不重新加载页面
+ *  仅限于菜单顺序和页数不改变的情况下
+ *  一般情况下建议使用reloadData方法
+ */
+- (void)reloadMenuTitles;
+
+/**
  *  查询可重用menuItem
  *
  *  @param identifier 重用标识
@@ -423,13 +430,6 @@
  *  @param recognizer 手势
  */
 - (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer;
-
-/**
- *  更新菜单标题，但不重新加载页面
- *  仅限于菜单顺序和页数不改变的情况下
- *  一般情况下建议使用reloadData方法
- */
-- (void)updateMenuTitles;
 
 /**
  *  取消菜单item的选中状态，可通过属性deselected获取当前状态

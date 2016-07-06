@@ -153,7 +153,7 @@ static const void *kVTMagicView = &kVTMagicView;
     self.needSkipUpdate = YES;
     CGRect originalContentFrame = _contentView.frame;
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
-    CGFloat contentH = size.height - contentY + (_needExtendedBottom ? VTTABBAR_HEIGHT : 0);
+    CGFloat contentH = size.height - contentY + (_needExtendBottom ? VTTABBAR_HEIGHT : 0);
     _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
     if (!CGRectEqualToRect(_contentView.frame, originalContentFrame)) {
         [_contentView resetPageFrames];
@@ -230,7 +230,7 @@ static const void *kVTMagicView = &kVTMagicView;
     if (_magicFlags.dataSourceMenuTitles) {
         _menuTitles = [_dataSource menuTitlesForMagicView:self];
         _menuBar.menuTitles = _menuTitles;
-        NSString *title = [_menuTitles firstObject];
+        __unused NSString *title = [_menuTitles firstObject];
         NSAssert(!title || [title isKindOfClass:[NSString class]], @"The class of menu title must be NSString");
     }
     
@@ -262,6 +262,18 @@ static const void *kVTMagicView = &kVTMagicView;
     [self reloadData];
 }
 
+- (void)reloadMenuTitles
+{
+    if (_magicFlags.dataSourceMenuTitles) {
+        _menuTitles = [_dataSource menuTitlesForMagicView:self];
+        _menuBar.menuTitles = _menuTitles;
+    }
+    [_menuBar reloadData];
+    if (!_contentView.isDragging) {
+        [self updateMenuBarState];
+    }
+}
+
 - (UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier
 {
     UIButton *menuItem = [_menuBar dequeueReusableItemWithIdentifier:identifier];
@@ -291,18 +303,6 @@ static const void *kVTMagicView = &kVTMagicView;
 - (UIButton *)menuItemAtIndex:(NSUInteger)index
 {
     return [_menuBar itemAtIndex:index];
-}
-
-- (void)updateMenuTitles
-{
-    if (_magicFlags.dataSourceMenuTitles) {
-        _menuTitles = [_dataSource menuTitlesForMagicView:self];
-        _menuBar.menuTitles = _menuTitles;
-    }
-    [_menuBar reloadData];
-    if (!_contentView.isDragging) {
-        [self updateMenuBarState];
-    }
 }
 
 - (void)deselectMenuItem
@@ -1043,9 +1043,9 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     _contentView.bounces = bounces;
 }
 
-- (void)setNeedExtendedBottom:(BOOL)needExtendedBottom
+- (void)setNeedExtendBottom:(BOOL)needExtendBottom
 {
-    _needExtendedBottom = needExtendedBottom;
+    _needExtendBottom = needExtendBottom;
     [self updateFrameForSubviews];
 }
 
