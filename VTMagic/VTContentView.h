@@ -44,7 +44,12 @@
 @property (nonatomic, assign) NSUInteger currentPage;
 
 /**
- *  屏幕上可见的控制器
+ *  是否需要预加载下一页，默认YES
+ */
+@property (nonatomic, assign) BOOL needPreloading;
+
+/**
+ *  当前屏幕上已加载的控制器
  */
 @property (nonatomic, strong, readonly) NSArray *visibleList;
 

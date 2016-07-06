@@ -27,8 +27,10 @@
     self.magicView.navigationColor = [UIColor whiteColor];
     self.magicView.sliderColor = RGBCOLOR(169, 37, 37);
     self.magicView.layoutStyle = VTLayoutStyleDivide;
-    self.magicView.againstStatusBar = YES;
+    self.magicView.switchStyle = VTSwitchStyleStiff;
     self.magicView.navigationHeight = 40.f;
+    self.magicView.againstStatusBar = YES;
+    self.magicView.needPreloading = NO;
     [self integrateComponents];
     [self configCustomSlider];
     

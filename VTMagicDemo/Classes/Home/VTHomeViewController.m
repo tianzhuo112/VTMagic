@@ -130,12 +130,12 @@
 }
 
 #pragma mark - VTMagicViewDelegate
-- (void)magicView:(VTMagicView *)magicView viewDidAppear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
 //    NSLog(@"index:%ld viewDidAppear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
 {
 //    NSLog(@"index:%ld viewDidDisappear:%@", (long)pageIndex, viewController.view);
 }

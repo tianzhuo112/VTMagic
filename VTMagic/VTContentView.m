@@ -22,11 +22,12 @@
 
 @implementation VTContentView
 
-#pragma mark -lifecycle
+#pragma mark - Lifecycle
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _needPreloading = YES;
         _indexList = [[NSMutableArray alloc] init];
         _frameList = [[NSMutableArray alloc] init];
         _visibleDict = [[NSMutableDictionary alloc] init];
@@ -68,7 +69,7 @@
         frame = [_frameList[indexPath.row] CGRectValue];
         viewController = _visibleDict[indexPath];
         // 控制器若移出屏幕则将其视图从父类中移除，并添加到缓存池中
-        if (![self vtm_isNeedDisplayWithFrame:frame]) {
+        if (![self vtm_isNeedDisplayWithFrame:frame preloading:_needPreloading]) {
             [self moveViewControllerToCache:viewController];
             [_visibleDict removeObjectForKey:indexPath];
         } else {
@@ -80,7 +81,7 @@
     [tempPaths removeObjectsInArray:pathList];
     for (NSIndexPath *indexPath in tempPaths) {
         frame = [_frameList[indexPath.row] CGRectValue];
-        if ([self vtm_isNeedDisplayWithFrame:frame]) {
+        if ([self vtm_isNeedDisplayWithFrame:frame preloading:_needPreloading]) {
             [self loadViewControllerAtIndexPath:indexPath];
         }
     }

@@ -147,7 +147,7 @@
 @property (nonatomic, strong) UIView *rightNavigatoinItem;
 
 /**
- *  屏幕上可见的控制器
+ *  当前屏幕上已加载的控制器
  */
 @property (nonatomic, strong, readonly) NSArray<__kindof UIViewController *> *viewControllers;
 
@@ -217,6 +217,13 @@
  *  @param duration     动画时长
  */
 - (void)setHeaderHidden:(BOOL)headerHidden duration:(CGFloat)duration;
+
+/**
+ *  是否需要预加载下一页，默认YES，
+ *  若为NO，则点击导航菜单和调用switchToPage:animated:方法切换页面时均无动画，
+ *  其切换效果与属性switchAnimated为NO时相同
+ */
+@property (nonatomic, assign) BOOL needPreloading;
 
 /**
  *  页面滑到两侧边缘时是否需要反弹效果，默认NO
