@@ -8,7 +8,6 @@
 
 #import "VTBubbleViewController.h"
 #import "VTGridViewController.h"
-#import "MenuInfo.h"
 
 @interface VTBubbleViewController ()
 
@@ -23,7 +22,7 @@
 {
     [super viewDidLoad];
     
-    self.magicView.navigationHeight = 40;
+    self.magicView.navigationHeight = 44;
     self.magicView.againstStatusBar = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
@@ -38,6 +37,13 @@
     [self addNotification];
     [self generateTestData];
     [self.magicView reloadDataToPage:2];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)dealloc

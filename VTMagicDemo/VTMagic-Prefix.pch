@@ -10,5 +10,6 @@
 #define VTMagicView_VTMagicView_Prefix_pch
 
 #import "VTCommon.h"
+#import "MenuInfo.h"
 
 #endif

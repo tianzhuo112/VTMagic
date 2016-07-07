@@ -10,11 +10,11 @@
 #import "VTRecomViewController.h"
 #import "VTGridViewController.h"
 #import "VTCommon.h"
-#import "MenuInfo.h"
 
 @interface VTHomeViewController ()
 
 @property (nonatomic, strong)  NSArray *menuList;
+@property (nonatomic, assign)  BOOL autoSwitch;
 
 @end
 
@@ -32,7 +32,7 @@
 //    self.magicView.separatorHidden = NO;
     self.magicView.itemScale = 1.2;
     self.magicView.headerHeight = 40;
-    self.magicView.navigationHeight = 40;
+    self.magicView.navigationHeight = 44;
     self.magicView.againstStatusBar = YES;
 //    self.magicView.sliderExtension = 5.0;
 //    self.magicView.switchStyle = VTSwitchStyleStiff;
@@ -49,11 +49,22 @@
     [self.magicView reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    _autoSwitch = 0 != self.tabBarController.selectedIndex;
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self.magicView switchToPage:0 animated:YES];
+    if (_autoSwitch) {
+        [self.magicView switchToPage:0 animated:YES];
+        _autoSwitch = NO;
+    }
 }
 
 - (void)dealloc

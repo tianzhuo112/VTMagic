@@ -9,7 +9,6 @@
 #import "VTCenterViewController.h"
 #import "VTGridViewController.h"
 #import <VTMagic/VTMagic.h>
-#import "MenuInfo.h"
 
 #define kSearchBarWidth (60.0f)
 
@@ -26,13 +25,37 @@
 {
     [super viewDidLoad];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
     self.view.backgroundColor = [UIColor whiteColor];
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];
+    [self.view setNeedsUpdateConstraints];
     [self integrateComponents];
     
     [self generateTestData];
     [_magicController.magicView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)updateViewConstraints
+{
+    UIView *magicView = _magicController.view;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[magicView]-0-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(magicView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[magicView]-0-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(magicView)]];
+    
+    [super updateViewConstraints];
 }
 
 #pragma mark - functional methods
@@ -97,13 +120,13 @@
 {
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
-        _magicController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _magicController.view.translatesAutoresizingMaskIntoConstraints = NO;
         _magicController.magicView.navigationInset = UIEdgeInsetsMake(0, kSearchBarWidth, 0, 0);
         _magicController.magicView.navigationColor = [UIColor whiteColor];
         _magicController.magicView.sliderColor = RGBCOLOR(169, 37, 37);
         _magicController.magicView.switchStyle = VTSwitchStyleDefault;
         _magicController.magicView.layoutStyle = VTLayoutStyleCenter;
-        _magicController.magicView.navigationHeight = 40.f;
+        _magicController.magicView.navigationHeight = 44.f;
         _magicController.magicView.againstStatusBar = YES;
         _magicController.magicView.dataSource = self;
         _magicController.magicView.delegate = self;

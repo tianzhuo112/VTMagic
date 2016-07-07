@@ -1,22 +1,21 @@
 //
-//  RecomViewController.m
-//  VTMagicView
+//  VTRelateViewController.m
+//  VTMagic
 //
-//  Created by tianzhuo on 14-11-13.
-//  Copyright (c) 2014年 tianzhuo. All rights reserved.
+//  Created by tianzhuo on 7/7/16.
+//  Copyright © 2016 tianzhuo. All rights reserved.
 //
 
-#import "VTRecomViewController.h"
-#import "VTDetailViewController.h"
+#import "VTRelateViewController.h"
 #import "VTRecomCell.h"
 
-@interface VTRecomViewController ()
+@interface VTRelateViewController ()
 
 @property (nonatomic, strong) NSMutableArray *newsList;
 
 @end
 
-@implementation VTRecomViewController
+@implementation VTRelateViewController
 
 - (void)viewDidLoad
 {
@@ -74,19 +73,11 @@
     if (!cell) {
         cell = [[VTRecomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
-    NSString *imageName = [NSString stringWithFormat:@"image_%ld", (long)indexPath.row%13];
+    NSString *imageName = _newsList[indexPath.row];
     [cell.iconView setImage:[UIImage imageNamed:imageName]];
     cell.titleLabel.text = @"标题标题";
-    cell.descLabel.text = @"景点描述景点描述景点描述景点描述景点描述";
+    cell.descLabel.text = @"详情描述详情描述详情描述详情描述详情描述详情描述";
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    VTDetailViewController *detailViewController = [[VTDetailViewController alloc] init];
-    detailViewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - VTMagicReuseProtocol
@@ -102,7 +93,7 @@
 {
     _newsList = [[NSMutableArray alloc] init];
     for (NSInteger index = 0; index < 50; index++) {
-        [_newsList addObject:[NSString stringWithFormat:@"新闻%ld", (long)index]];
+        [_newsList addObject:[NSString stringWithFormat:@"image_%d", arc4random_uniform(13)]];
     }
 }
 

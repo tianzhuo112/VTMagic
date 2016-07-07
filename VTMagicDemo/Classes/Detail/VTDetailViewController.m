@@ -1,35 +1,35 @@
 //
-//  VTDataViewController.m
+//  VTDetailViewController.m
 //  VTMagic
 //
-//  Created by tianzhuo on 6/1/16.
+//  Created by tianzhuo on 7/7/16.
 //  Copyright © 2016 tianzhuo. All rights reserved.
 //
 
-#import "VTDataViewController.h"
-#import "VTWebViewController.h"
+#import "VTDetailViewController.h"
+#import "VTRelateViewController.h"
 #import <VTMagic/VTMagic.h>
 
-@interface VTDataViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
+@interface VTDetailViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
 
 @property (nonatomic, strong) VTMagicController *magicController;
 @property (nonatomic, strong)  NSArray *menuList;
 
 @end
 
-@implementation VTDataViewController
+@implementation VTDetailViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];
     [self.view setNeedsUpdateConstraints];
     
-    [self generateTestData];
+    _menuList = @[@"详情", @"热门", @"相关", @"聊天"];
     [_magicController.magicView reloadData];
 }
 
@@ -37,7 +37,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)updateViewConstraints
@@ -47,7 +47,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(magicView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[magicView]-0-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-200-[magicView]-0-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(magicView)]];
@@ -76,18 +76,13 @@
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
 {
-    static NSString *pageId = @"page.identifier";
-    VTWebViewController *webviewController = [magicView dequeueReusablePageWithIdentifier:pageId];
-    if (!webviewController) {
-        webviewController = [[VTWebViewController alloc] init];
+    static NSString *gridId = @"relate.identifier";
+    VTRelateViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
+    if (!viewController) {
+        viewController = [[VTRelateViewController alloc] init];
     }
-    return webviewController;
-}
-
-#pragma mark - functional methods
-- (void)generateTestData
-{
-    _menuList = @[@"潜龙榜", @"美人榜", @"神功榜", @"奇物榜"];
+    viewController.menuInfo = _menuList[pageIndex];
+    return viewController;
 }
 
 #pragma mark - accessor methods
@@ -100,9 +95,8 @@
         _magicController.magicView.sliderColor = RGBCOLOR(169, 37, 37);
         _magicController.magicView.switchStyle = VTSwitchStyleDefault;
         _magicController.magicView.layoutStyle = VTLayoutStyleDivide;
-        _magicController.magicView.navigationHeight = 44.f;
-        _magicController.magicView.againstStatusBar = YES;
-        _magicController.magicView.sliderExtension = 10.0;
+        _magicController.magicView.navigationHeight = 40.f;
+        _magicController.magicView.sliderExtension = 10.f;
         _magicController.magicView.dataSource = self;
         _magicController.magicView.delegate = self;
     }

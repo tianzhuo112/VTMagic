@@ -7,8 +7,8 @@
 //
 
 #import "VTGridViewController.h"
+#import "VTDetailViewController.h"
 #import "VTGridViewCell.h"
-#import "MenuInfo.h"
 #import "VTMagic.h"
 
 #define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
@@ -98,6 +98,9 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     NSInteger currentPage = self.magicController.currentPage;
     NSLog(@"==didSelectItemAtIndexPath%@ \n current page is: %ld==", indexPath, (long)currentPage);
+    VTDetailViewController *detailViewController = [[VTDetailViewController alloc] init];
+    detailViewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 #pragma mark - VTMagicReuseProtocol
@@ -115,9 +118,8 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 {
     NSTimeInterval currentStamp = [[NSDate date] timeIntervalSince1970];
     if (currentStamp - _menuInfo.lastTime < 60 * 60) return;
-    // 延时处理，模拟网络请求
+    // 延时处理，模拟网络请求，根据_menuInfo.menuId请求对应菜单项的相关信息
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // request success
         _menuInfo.lastTime = currentStamp;
         [self handleNetworkSuccess];
     });

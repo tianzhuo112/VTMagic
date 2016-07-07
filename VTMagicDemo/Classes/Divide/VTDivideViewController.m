@@ -9,7 +9,6 @@
 #import "VTDivideViewController.h"
 #import "VTGridViewController.h"
 #import <VTMagic/VTMagic.h>
-#import "MenuInfo.h"
 
 @interface VTDivideViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
 
@@ -28,7 +27,7 @@
     self.magicView.sliderColor = RGBCOLOR(169, 37, 37);
     self.magicView.layoutStyle = VTLayoutStyleDivide;
     self.magicView.switchStyle = VTSwitchStyleStiff;
-    self.magicView.navigationHeight = 40.f;
+    self.magicView.navigationHeight = 44.f;
     self.magicView.againstStatusBar = YES;
     self.magicView.needPreloading = NO;
     [self integrateComponents];
@@ -36,6 +35,13 @@
     
     [self generateTestData];
     [self.magicView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 #pragma mark - VTMagicViewDataSource
