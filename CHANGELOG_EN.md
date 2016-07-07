@@ -7,12 +7,12 @@ All notable changes to this project will be documented in this file.
 Released on Wednesday, July 6, 2016.
 
 ### changed
-- Fix bug: unable to accurately focus on menu item when switch by `handlePanGesture:`.
 - Add preloading switch, you can control preloading logic by modifying property `needPreloading`.
-- You can custom `sliderView` and `separatoreView` if you need.
+- You can custom `sliderView` and `separatorView` if you need.
 - You can clear memory cache by method `clearMemoryCache`.
 - Add new method `pageIndexForViewController:`, you can get the `pageIndex` of any page controller by this method, and also you can get the `pageIndex` of current page controller by category method `vtm_pageIndex` conveniently.
 - Method `updateMenuTitles` was renamed `reloadMenuTitles`, and property `needExtendedBottom` was renamed `needExtendBottom`.
+- Fix bug: unable to accurately focus on menu item when switch by `handlePanGesture:`.
 
 
 ## [1.2.2](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.2) (06/29/2016)
