@@ -24,15 +24,6 @@
     [self fireChatTimer];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    if (VTAppearanceStateDidDisappear == self.magicController.appearanceState) {
-        [self invalidateTimer];
-    }
-}
-
 #pragma mark - functional methods
 - (void)fireChatTimer
 {

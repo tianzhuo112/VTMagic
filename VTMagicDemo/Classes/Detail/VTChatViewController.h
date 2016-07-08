@@ -32,4 +32,9 @@
  */
 @property (nonatomic, weak) id<VTChatViewControllerDelegate> delegate;
 
+/**
+ *  销毁定时器
+ */
+- (void)invalidateTimer;
+
 @end

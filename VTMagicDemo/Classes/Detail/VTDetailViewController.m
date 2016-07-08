@@ -44,6 +44,13 @@
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [_chatViewController invalidateTimer];
+}
+
 - (void)updateViewConstraints
 {
     UIView *magicView = _magicController.view;
