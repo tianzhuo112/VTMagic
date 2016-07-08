@@ -22,6 +22,8 @@
 		7EDBE4DD1D25689D0010F62E /* MenuInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4DC1D25689D0010F62E /* MenuInfo.m */; };
 		7EDBE4EC1D2E97310010F62E /* VTDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4E91D2E97310010F62E /* VTDetailViewController.m */; };
 		7EDBE4ED1D2E97310010F62E /* VTRelateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4EB1D2E97310010F62E /* VTRelateViewController.m */; };
+		7EDBE4F01D2FD1010010F62E /* VTChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4EF1D2FD1010010F62E /* VTChatViewController.m */; };
+		7EDBE4F41D2FD1380010F62E /* VTMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4F31D2FD1380010F62E /* VTMenuItem.m */; };
 		7EF068501CF82E8F00EDFC41 /* VTMagicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */; };
 		8A8752B3115AE8AAE7B7D0A9 /* libPods-VTMagicTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B05D0A986B6C3E04F8B6EA6 /* libPods-VTMagicTests.a */; };
 		991301BB0FFF835D29F7A46C /* libPods-VTMagic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BC38DE51F14834A13E67075 /* libPods-VTMagic.a */; };
@@ -79,6 +81,10 @@
 		7EDBE4E91D2E97310010F62E /* VTDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTDetailViewController.m; sourceTree = "<group>"; };
 		7EDBE4EA1D2E97310010F62E /* VTRelateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTRelateViewController.h; sourceTree = "<group>"; };
 		7EDBE4EB1D2E97310010F62E /* VTRelateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTRelateViewController.m; sourceTree = "<group>"; };
+		7EDBE4EE1D2FD1010010F62E /* VTChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTChatViewController.h; sourceTree = "<group>"; };
+		7EDBE4EF1D2FD1010010F62E /* VTChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTChatViewController.m; sourceTree = "<group>"; };
+		7EDBE4F21D2FD1380010F62E /* VTMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTMenuItem.h; sourceTree = "<group>"; };
+		7EDBE4F31D2FD1380010F62E /* VTMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMenuItem.m; sourceTree = "<group>"; };
 		7EF0684E1CF81B4A00EDFC41 /* VTMagic-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VTMagic-Prefix.pch"; sourceTree = "<group>"; };
 		7EF0684F1CF82E8F00EDFC41 /* VTMagicTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTMagicTests.m; sourceTree = "<group>"; };
 		AEA0D4F31A11E4AB00229B72 /* VTMagic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VTMagic.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,12 +242,24 @@
 		7EDBE4E71D2E97310010F62E /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				7EDBE4F11D2FD1190010F62E /* View */,
 				7EDBE4E81D2E97310010F62E /* VTDetailViewController.h */,
 				7EDBE4E91D2E97310010F62E /* VTDetailViewController.m */,
 				7EDBE4EA1D2E97310010F62E /* VTRelateViewController.h */,
 				7EDBE4EB1D2E97310010F62E /* VTRelateViewController.m */,
+				7EDBE4EE1D2FD1010010F62E /* VTChatViewController.h */,
+				7EDBE4EF1D2FD1010010F62E /* VTChatViewController.m */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		7EDBE4F11D2FD1190010F62E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7EDBE4F21D2FD1380010F62E /* VTMenuItem.h */,
+				7EDBE4F31D2FD1380010F62E /* VTMenuItem.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		AEA0D4EA1A11E4AB00229B72 = {
@@ -522,6 +540,8 @@
 				7E44B6931CFF199A00FEEFF8 /* VTTabBarController.m in Sources */,
 				7EDBE4EC1D2E97310010F62E /* VTDetailViewController.m in Sources */,
 				7EDBE4ED1D2E97310010F62E /* VTRelateViewController.m in Sources */,
+				7EDBE4F01D2FD1010010F62E /* VTChatViewController.m in Sources */,
+				7EDBE4F41D2FD1380010F62E /* VTMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,12 +8,16 @@
 
 #import "VTDetailViewController.h"
 #import "VTRelateViewController.h"
+#import "VTChatViewController.h"
 #import <VTMagic/VTMagic.h>
+#import "VTMenuItem.h"
 
-@interface VTDetailViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
+@interface VTDetailViewController()<VTMagicViewDataSource, VTMagicViewDelegate, VTChatViewControllerDelegate>
 
 @property (nonatomic, strong) VTMagicController *magicController;
+@property (nonatomic, strong) VTChatViewController *chatViewController;
 @property (nonatomic, strong)  NSArray *menuList;
+@property (nonatomic, assign)  BOOL dotHidden;
 
 @end
 
@@ -64,18 +68,26 @@
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
 {
     static NSString *itemIdentifier = @"itemIdentifier";
-    UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
+    VTMenuItem *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
-        menuItem = [UIButton buttonWithType:UIButtonTypeCustom];
+        menuItem = [VTMenuItem buttonWithType:UIButtonTypeCustom];
         [menuItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
         [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
         menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];
+    }
+    menuItem.dotHidden = YES;
+    if (_menuList.count - 1 == itemIndex) {
+        menuItem.dotHidden = _dotHidden;
     }
     return menuItem;
 }
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
 {
+    if (_menuList.count - 1 == pageIndex) {
+        return self.chatViewController;
+    }
+    
     static NSString *gridId = @"relate.identifier";
     VTRelateViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
     if (!viewController) {
@@ -83,6 +95,21 @@
     }
     viewController.menuInfo = _menuList[pageIndex];
     return viewController;
+}
+
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
+{
+    if ([viewController isEqual:_chatViewController]) {
+        _dotHidden = YES;
+        [magicView reloadMenuTitles];
+    }
+}
+
+#pragma mark - VTChatViewControllerDelegate
+- (void)chatViewControllerDidReciveNewMessages:(VTChatViewController *)chatViewController
+{
+    _dotHidden = NO;
+    [_magicController.magicView reloadMenuTitles];
 }
 
 #pragma mark - accessor methods
@@ -101,6 +128,15 @@
         _magicController.magicView.delegate = self;
     }
     return _magicController;
+}
+
+- (VTChatViewController *)chatViewController
+{
+    if (!_chatViewController) {
+        _chatViewController = [[VTChatViewController alloc] init];
+        _chatViewController.delegate = self;
+    }
+    return _chatViewController;
 }
 
 @end
