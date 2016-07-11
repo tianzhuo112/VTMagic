@@ -254,11 +254,12 @@ static const void *kVTMagicView = &kVTMagicView;
     [self layoutIfNeeded];
 }
 
-- (void)reloadDataToPage:(NSUInteger)page
+- (void)reloadDataToPage:(NSUInteger)pageIndex
 {
-    _currentPage = page;
-    _menuBar.currentIndex = page;
-    _contentView.currentPage = page;
+    _previousIndex = _currentPage;
+    _currentPage = pageIndex;
+    _menuBar.currentIndex = pageIndex;
+    _contentView.currentPage = pageIndex;
     [self reloadData];
 }
 
@@ -344,11 +345,12 @@ static const void *kVTMagicView = &kVTMagicView;
     _contentView.contentOffset = CGPointMake(offset, 0);
     self.needSkipUpdate = NO;
     
-    [self displayPageHasChanged:pageIndex disIndex:_currentPage];
-    [self viewControllerDidDisappear:_currentPage];
-    [self viewControllerDidAppear:pageIndex];
+    _previousIndex = _currentPage;
     _currentPage = pageIndex;
     _menuBar.currentIndex = pageIndex;
+    [self displayPageHasChanged:pageIndex disIndex:_previousIndex];
+    [self viewControllerDidDisappear:_previousIndex];
+    [self viewControllerDidAppear:pageIndex];
     [self updateMenuBarWhenSwitchEnd];
 }
 
@@ -974,7 +976,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         _magicFlags.shouldManualForwardAppearanceMethods = ![magicController shouldAutomaticallyForwardAppearanceMethods];
     }
 }
-
+    
 - (void)setLayoutStyle:(VTLayoutStyle)layoutStyle
 {
     _layoutStyle = layoutStyle;

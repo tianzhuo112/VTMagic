@@ -8,8 +8,8 @@
 
 #import "VTGridViewController.h"
 #import "VTDetailViewController.h"
+#import <VTMagic/VTMagic.h>
 #import "VTGridViewCell.h"
-#import "VTMagic.h"
 
 #define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
 static NSString *reuseIdentifier = @"grid.reuse.identifier";

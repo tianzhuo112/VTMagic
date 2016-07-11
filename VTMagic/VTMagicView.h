@@ -97,7 +97,7 @@
 /**
  *  主控制器，若delegate遵循协议VTMagicProtocol，则默认与其相同
  *
- *  @warning 若继承自或直接实例化VTMagicController，则不需要设置该属性
+ *  @warning 若继承或直接实例化VTMagicController，则不需要设置该属性
  */
 @property (nonatomic, weak) UIViewController<VTMagicProtocol> *magicController;
 
@@ -360,7 +360,7 @@
  *
  *  @param page 被定位的页面
  */
-- (void)reloadDataToPage:(NSUInteger)page;
+- (void)reloadDataToPage:(NSUInteger)pageIndex;
 
 /**
  *  更新菜单标题，但不重新加载页面
