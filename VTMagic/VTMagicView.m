@@ -229,13 +229,13 @@ static const void *kVTMagicView = &kVTMagicView;
     
     if (_magicFlags.dataSourceMenuTitles) {
         _menuTitles = [_dataSource menuTitlesForMagicView:self];
+        _sliderView.hidden = _menuTitles.count ? _sliderHidden : YES;
         _menuBar.menuTitles = _menuTitles;
         __unused NSString *title = [_menuTitles firstObject];
         NSAssert(!title || [title isKindOfClass:[NSString class]], @"The class of menu title must be NSString");
     }
     
-    BOOL needReset = _menuTitles.count <= _currentPage;
-    if (needReset) {
+    if (_menuTitles.count <= _currentPage) {
         _currentPage = 0;
         _nextPageIndex = _currentPage;
         _previousIndex = _currentPage;
