@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     
-    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     self.view.backgroundColor = [UIColor whiteColor];
     [self addChildViewController:self.magicController];
     [self.view addSubview:_magicController.view];

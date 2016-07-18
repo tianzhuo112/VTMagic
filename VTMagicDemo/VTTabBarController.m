@@ -52,7 +52,7 @@
     self.viewControllers = @[homeNav, bubbleNav, centerNav, divideNav, dataNav];
     
     self.tabBar.barTintColor = RGBCOLOR(239, 239, 239);
-    self.tabBar.alpha = 0.97;
+    self.tabBar.alpha = 0.75;
 }
 
 - (UITabBarItem *)creatTabBarItemWithTitle:(NSString*)title

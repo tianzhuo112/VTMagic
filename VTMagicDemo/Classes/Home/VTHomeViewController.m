@@ -41,9 +41,10 @@
     self.magicView.navigationColor = [UIColor whiteColor];
     self.magicView.layoutStyle = VTLayoutStyleDefault;
     self.view.backgroundColor = RGBCOLOR(243, 40, 47);
+    self.edgesForExtendedLayout = UIRectEdgeAll;
     [self integrateComponents];
     [self configSeparatorView];
-    [self.magicView reloadData];
+    
     [self addNotification];
     [self generateTestData];
     [self.magicView reloadData];

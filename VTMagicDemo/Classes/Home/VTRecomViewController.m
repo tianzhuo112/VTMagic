@@ -23,6 +23,7 @@
     [super viewDidLoad];
     
     self.tableView.scrollsToTop = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, VTTABBAR_HEIGHT, 0);
     self.view.backgroundColor = RGBCOLOR(239, 239, 239);
     self.tableView.rowHeight = 70.f;
     

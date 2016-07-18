@@ -71,6 +71,7 @@
 {
     if (!_webView) {
         _webView = [[WKWebView alloc] initWithFrame:self.view.frame];
+        _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, VTTABBAR_HEIGHT, 0);
         _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [_webView.scrollView addGestureRecognizer:self.panRecognizer];
         _webView.scrollView.alwaysBounceHorizontal = NO;
