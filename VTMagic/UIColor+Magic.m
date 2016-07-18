@@ -11,8 +11,7 @@
 
 @implementation UIColor (Magic)
 
-- (VTColor)vtm_changeToVTColor
-{
+- (VTColor)vtm_changeToVTColor {
     VTColor color;
     if ([self respondsToSelector:@selector(getRed:green:blue:alpha:)]) {
         [self getRed:&color.red green:&color.green blue:&color.blue alpha:&color.alph];
@@ -22,13 +21,11 @@
     return color;
 }
 
-+ (UIColor *)vtm_colorWithVTColor:(VTColor)color
-{
++ (UIColor *)vtm_colorWithVTColor:(VTColor)color {
     return [UIColor colorWithRed:color.red green:color.green blue:color.blue alpha:color.alph];
 }
 
-+ (UIColor *)vtm_compositeColor:(VTColor)baseColor anoColor:(VTColor)anoColor scale:(CGFloat)scale
-{
++ (UIColor *)vtm_compositeColor:(VTColor)baseColor anoColor:(VTColor)anoColor scale:(CGFloat)scale {
     VTColor diffColor = VTColorReduce(anoColor, baseColor);
     VTColor offsetColor = VTColorScale(diffColor, scale);
     return [self vtm_colorWithVTColor:VTColorAdd(baseColor, offsetColor)];

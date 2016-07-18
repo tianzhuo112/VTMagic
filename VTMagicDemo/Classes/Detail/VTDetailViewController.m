@@ -23,8 +23,7 @@
 
 @implementation VTDetailViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -37,22 +36,19 @@
     [_magicController.magicView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
     [_chatViewController invalidateTimer];
 }
 
-- (void)updateViewConstraints
-{
+- (void)updateViewConstraints {
     UIView *magicView = _magicController.view;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[magicView]-0-|"
                                                                       options:0
@@ -67,13 +63,11 @@
 }
 
 #pragma mark - VTMagicViewDataSource
-- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
-{
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
     return _menuList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
-{
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     static NSString *itemIdentifier = @"itemIdentifier";
     VTMenuItem *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
@@ -89,8 +83,7 @@
     return menuItem;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
-{
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex {
     if (_menuList.count - 1 == pageIndex) {
         return self.chatViewController;
     }
@@ -104,8 +97,7 @@
     return viewController;
 }
 
-- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex {
     if ([viewController isEqual:_chatViewController]) {
         _dotHidden = YES;
         [magicView reloadMenuTitles];
@@ -113,15 +105,13 @@
 }
 
 #pragma mark - VTChatViewControllerDelegate
-- (void)chatViewControllerDidReciveNewMessages:(VTChatViewController *)chatViewController
-{
+- (void)chatViewControllerDidReciveNewMessages:(VTChatViewController *)chatViewController {
     _dotHidden = NO;
     [_magicController.magicView reloadMenuTitles];
 }
 
 #pragma mark - accessor methods
-- (VTMagicController *)magicController
-{
+- (VTMagicController *)magicController {
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
         _magicController.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -137,8 +127,7 @@
     return _magicController;
 }
 
-- (VTChatViewController *)chatViewController
-{
+- (VTChatViewController *)chatViewController {
     if (!_chatViewController) {
         _chatViewController = [[VTChatViewController alloc] init];
         _chatViewController.delegate = self;

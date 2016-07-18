@@ -16,8 +16,7 @@
 
 @implementation VTMenuItem
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         _dotHidden = YES;
@@ -33,8 +32,7 @@
     return self;
 }
 
-- (void)updateConstraints
-{
+- (void)updateConstraints {
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_dotView(8)]-20-|"
                                                                       options:0
                                                                       metrics:nil
@@ -48,8 +46,7 @@
 }
 
 #pragma mark - accessor methods
-- (void)setDotHidden:(BOOL)dotHidden
-{
+- (void)setDotHidden:(BOOL)dotHidden {
     _dotHidden = dotHidden;
     _dotView.hidden = dotHidden;
 }

@@ -43,8 +43,7 @@ To run the example project, clone the repo, and run `pod install` from the proje
 ### Integration
 
 ```objective-c
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     [self addChildViewController:self.magicController];
@@ -53,8 +52,7 @@ To run the example project, clone the repo, and run `pod install` from the proje
     [_magicController.magicView reloadData];
 }
 
-- (VTMagicController *)magicController
-{
+- (VTMagicController *)magicController {
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
         _magicController.magicView.navigationColor = [UIColor whiteColor];
@@ -80,8 +78,7 @@ or like this
 ```objective-c
 @implementation ViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.magicView.navigationColor = [UIColor whiteColor];
@@ -103,13 +100,11 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 ####  VTMagicViewDataSource
 
 ```objective-c
-- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
-{
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
     return _menuList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
-{
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     static NSString *itemIdentifier = @"itemIdentifier";
     UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
@@ -121,8 +116,7 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
     return menuItem;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
-{
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex {
     if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
         VTRecomViewController *recomViewController = [magicView dequeueReusablePageWithIdentifier:recomId];
@@ -144,18 +138,15 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 #### VTMagicViewDelegate
 
 ```objective-c
-- (void)magicView:(VTMagicView *)magicView viewDidAppear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex {
     NSLog(@"pageIndex:%ld viewDidAppear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(UIViewController *)viewController atPage:(NSUInteger)pageIndex {
     NSLog(@"pageIndex:%ld viewDidDisappear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
-{
+- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex {
     NSLog(@"didSelectItemAtIndex:%ld", (long)itemIndex);
 }
 ```
@@ -165,8 +156,7 @@ You must conform to `<VTMagicViewDataSource>`. `<VTMagicViewDelegate>` and `<VTM
 This method will be called when page is reused, you should clear old data or reset content offset in here.
 
 ```objective-c
-- (void)vtm_prepareForReuse
-{
+- (void)vtm_prepareForReuse {
     NSLog(@"clear old data if needed:%@", self);
 }
 ```
@@ -178,15 +168,13 @@ This method will be called when page is reused, you should clear old data or res
 VTMagic will automatically calls the appearance methods when user switches the page, maybe you should do something in here, e.g. refresh page info.
 
 ```objective-c
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
     // do something...
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     // do something...

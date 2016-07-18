@@ -15,8 +15,7 @@
 
 @implementation VTGridViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         _imageView = [[UIImageView alloc] init];
@@ -40,8 +39,7 @@
     return self;
 }
 
-- (void)updateConstraints
-{
+- (void)updateConstraints {
     [self addContraints:@"H:|-0-[_imageView]-0-|" forViews:NSDictionaryOfVariableBindings(_imageView)];
     [self addContraints:@"V:|-0-[_imageView(99)]" forViews:NSDictionaryOfVariableBindings(_imageView)];
     
@@ -54,8 +52,7 @@
     [super updateConstraints];
 }
 
-- (void)addContraints:(NSString *)constraint forViews:(NSDictionary *)views
-{
+- (void)addContraints:(NSString *)constraint forViews:(NSDictionary *)views {
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:views]];
 }
 

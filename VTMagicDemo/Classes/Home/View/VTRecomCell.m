@@ -15,8 +15,7 @@
 
 @implementation VTRecomCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         _iconView = [[UIImageView alloc] init];
@@ -41,8 +40,7 @@
     return self;
 }
 
-- (void)updateConstraints
-{
+- (void)updateConstraints {
     [self addContraints:@"H:|-15-[_iconView(100)]" forViews:NSDictionaryOfVariableBindings(_iconView)];
     [self addContraints:@"V:|-5-[_iconView]-5-|" forViews:NSDictionaryOfVariableBindings(_iconView)];
     
@@ -56,8 +54,7 @@
     [super updateConstraints];
 }
 
-- (void)addContraints:(NSString *)constraint forViews:(NSDictionary *)views
-{
+- (void)addContraints:(NSString *)constraint forViews:(NSDictionary *)views {
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:constraint options:0 metrics:nil views:views]];
 }
 

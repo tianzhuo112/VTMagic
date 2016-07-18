@@ -15,8 +15,7 @@
 
 @implementation VTTabBarController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     VTHomeViewController *homeVC = [[VTHomeViewController alloc] init];
@@ -55,8 +54,7 @@
     self.tabBar.alpha = 0.75;
 }
 
-- (UITabBarItem *)creatTabBarItemWithTitle:(NSString*)title
-{
+- (UITabBarItem *)creatTabBarItemWithTitle:(NSString*)title {
     UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:title image:nil selectedImage:nil];
     [item setTitleTextAttributes:@{NSForegroundColorAttributeName:RGBCOLOR(169, 37, 37)}  forState:UIControlStateSelected];
     [item setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateNormal];

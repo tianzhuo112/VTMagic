@@ -18,17 +18,16 @@ typedef struct {
 static const VTColor VTColorZero;
 
 CG_INLINE VTColor
-VTColorMake(CGFloat red, CGFloat green, CGFloat blue, CGFloat alph)
-{
+VTColorMake(CGFloat red, CGFloat green, CGFloat blue, CGFloat alph) {
     VTColor color;
     color.red = red; color.green = green;
     color.blue = blue; color.alph = alph;
+    
     return color;
 }
 
 CG_INLINE VTColor
-VTColorScale(VTColor color, CGFloat scale)
-{
+VTColorScale(VTColor color, CGFloat scale) {
     VTColor scaleColor;
     scaleColor.red = color.red * scale;
     scaleColor.green = color.green * scale;
@@ -38,8 +37,7 @@ VTColorScale(VTColor color, CGFloat scale)
 }
 
 CG_INLINE VTColor
-VTColorAdd(VTColor aColor1, VTColor aColor2)
-{
+VTColorAdd(VTColor aColor1, VTColor aColor2) {
     VTColor finalColor;
     finalColor.red = aColor1.red + aColor2.red;
     finalColor.green = aColor1.green + aColor2.green;
@@ -49,8 +47,7 @@ VTColorAdd(VTColor aColor1, VTColor aColor2)
 }
 
 CG_INLINE VTColor
-VTColorReduce(VTColor aColor, VTColor reductionColor)
-{
+VTColorReduce(VTColor aColor, VTColor reductionColor) {
     VTColor finalColor;
     finalColor.red = aColor.red - reductionColor.red;
     finalColor.green = aColor.green - reductionColor.green;
@@ -60,18 +57,24 @@ VTColorReduce(VTColor aColor, VTColor reductionColor)
 }
 
 CG_INLINE BOOL
-VTColorIsEqual(VTColor aColor1, VTColor aColor2)
-{
-    if (aColor1.red != aColor2.red) return NO;
-    if (aColor1.green != aColor2.green) return NO;
-    if (aColor1.blue != aColor2.blue) return NO;
-    if (aColor1.alph != aColor2.alph) return NO;
+VTColorIsEqual(VTColor aColor1, VTColor aColor2) {
+    if (aColor1.red != aColor2.red) {
+        return NO;
+    }
+    if (aColor1.green != aColor2.green) {
+        return NO;
+    }
+    if (aColor1.blue != aColor2.blue) {
+        return NO;
+    }
+    if (aColor1.alph != aColor2.alph) {
+        return NO;
+    }
     return YES;
 }
 
 CG_INLINE BOOL
-VTColorIsZero(VTColor aColor)
-{
+VTColorIsZero(VTColor aColor) {
     return VTColorIsEqual(VTColorZero, aColor);
 }
 

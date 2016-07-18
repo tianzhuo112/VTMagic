@@ -17,30 +17,29 @@
 
 @implementation VTChatViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self fireChatTimer];
 }
 
 #pragma mark - functional methods
-- (void)fireChatTimer
-{
-    if (_chatTimer) return;
+- (void)fireChatTimer {
+    if (_chatTimer) {
+        return;
+    }
+    
     _chatTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(notifyReciveMessages) userInfo:nil repeats:YES];
 }
 
-- (void)invalidateTimer
-{
+- (void)invalidateTimer {
     if ([_chatTimer isValid]) {
         [_chatTimer invalidate];
     }
     _chatTimer = nil;
 }
 
-- (void)notifyReciveMessages
-{
+- (void)notifyReciveMessages {
     BOOL isDisplayed = [self.magicController.currentViewController isEqual:self];
     if (!isDisplayed && [_delegate respondsToSelector:@selector(chatViewControllerDidReciveNewMessages:)]) {
         [_delegate chatViewControllerDidReciveNewMessages:self];

@@ -21,8 +21,7 @@
 
 @implementation VTCenterViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -36,15 +35,13 @@
     [_magicController.magicView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
-- (void)updateViewConstraints
-{
+- (void)updateViewConstraints {
     UIView *magicView = _magicController.view;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[magicView]-0-|"
                                                                       options:0
@@ -59,8 +56,7 @@
 }
 
 #pragma mark - functional methods
-- (void)integrateComponents
-{
+- (void)integrateComponents {
     UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [searchButton setImage:[UIImage imageNamed:@"magic_search"] forState:UIControlStateNormal];
     [searchButton addTarget:self action:@selector(searchAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -70,14 +66,12 @@
 }
 
 #pragma mark - actions
-- (void)searchAction:(UIButton *)sender
-{
+- (void)searchAction:(UIButton *)sender {
     NSLog(@"searchAction");
 }
 
 #pragma mark - VTMagicViewDataSource
-- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
-{
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
     NSMutableArray *titleList = [NSMutableArray array];
     for (MenuInfo *menu in _menuList) {
         [titleList addObject:menu.title];
@@ -85,8 +79,7 @@
     return titleList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
-{
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     static NSString *itemIdentifier = @"itemIdentifier";
     UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
@@ -98,8 +91,7 @@
     return menuItem;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
-{
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex {
     static NSString *gridId = @"grid.identifier";
     VTGridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
     if (!viewController) {
@@ -110,14 +102,12 @@
 }
 
 #pragma mark - functional methods
-- (void)generateTestData
-{
+- (void)generateTestData {
     _menuList = @[[MenuInfo menuInfoWithTitl:@"专题"], [MenuInfo menuInfoWithTitl:@"论坛"]];
 }
 
 #pragma mark - accessor methods
-- (VTMagicController *)magicController
-{
+- (VTMagicController *)magicController {
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
         _magicController.view.translatesAutoresizingMaskIntoConstraints = NO;

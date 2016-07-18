@@ -15,18 +15,15 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
 @implementation UIViewController (Magic)
 
 #pragma mark - accessor methods
-- (void)setReuseIdentifier:(NSString *)reuseIdentifier
-{
+- (void)setReuseIdentifier:(NSString *)reuseIdentifier {
     objc_setAssociatedObject(self, kVTReuseIdentifier, reuseIdentifier, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (NSString *)reuseIdentifier
-{
+- (NSString *)reuseIdentifier {
     return objc_getAssociatedObject(self, kVTReuseIdentifier);
 }
 
-- (UIViewController<VTMagicProtocol> *)magicController
-{
+- (UIViewController<VTMagicProtocol> *)magicController {
     UIViewController *viewController = self.parentViewController;
     while (viewController) {
         if ([viewController conformsToProtocol:@protocol(VTMagicProtocol)]) break;
@@ -35,8 +32,7 @@ static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
     return (UIViewController<VTMagicProtocol> *)viewController;
 }
 
-- (NSInteger)vtm_pageIndex
-{
+- (NSInteger)vtm_pageIndex {
     return [self.magicController.magicView pageIndexForViewController:self];
 }
 

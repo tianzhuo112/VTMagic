@@ -16,8 +16,7 @@
 @implementation VTMagicController
 
 #pragma mark - Lifecycle
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         if ([self respondsToSelector:@selector(edgesForExtendedLayout)]) {
@@ -29,39 +28,34 @@
     return self;
 }
 
-- (void)loadView
-{
+- (void)loadView {
     [super loadView];
     
     self.view = self.magicView;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     _appearanceState = VTAppearanceStateWillAppear;
     [_currentViewController beginAppearanceTransition:YES animated:animated];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     _appearanceState = VTAppearanceStateDidAppear;
     [_currentViewController endAppearanceTransition];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     _appearanceState = VTAppearanceStateWillDisappear;
     [_currentViewController beginAppearanceTransition:NO animated:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
     _appearanceState = VTAppearanceStateDidDisappear;
@@ -69,57 +63,47 @@
 }
 
 #pragma mark - 禁止自动触发appearance methods
-- (BOOL)shouldAutomaticallyForwardAppearanceMethods
-{
+- (BOOL)shouldAutomaticallyForwardAppearanceMethods {
     return NO;
 }
 
 #pragma mark - functional methods
-- (UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex
-{
+- (UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex {
     return [self.magicView viewControllerAtPage:pageIndex];
 }
 
-- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated
-{
+- (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated {
     [self.magicView switchToPage:pageIndex animated:animated];
 }
 
 #pragma mark - VTMagicViewDataSource
-- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
-{
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
     return nil;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
-{
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     return nil;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageInde
-{
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageInde {
     return nil;
 }
 
 #pragma mark - VTMagicViewDelegate
-- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex {
     VTLog(@"index:%ld viewControllerDidAppear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex {
     VTLog(@"index:%ld viewControllerDidDisappear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
-{
+- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex {
     VTLog(@"didSelectItemAtIndex:%ld", (long)itemIndex);
 }
 
 #pragma mark - accessor methods
-- (VTMagicView *)magicView
-{
+- (VTMagicView *)magicView {
     if (!_magicView) {
         _magicView = [[VTMagicView alloc] initWithFrame:[UIScreen mainScreen].bounds];
         _magicView.autoresizesSubviews = YES;
@@ -131,8 +115,7 @@
     return _magicView;
 }
 
-- (NSArray<UIViewController *> *)viewControllers
-{
+- (NSArray<UIViewController *> *)viewControllers {
     return self.magicView.viewControllers;
 }
 

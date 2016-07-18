@@ -10,8 +10,7 @@
 
 @implementation UIScrollView (Magic)
 
-- (BOOL)vtm_isNeedDisplayWithFrame:(CGRect)frame preloading:(BOOL)preloading
-{
+- (BOOL)vtm_isNeedDisplayWithFrame:(CGRect)frame preloading:(BOOL)preloading {
     CGRect visibleRect = (CGRect){CGPointMake(self.contentOffset.x, 0), self.frame.size};
     CGRect intersectRegion = CGRectIntersection(frame, visibleRect);
     BOOL isOnScreen =  !CGRectIsNull(intersectRegion) || !CGRectIsEmpty(intersectRegion);
@@ -22,11 +21,13 @@
     return isOnScreen;
 }
 
-- (BOOL)vtm_isItemNeedDisplayWithFrame:(CGRect)frame
-{
+- (BOOL)vtm_isItemNeedDisplayWithFrame:(CGRect)frame {
     frame.size.width *= 2;
     BOOL isOnScreen = [self vtm_isNeedDisplayWithFrame:frame preloading:YES];
-    if (isOnScreen) return YES;
+    if (isOnScreen) {
+        return YES;
+    }
+    
     frame.size.width *= 0.5;
     frame.origin.x -= frame.size.width;
     isOnScreen = [self vtm_isNeedDisplayWithFrame:frame preloading:YES];

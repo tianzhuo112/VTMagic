@@ -21,8 +21,7 @@
 @implementation VTHomeViewController
 
 #pragma mark - Lifecycle
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
 //    self.magicView.bounces = YES;
@@ -50,16 +49,14 @@
     [self.magicView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     _autoSwitch = 0 != self.tabBarController.selectedIndex;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     if (_autoSwitch) {
@@ -68,14 +65,12 @@
     }
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - NSNotification
-- (void)addNotification
-{
+- (void)addNotification {
     [self removeNotification];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(statusBarOrientationChange:)
@@ -83,19 +78,16 @@
                                                object:nil];
 }
 
-- (void)removeNotification
-{
+- (void)removeNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
-- (void)statusBarOrientationChange:(NSNotification *)notification
-{
+- (void)statusBarOrientationChange:(NSNotification *)notification {
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
 }
 
 #pragma mark - VTMagicViewDataSource
-- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
-{
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
     NSMutableArray *titleList = [NSMutableArray array];
     for (MenuInfo *menu in _menuList) {
         [titleList addObject:menu.title];
@@ -103,8 +95,7 @@
     return titleList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
-{
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     static NSString *itemIdentifier = @"itemIdentifier";
     UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
@@ -119,8 +110,7 @@
     return menuItem;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
-{
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex {
     MenuInfo *menuInfo = _menuList[pageIndex];
     if (0 == pageIndex) {
         static NSString *recomId = @"recom.identifier";
@@ -142,24 +132,20 @@
 }
 
 #pragma mark - VTMagicViewDelegate
-- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex {
 //    NSLog(@"index:%ld viewDidAppear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex
-{
+- (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex {
 //    NSLog(@"index:%ld viewDidDisappear:%@", (long)pageIndex, viewController.view);
 }
 
-- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex
-{
+- (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex {
 //    NSLog(@"didSelectItemAtIndex:%ld", (long)itemIndex);
 }
 
 #pragma mark - actions
-- (void)subscribeAction
-{
+- (void)subscribeAction {
     NSLog(@"subscribeAction");
     // against status bar or not
 //    self.magicView.againstStatusBar = !self.magicView.againstStatusBar;
@@ -167,8 +153,7 @@
 }
 
 #pragma mark - functional methods
-- (void)generateTestData
-{
+- (void)generateTestData {
     NSString *title = @"推荐";
     NSMutableArray *menuList = [[NSMutableArray alloc] initWithCapacity:24];
     [menuList addObject:[MenuInfo menuInfoWithTitl:title]];
@@ -180,8 +165,7 @@
     _menuList = menuList;
 }
 
-- (void)integrateComponents
-{
+- (void)integrateComponents {
     UIButton *rightButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
     [rightButton addTarget:self action:@selector(subscribeAction) forControlEvents:UIControlEventTouchUpInside];
     [rightButton setTitleColor:RGBACOLOR(169, 37, 37, 0.6) forState:UIControlStateSelected];
@@ -192,8 +176,7 @@
     self.magicView.rightNavigatoinItem = rightButton;
 }
 
-- (void)configSeparatorView
-{
+- (void)configSeparatorView {
 //    UIImageView *separatorView = [[UIImageView alloc] init];
 //    [self.magicView setSeparatorView:separatorView];
     self.magicView.separatorHeight = 2.f;

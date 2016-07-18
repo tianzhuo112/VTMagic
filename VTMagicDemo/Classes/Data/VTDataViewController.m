@@ -19,8 +19,7 @@
 
 @implementation VTDataViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.edgesForExtendedLayout = UIRectEdgeAll;
@@ -33,15 +32,13 @@
     [_magicController.magicView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
-- (void)updateViewConstraints
-{
+- (void)updateViewConstraints {
     UIView *magicView = _magicController.view;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[magicView]-0-|"
                                                                       options:0
@@ -56,13 +53,11 @@
 }
 
 #pragma mark - VTMagicViewDataSource
-- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView
-{
+- (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
     return _menuList;
 }
 
-- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex
-{
+- (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     static NSString *itemIdentifier = @"itemIdentifier";
     UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
@@ -74,8 +69,7 @@
     return menuItem;
 }
 
-- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex
-{
+- (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex {
     static NSString *pageId = @"page.identifier";
     VTWebViewController *webviewController = [magicView dequeueReusablePageWithIdentifier:pageId];
     if (!webviewController) {
@@ -85,14 +79,12 @@
 }
 
 #pragma mark - functional methods
-- (void)generateTestData
-{
+- (void)generateTestData {
     _menuList = @[@"潜龙榜", @"美人榜", @"神功榜", @"奇物榜"];
 }
 
 #pragma mark - accessor methods
-- (VTMagicController *)magicController
-{
+- (VTMagicController *)magicController {
     if (!_magicController) {
         _magicController = [[VTMagicController alloc] init];
         _magicController.view.translatesAutoresizingMaskIntoConstraints = NO;

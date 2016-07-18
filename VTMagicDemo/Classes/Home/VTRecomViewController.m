@@ -18,8 +18,7 @@
 
 @implementation VTRecomViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     self.tableView.scrollsToTop = NO;
@@ -31,44 +30,38 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     VTPRINT_METHOD
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     self.tableView.scrollsToTop = YES;
     VTPRINT_METHOD
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     self.tableView.scrollsToTop = NO;
     VTPRINT_METHOD
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
     VTPRINT_METHOD
 }
 
 #pragma mark - Table view data source
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _newsList.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     VTRecomCell *cell = nil;
     static NSString *cellID = @"cell.Identifier";
     cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -82,8 +75,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     VTDetailViewController *detailViewController = [[VTDetailViewController alloc] init];
     detailViewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:detailViewController animated:YES];
@@ -91,16 +83,14 @@
 }
 
 #pragma mark - VTMagicReuseProtocol
-- (void)vtm_prepareForReuse
-{
+- (void)vtm_prepareForReuse {
     // reset content offset
     NSLog(@"clear old data if needed:%@", self);
     [self.tableView setContentOffset:CGPointZero];
 }
 
 #pragma mark - functional methods
-- (void)fetchNewsData
-{
+- (void)fetchNewsData {
     _newsList = [[NSMutableArray alloc] init];
     for (NSInteger index = 0; index < 50; index++) {
         [_newsList addObject:[NSString stringWithFormat:@"新闻%ld", (long)index]];

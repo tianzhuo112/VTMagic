@@ -19,8 +19,7 @@
 
 @implementation VTWebViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self.view addSubview:self.webView];
@@ -30,16 +29,14 @@
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     self.webView.scrollView.scrollsToTop = YES;
     VTPRINT_METHOD
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     self.webView.scrollView.scrollsToTop = NO;
@@ -47,28 +44,24 @@
 }
 
 #pragma mark - VTMagicReuseProtocol
-- (void)vtm_prepareForReuse
-{
+- (void)vtm_prepareForReuse {
     // reset content offset
     NSLog(@"clear old data if needed:%@", self);
     [self.webView.scrollView setContentOffset:CGPointZero];
 }
 
 #pragma mark - UIPanGestureRecognizer
-- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer
-{
+- (void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     // 如果内嵌webView时无法响应滑动手势，可以这样处理
 //    [self.magicController.magicView handlePanGesture:recognizer];
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
 }
 
 #pragma mark - accessors
-- (WKWebView *)webView
-{
+- (WKWebView *)webView {
     if (!_webView) {
         _webView = [[WKWebView alloc] initWithFrame:self.view.frame];
         _webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, VTTABBAR_HEIGHT, 0);
@@ -81,8 +74,7 @@
     return _webView;
 }
 
-- (UIPanGestureRecognizer *)panRecognizer
-{
+- (UIPanGestureRecognizer *)panRecognizer {
     if (!_panRecognizer) {
         _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
         _panRecognizer.cancelsTouchesInView = YES;
