@@ -10,6 +10,7 @@
 #import "VTDetailViewController.h"
 #import <VTMagic/VTMagic.h>
 #import "VTGridViewCell.h"
+#import "DataManager.h"
 
 #define IPHONELESS6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? 640 == [[UIScreen mainScreen] currentMode].size.width : NO)
 static NSString *reuseIdentifier = @"grid.reuse.identifier";
@@ -70,6 +71,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     [super viewDidDisappear:animated];
     
     VTPRINT_METHOD
+    [[DataManager sharedInstance] savePageInfo:_infoList menuId:_menuInfo.menuId];
 }
 
 #pragma mark UICollectionViewDataSource
@@ -112,8 +114,8 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
         return;
     }
     
-    // 延时处理，模拟网络请求，根据_menuInfo.menuId请求对应菜单项的相关信息
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    // 模拟网络请求延时，根据_menuInfo.menuId请求对应菜单项的相关信息
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.02 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         _menuInfo.lastTime = currentStamp;
         [self handleNetworkSuccess];
     });
@@ -135,9 +137,8 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 
 - (void)loadLocalData {
     _infoList = [[NSMutableArray alloc] init];
-    for (NSInteger index = 0; index < 50; index++) {
-        [_infoList addObject:[NSString stringWithFormat:@"image_%d", arc4random_uniform(13)]];
-    }
+    NSArray *cacheList = [[DataManager sharedInstance] pageInfoWithMenuId:_menuInfo.menuId];
+    [_infoList addObjectsFromArray:cacheList];
     [self.collectionView reloadData];
 }
 

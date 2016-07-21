@@ -19,6 +19,7 @@
 		7E44B6931CFF199A00FEEFF8 /* VTTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B6921CFF199A00FEEFF8 /* VTTabBarController.m */; };
 		7E44B69C1CFF262600FEEFF8 /* VTCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B69B1CFF262600FEEFF8 /* VTCenterViewController.m */; };
 		7E44B6A01CFF2AA600FEEFF8 /* VTDivideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E44B69F1CFF2AA600FEEFF8 /* VTDivideViewController.m */; };
+		7ED67F851D411B9300D1DBE0 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ED67F841D411B9300D1DBE0 /* DataManager.m */; };
 		7EDBE4DD1D25689D0010F62E /* MenuInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4DC1D25689D0010F62E /* MenuInfo.m */; };
 		7EDBE4EC1D2E97310010F62E /* VTDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4E91D2E97310010F62E /* VTDetailViewController.m */; };
 		7EDBE4ED1D2E97310010F62E /* VTRelateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBE4EB1D2E97310010F62E /* VTRelateViewController.m */; };
@@ -75,6 +76,8 @@
 		7E8317781CF74E6B00436604 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7E832EB71D15472E00EFCC03 /* CHANGELOG_CN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG_CN.md; sourceTree = "<group>"; };
 		7E832EB81D15472E00EFCC03 /* CHANGELOG_EN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG_EN.md; sourceTree = "<group>"; };
+		7ED67F831D411B9300D1DBE0 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
+		7ED67F841D411B9300D1DBE0 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		7EDBE4DB1D25689D0010F62E /* MenuInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuInfo.h; sourceTree = "<group>"; };
 		7EDBE4DC1D25689D0010F62E /* MenuInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuInfo.m; sourceTree = "<group>"; };
 		7EDBE4E81D2E97310010F62E /* VTDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTDetailViewController.h; sourceTree = "<group>"; };
@@ -235,6 +238,8 @@
 			children = (
 				7EDBE4DB1D25689D0010F62E /* MenuInfo.h */,
 				7EDBE4DC1D25689D0010F62E /* MenuInfo.m */,
+				7ED67F831D411B9300D1DBE0 /* DataManager.h */,
+				7ED67F841D411B9300D1DBE0 /* DataManager.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -541,6 +546,7 @@
 				7EDBE4EC1D2E97310010F62E /* VTDetailViewController.m in Sources */,
 				7EDBE4ED1D2E97310010F62E /* VTRelateViewController.m in Sources */,
 				7EDBE4F01D2FD1010010F62E /* VTChatViewController.m in Sources */,
+				7ED67F851D411B9300D1DBE0 /* DataManager.m in Sources */,
 				7EDBE4F41D2FD1380010F62E /* VTMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
