@@ -1,6 +1,6 @@
 # VTMagic
 
-VTMagic is a page container library, you can custom every page controller by different identifier if you need. It's so easy to use!（[中文手册传送门](http://www.jianshu.com/p/cb2edb21055f)）
+VTMagic is a page container library for iOS, you can custom every page controller by different identifier if you need. It's so easy to use!（[中文手册传送门](http://www.jianshu.com/p/cb2edb21055f)）
 
 [CHANGELOG][CHANGELOG_EN]\([变更日志][CHANGELOG_CN])
 
@@ -197,9 +197,6 @@ You can switch to some specified page.
 
 ```objective-c
 [self.magicView switchToPage:3 animated:YES];
-```
-or like this
-```objective-c
 [self.magicController switchToPage:3 animated:YES];
 ```
 #### Get specified view controller
@@ -208,16 +205,13 @@ You can get any page controller by page index, it will return nil if the page is
 
 ```objective-c
 UIViewController *viewController = [self.magicView viewControllerAtPage:3];
-```
-or like this
-```objective-c
 UIViewController *viewController = [self.magicController viewControllerAtPage:3];
 ```
 
 
 ## Author
 
-**VictorTian** *Email: tianzhuo112@163.com*
+**VictorTian** *email: tianzhuo112@163.com*
 
 
 ## License

@@ -136,7 +136,6 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 }
 
 - (void)loadLocalData {
-    _infoList = [[NSMutableArray alloc] init];
     NSArray *cacheList = [[DataManager sharedInstance] pageInfoWithMenuId:_menuInfo.menuId];
     [_infoList addObjectsFromArray:cacheList];
     [self.collectionView reloadData];
