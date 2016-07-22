@@ -70,8 +70,8 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
+    [self savePageInfo];
     VTPRINT_METHOD
-    [[DataManager sharedInstance] savePageInfo:_infoList menuId:_menuInfo.menuId];
 }
 
 #pragma mark UICollectionViewDataSource
@@ -109,8 +109,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 #pragma mark - functional methods
 - (void)refreshPageIfNeeded {
     NSTimeInterval currentStamp = [[NSDate date] timeIntervalSince1970];
-    
-    if (currentStamp - _menuInfo.lastTime < 60 * 60) {
+    if (self.infoList.count && currentStamp - _menuInfo.lastTime < 60 * 60) {
         return;
     }
     
@@ -128,11 +127,15 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 
 - (void)handleNetworkSuccess {
     NSLog(@"==模拟网络请求成功后刷新页面==");
-    _infoList = [[NSMutableArray alloc] init];
     for (NSInteger index = 0; index < 50; index++) {
-        [_infoList addObject:[NSString stringWithFormat:@"image_%d", arc4random_uniform(13)]];
+        [self.infoList addObject:[NSString stringWithFormat:@"image_%d", arc4random_uniform(13)]];
     }
     [self.collectionView reloadData];
+}
+
+- (void)savePageInfo
+{
+    [[DataManager sharedInstance] savePageInfo:_infoList menuId:_menuInfo.menuId];
 }
 
 - (void)loadLocalData {
@@ -145,6 +148,14 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
 - (void)setMenuInfo:(MenuInfo *)menuInfo {
     _menuInfo = menuInfo;
     [self loadLocalData];
+}
+
+- (NSMutableArray *)infoList
+{
+    if (!_infoList) {
+        _infoList = [[NSMutableArray alloc] init];
+    }
+    return _infoList;
 }
 
 @end

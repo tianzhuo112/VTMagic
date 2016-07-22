@@ -208,12 +208,24 @@ static const void *kVTMagicView = &kVTMagicView;
 
 #pragma mark - functional methods
 - (void)reloadData {
-    UIViewController *viewController = [self viewControllerAtPage:_currentPage];
+    [self reloadDataWithDisIndex:_currentPage];
+}
+
+- (void)reloadDataToPage:(NSUInteger)pageIndex {
+    _previousIndex = _currentPage;
+    _currentPage = pageIndex;
+    _menuBar.currentIndex = pageIndex;
+    _contentView.currentPage = pageIndex;
+    [self reloadDataWithDisIndex:_previousIndex];
+}
+
+- (void)reloadDataWithDisIndex:(NSInteger)disIndex {
+    UIViewController *viewController = [self viewControllerAtPage:disIndex];
     if (viewController && _magicFlags.viewControllerDidDisappear) {
-        [_delegate magicView:self viewDidDisappear:viewController atPage:_currentPage];
+        [_delegate magicView:self viewDidDisappear:viewController atPage:disIndex];
     }
-    [self viewControllerWillDisappear:_currentPage];
-    [self viewControllerDidDisappear:_currentPage];
+    [self viewControllerWillDisappear:disIndex];
+    [self viewControllerDidDisappear:disIndex];
     
     if (_magicFlags.dataSourceMenuTitles) {
         _menuTitles = [_dataSource menuTitlesForMagicView:self];
@@ -240,14 +252,6 @@ static const void *kVTMagicView = &kVTMagicView;
     [self updateMenuBarState];
     [self setNeedsLayout];
     [self layoutIfNeeded];
-}
-
-- (void)reloadDataToPage:(NSUInteger)pageIndex {
-    _previousIndex = _currentPage;
-    _currentPage = pageIndex;
-    _menuBar.currentIndex = pageIndex;
-    _contentView.currentPage = pageIndex;
-    [self reloadData];
 }
 
 - (void)reloadMenuTitles {
