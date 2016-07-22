@@ -259,7 +259,6 @@ static NSInteger const kVTMenuBarTag = 1000;
     CGFloat sliderY = CGRectGetHeight(self.frame) - _sliderHeight + _sliderOffset;
     CGRect frame = CGRectMake(0, sliderY, 0, _sliderHeight);
     for (NSString *title in _menuTitles) {
-        index = [_menuTitles indexOfObject:title];
         itemFrame = [self itemFrameAtIndex:index];
         if (_sliderWidth) {
             frame.size.width = _sliderWidth;
@@ -271,6 +270,7 @@ static NSInteger const kVTMenuBarTag = 1000;
         }
         frame.origin.x = CGRectGetMidX(itemFrame) - frame.size.width/2;
         [_sliderList addObject:[NSValue valueWithCGRect:frame]];
+        index++;
     }
 }
 
@@ -282,7 +282,6 @@ static NSInteger const kVTMenuBarTag = 1000;
     CGPoint bubblePoint = CGPointZero;
     for (NSString *title in _menuTitles) {
         size = [self sizeWithTitle:title];
-        index = [_menuTitles indexOfObject:title];
         itemFrame = [self itemFrameAtIndex:index];
         size.width += _bubbleInset.left + _bubbleInset.right;
         size.height += _bubbleInset.top + _bubbleInset.bottom;
@@ -290,6 +289,7 @@ static NSInteger const kVTMenuBarTag = 1000;
         bubblePoint.y = CGRectGetMidY(itemFrame) - size.height/2;
         frame = (CGRect){bubblePoint, size};
         [_sliderList addObject:[NSValue valueWithCGRect:frame]];
+        index++;
     }
 }
 
