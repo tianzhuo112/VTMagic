@@ -16,8 +16,7 @@
 
 @implementation DataManager
 
-+ (instancetype)sharedInstance
-{
++ (instancetype)sharedInstance {
     static DataManager *sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -27,15 +26,13 @@
     return sharedManager;
 }
 
-- (void)savePageInfo:(NSArray *)infoList menuId:(NSString *)menuId
-{
+- (void)savePageInfo:(NSArray *)infoList menuId:(NSString *)menuId {
     if (menuId) {
         [_dataInfo setObject:[NSArray arrayWithArray:infoList] forKey:menuId];
     }
 }
 
-- (NSArray *)pageInfoWithMenuId:(NSString *)menuId
-{
+- (NSArray *)pageInfoWithMenuId:(NSString *)menuId {
     return [_dataInfo objectForKey:menuId];
 }
 

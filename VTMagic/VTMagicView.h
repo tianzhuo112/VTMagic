@@ -226,6 +226,11 @@
 @property (nonatomic, assign) BOOL needPreloading;
 
 /**
+ *  是否正在切换中，仅动画切换时为YES
+ */
+@property (nonatomic, assign, readonly, getter=isSwitching) BOOL switching;
+
+/**
  *  页面滑到两侧边缘时是否需要反弹效果，默认NO
  */
 @property (nonatomic, assign) BOOL bounces;

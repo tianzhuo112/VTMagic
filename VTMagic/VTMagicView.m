@@ -309,8 +309,8 @@ static const void *kVTMagicView = &kVTMagicView;
         return;
     }
     
-    _contentView.currentPage = pageIndex;
     _switchEvent = VTSwitchEventScroll;
+    _contentView.currentPage = pageIndex;
     if (animated && _needPreloading) {
         [self switchAnimation:pageIndex];
     } else {
@@ -336,7 +336,9 @@ static const void *kVTMagicView = &kVTMagicView;
     _menuBar.currentIndex = pageIndex;
     [self displayPageHasChanged:pageIndex disIndex:_previousIndex];
     [self viewControllerDidDisappear:_previousIndex];
-    [self viewControllerDidAppear:pageIndex];
+    if (VTAppearanceStateWillAppear != _magicController.appearanceState) {
+        [self viewControllerDidAppear:pageIndex];
+    }
     [self updateMenuBarWhenSwitchEnd];
 }
 
@@ -345,6 +347,7 @@ static const void *kVTMagicView = &kVTMagicView;
         return;
     }
     
+    _switching = YES;
     NSInteger disIndex = _currentPage;
     CGFloat contentWidth = CGRectGetWidth(_contentView.frame);
     BOOL isNotAdjacent = abs((int)(_currentPage - pageIndex)) > 1;
@@ -379,6 +382,7 @@ static const void *kVTMagicView = &kVTMagicView;
             [self viewControllerDidAppear:pageIndex];
         }
         self.needSkipUpdate = NO;
+        _switching = NO;
     }];
 }
 
@@ -654,18 +658,25 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         [viewController didMoveToParentViewController:_magicController];
         // 设置默认的currentViewController，并触发viewDidAppear
         if (pageIndex == _currentPage && VTSwitchEventLoad == _switchEvent) {
-            [_magicController setCurrentPage:_currentPage];
-            [_magicController setCurrentViewController:viewController];
-            if (_magicFlags.viewControllerDidAppear) {
-                [_delegate magicView:self viewDidAppear:viewController atPage:_currentPage];
-            }
-            if ([self shouldForwardAppearanceMethods]) {
-                [viewController beginAppearanceTransition:YES animated:YES];
-                [viewController endAppearanceTransition];
-            }
+            [self resetCurrentViewController:viewController];
         }
     }
     return viewController;
+}
+
+- (void)resetCurrentViewController:(UIViewController *)viewController {
+    [_magicController setCurrentPage:_currentPage];
+    [_magicController setCurrentViewController:viewController];
+    if (_magicFlags.viewControllerDidAppear) {
+        [_delegate magicView:self viewDidAppear:viewController atPage:_currentPage];
+    }
+    
+    if ([self shouldForwardAppearanceMethods]) {
+        [viewController beginAppearanceTransition:YES animated:NO];
+        if (VTAppearanceStateWillAppear != _magicController.appearanceState) {
+            [viewController endAppearanceTransition];
+        }
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -826,7 +837,8 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 
 - (BOOL)shouldForwardAppearanceMethods {
     return _magicFlags.shouldManualForwardAppearanceMethods &&
-      VTAppearanceStateDidAppear == _magicController.appearanceState;
+    (VTAppearanceStateDidAppear == _magicController.appearanceState ||
+     VTAppearanceStateWillAppear == _magicController.appearanceState);
 }
 
 #pragma mark - accessor methods

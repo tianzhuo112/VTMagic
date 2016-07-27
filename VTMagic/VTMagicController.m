@@ -38,28 +38,36 @@
     [super viewWillAppear:animated];
     
     _appearanceState = VTAppearanceStateWillAppear;
-    [_currentViewController beginAppearanceTransition:YES animated:animated];
+    if (!_magicView.isSwitching) {
+        [_currentViewController beginAppearanceTransition:YES animated:animated];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     _appearanceState = VTAppearanceStateDidAppear;
-    [_currentViewController endAppearanceTransition];
+    if (!_magicView.isSwitching) {
+        [_currentViewController endAppearanceTransition];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     _appearanceState = VTAppearanceStateWillDisappear;
-    [_currentViewController beginAppearanceTransition:NO animated:animated];
+    if (!_magicView.isSwitching) {
+        [_currentViewController beginAppearanceTransition:NO animated:animated];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
     _appearanceState = VTAppearanceStateDidDisappear;
-    [_currentViewController endAppearanceTransition];
+    if (!_magicView.isSwitching) {
+        [_currentViewController endAppearanceTransition];
+    }
 }
 
 #pragma mark - 禁止自动触发appearance methods
