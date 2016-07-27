@@ -133,8 +133,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     [self.collectionView reloadData];
 }
 
-- (void)savePageInfo
-{
+- (void)savePageInfo {
     [[DataManager sharedInstance] savePageInfo:_infoList menuId:_menuInfo.menuId];
 }
 
@@ -150,8 +149,7 @@ static NSString *reuseIdentifier = @"grid.reuse.identifier";
     [self loadLocalData];
 }
 
-- (NSMutableArray *)infoList
-{
+- (NSMutableArray *)infoList {
     if (!_infoList) {
         _infoList = [[NSMutableArray alloc] init];
     }

@@ -207,7 +207,7 @@ static NSInteger const kVTMenuBarTag = 1000;
     CGRect lastFame = [[_frameList lastObject] CGRectValue];
     CGFloat contentWidth = menuWidth - _menuInset.right;
     CGFloat itemOffset = (contentWidth - CGRectGetMaxX(lastFame))/2;
-    
+
     if (itemOffset <= 0) {
         return;
     }
@@ -311,7 +311,6 @@ static NSInteger const kVTMenuBarTag = 1000;
     if (_frameList.count <= index) {
         return CGRectZero;
     }
-    
     return [_frameList[index] CGRectValue];
 }
 
@@ -356,7 +355,6 @@ static NSInteger const kVTMenuBarTag = 1000;
     if (_sliderList.count <= index) {
         return CGRectZero;
     }
-    
     return [_sliderList[index] CGRectValue];
 }
 

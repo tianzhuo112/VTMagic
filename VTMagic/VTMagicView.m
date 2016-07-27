@@ -667,6 +667,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)resetCurrentViewController:(UIViewController *)viewController {
     [_magicController setCurrentPage:_currentPage];
     [_magicController setCurrentViewController:viewController];
+    viewController.view.frame = [_contentView frameOfViewControllerAtPage:_currentPage];
     if (_magicFlags.viewControllerDidAppear) {
         [_delegate magicView:self viewDidAppear:viewController atPage:_currentPage];
     }
@@ -883,12 +884,14 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 - (void)setSliderView:(UIView *)sliderView {
     [_sliderView removeFromSuperview];
     _sliderView = sliderView;
+    _sliderView.backgroundColor = _sliderView.backgroundColor ?: _sliderColor;
     [_menuBar addSubview:sliderView];
 }
 
 - (void)setSeparatorView:(UIView *)separatorView {
     [_separatorView removeFromSuperview];
     _separatorView = separatorView;
+    _separatorView.backgroundColor = _separatorView.backgroundColor ?: _separatorColor;
     [_navigationView addSubview:separatorView];
     [_navigationView bringSubviewToFront:_menuBar];
 }

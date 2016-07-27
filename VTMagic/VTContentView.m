@@ -146,6 +146,14 @@
     return NSNotFound;
 }
 
+- (CGRect)frameOfViewControllerAtPage:(NSInteger)pageIndex
+{
+    if (pageIndex < 0 || _frameList.count <= pageIndex) {
+        return CGRectZero;
+    }
+    return [_frameList[pageIndex] CGRectValue];
+}
+
 #pragma mark - 根据索引获取页面控制器
 - (UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex {
     return [self viewControllerAtPage:pageIndex autoCreate:NO];

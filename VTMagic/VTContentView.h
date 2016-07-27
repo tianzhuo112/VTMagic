@@ -80,6 +80,15 @@
 - (NSInteger)pageIndexForViewController:(UIViewController *)viewController;
 
 /**
+ *  根据页面索引获取对应页面的frame
+ *
+ *  @param pageIndex 页面索引
+ *
+ *  @return 页面索引
+ */
+- (CGRect)frameOfViewControllerAtPage:(NSInteger)pageIndex;
+
+/**
  *  获取索引对应的ViewController
  *  若index超出范围或对应控制器不可见，则返回nil
  *

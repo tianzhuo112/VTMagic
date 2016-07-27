@@ -24,7 +24,6 @@
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.view.backgroundColor = [UIColor whiteColor];
     self.magicView.navigationColor = [UIColor whiteColor];
-    self.magicView.sliderColor = RGBCOLOR(169, 37, 37);
     self.magicView.layoutStyle = VTLayoutStyleDivide;
     self.magicView.switchStyle = VTSwitchStyleStiff;
     self.magicView.navigationHeight = 44.f;

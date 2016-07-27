@@ -22,7 +22,6 @@ VTColorMake(CGFloat red, CGFloat green, CGFloat blue, CGFloat alph) {
     VTColor color;
     color.red = red; color.green = green;
     color.blue = blue; color.alph = alph;
-    
     return color;
 }
 
