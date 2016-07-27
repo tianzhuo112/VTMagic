@@ -10,6 +10,8 @@
 #import "VTMagicProtocol.h"
 #import "VTEnumType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VTMagicView;
 
 /****************************************data source****************************************/
@@ -85,21 +87,21 @@
 /**
  *  数据源
  */
-@property (nonatomic, weak) id<VTMagicViewDataSource> dataSource;
+@property (nonatomic, weak, nullable) id<VTMagicViewDataSource> dataSource;
 
 /**
  *  代理
  *  若delegate为UIViewController并且实现了VTMagicProtocol协议，
  *  则主控制器(mainViewController)默认与其相同
  */
-@property (nonatomic, weak) id<VTMagicViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id<VTMagicViewDelegate> delegate;
 
 /**
  *  主控制器，若delegate遵循协议VTMagicProtocol，则默认与其相同
  *
  *  @warning 若继承或直接实例化VTMagicController，则不需要设置该属性
  */
-@property (nonatomic, weak) UIViewController<VTMagicProtocol> *magicController;
+@property (nonatomic, weak, nullable) UIViewController<VTMagicProtocol> *magicController;
 
 /**
  *  切换样式，默认是VTSwitchStyleDefault
@@ -139,12 +141,12 @@
 /**
  *  顶部导航栏左侧视图项
  */
-@property (nonatomic, strong) UIView *leftNavigatoinItem;
+@property (nonatomic, strong, nullable) UIView *leftNavigatoinItem;
 
 /**
  *  顶部导航栏右侧视图项
  */
-@property (nonatomic, strong) UIView *rightNavigatoinItem;
+@property (nonatomic, strong, nullable) UIView *rightNavigatoinItem;
 
 /**
  *  当前屏幕上已加载的控制器
@@ -252,7 +254,7 @@
 /**
  *  顶部导航栏背景色
  */
-@property (nonatomic, strong) UIColor *navigationColor;
+@property (nonatomic, strong, nullable) UIColor *navigationColor;
 
 /**
  *  顶部导航条的高度，默认是44
@@ -262,7 +264,7 @@
 /**
  *  顶部导航栏底部分割线颜色
  */
-@property (nonatomic, strong) UIColor *separatorColor;
+@property (nonatomic, strong, nullable) UIColor *separatorColor;
 
 /**
  *  导航栏分割线高度，默认0.5个点
@@ -272,7 +274,7 @@
 /**
  *  顶部导航栏滑块颜色
  */
-@property (nonatomic, strong) UIColor *sliderColor;
+@property (nonatomic, strong, nullable) UIColor *sliderColor;
 
 /**
  *  顶部导航栏滑块高度，默认2
@@ -381,7 +383,7 @@
  *
  *  @return 可重用的menuItem
  */
-- (__kindof UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
+- (nullable __kindof UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
 
 /**
  *  根据缓存标识获取可重用的UIViewController
@@ -390,7 +392,7 @@
  *
  *  @return 可重用的UIViewController
  */
-- (__kindof UIViewController *)dequeueReusablePageWithIdentifier:(NSString *)identifier;
+- (nullable __kindof UIViewController *)dequeueReusablePageWithIdentifier:(NSString *)identifier;
 
 /**
  *  根据控制器获取对应的页面索引，仅当前显示的和预加载的控制器有相应索引，
@@ -410,7 +412,7 @@
  *
  *  @return UIViewController对象
  */
-- (__kindof UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex;
+- (nullable __kindof UIViewController *)viewControllerAtPage:(NSUInteger)pageIndex;
 
 /**
  *  根据索引获取当前页面显示的menuItem，不在窗口上显示的则为nil
@@ -419,7 +421,7 @@
  *
  *  @return 当前索引对应的menuItem
  */
-- (__kindof UIButton *)menuItemAtIndex:(NSUInteger)index;
+- (nullable __kindof UIButton *)menuItemAtIndex:(NSUInteger)index;
 
 /**
  *  切换到指定页面
@@ -451,5 +453,7 @@
  *  清除所有缓存的页面
  */
 - (void)clearMemoryCache;
+
+NS_ASSUME_NONNULL_END
 
 @end

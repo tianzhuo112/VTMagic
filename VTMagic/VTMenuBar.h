@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "VTEnumType.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class VTMenuBar;
 @protocol VTMenuBarDatasource <NSObject>
 /**
@@ -41,17 +43,17 @@
 /**
  *  数据源
  */
-@property (nonatomic, weak) id <VTMenuBarDatasource> datasource;
+@property (nonatomic, weak, nullable) id <VTMenuBarDatasource> datasource;
 
 /**
  *  代理
  */
-@property (nonatomic, weak) id <VTMenuBarDelegate, UIScrollViewDelegate> delegate;
+@property (nonatomic, weak, nullable) id <VTMenuBarDelegate, UIScrollViewDelegate> delegate;
 
 /**
  *  菜单名数组，字符串类型
  */
-@property (nonatomic, strong) NSArray<__kindof NSString *> *menuTitles;
+@property (nonatomic, strong, nullable) NSArray<__kindof NSString *> *menuTitles;
 
 /**
  *  导航菜单布局样式
@@ -71,7 +73,7 @@
 /**
  *  当前被选中的item
  */
-@property (nonatomic, strong, readonly) UIButton *selectedItem;
+@property (nonatomic, strong, readonly, nullable) UIButton *selectedItem;
 
 /**
  *  导航菜单item的选中状态是否已被取消，默认NO
@@ -190,7 +192,7 @@
  *
  *  @return 当前索引对应的item
  */
-- (UIButton *)itemAtIndex:(NSUInteger)index;
+- (nullable UIButton *)itemAtIndex:(NSUInteger)index;
 
 /**
  *  根据索引生成对应的item，若对应item已经存在，则直接返回
@@ -199,7 +201,7 @@
  *
  *  @return 当前索引对应的item
  */
-- (UIButton *)createItemAtIndex:(NSUInteger)index;
+- (nullable UIButton *)createItemAtIndex:(NSUInteger)index;
 
 /**
  *  根据重用标识查询可重用的category item
@@ -211,3 +213,5 @@
 - (__kindof UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
 
 @end
+
+NS_ASSUME_NONNULL_END
