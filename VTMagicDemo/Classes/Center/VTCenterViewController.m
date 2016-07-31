@@ -15,7 +15,9 @@
 @interface VTCenterViewController()<VTMagicViewDataSource, VTMagicViewDelegate>
 
 @property (nonatomic, strong) VTMagicController *magicController;
-@property (nonatomic, strong)  NSArray *menuList;
+@property (nonatomic, strong) VTGridViewController *topicViewController;
+@property (nonatomic, strong) VTGridViewController *forumViewController;
+@property (nonatomic, strong) NSArray *menuList;
 
 @end
 
@@ -92,13 +94,12 @@
 }
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex {
-    static NSString *gridId = @"grid.identifier";
-    VTGridViewController *viewController = [magicView dequeueReusablePageWithIdentifier:gridId];
-    if (!viewController) {
-        viewController = [[VTGridViewController alloc] init];
+    MenuInfo *menuInfo = _menuList[pageIndex];
+    if ([menuInfo.title isEqualToString:@"专题"]) { // if (0 == pageIndex) {
+        return self.topicViewController;
+    } else {
+        return self.forumViewController;
     }
-    viewController.menuInfo = _menuList[pageIndex];
-    return viewController;
 }
 
 #pragma mark - functional methods
@@ -122,6 +123,20 @@
         _magicController.magicView.delegate = self;
     }
     return _magicController;
+}
+
+- (UIViewController *)topicViewController {
+    if (!_topicViewController) {
+        _topicViewController = [[VTGridViewController alloc] init];
+    }
+    return _topicViewController;
+}
+
+- (VTGridViewController *)forumViewController {
+    if (!_forumViewController) {
+        _forumViewController = [[VTGridViewController alloc] init];
+    }
+    return _forumViewController;
 }
 
 @end
