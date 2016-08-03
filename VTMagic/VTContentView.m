@@ -7,8 +7,8 @@
 //
 
 #import "VTContentView.h"
-#import "UIViewController+Magic.h"
-#import "UIScrollView+Magic.h"
+#import "UIViewController+VTMagic.h"
+#import "UIScrollView+VTMagic.h"
 
 @interface VTContentView()
 

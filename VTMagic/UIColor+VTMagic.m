@@ -1,15 +1,15 @@
 //
-//  UIColor+Magic.m
+//  UIColor+VTMagic.m
 //  VTMagic
 //
 //  Created by tianzhuo on 15/7/23.
 //  Copyright (c) 2015年 tianzhuo. All rights reserved.
 //
 
-#import "UIColor+Magic.h"
+#import "UIColor+VTMagic.h"
 #import "VTCommon.h"
 
-@implementation UIColor (Magic)
+@implementation UIColor (VTMagic)
 
 - (VTColor)vtm_changeToVTColor {
     VTColor color;

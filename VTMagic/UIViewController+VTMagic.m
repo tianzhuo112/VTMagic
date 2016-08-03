@@ -1,18 +1,18 @@
 //
-//  UIViewController+Magic.m
+//  UIViewController+VTMagic.m
 //  VTMagic
 //
 //  Created by tianzhuo on 15/7/9.
 //  Copyright (c) 2015年 tianzhuo. All rights reserved.
 //
 
-#import "UIViewController+Magic.h"
+#import "UIViewController+VTMagic.h"
 #import <objc/runtime.h>
 #import "VTMagicView.h"
 
 static const void *kVTReuseIdentifier = &kVTReuseIdentifier;
 
-@implementation UIViewController (Magic)
+@implementation UIViewController (VTMagic)
 
 #pragma mark - accessor methods
 - (void)setReuseIdentifier:(NSString *)reuseIdentifier {

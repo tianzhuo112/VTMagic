@@ -10,7 +10,7 @@
 #import "VTMenuBar.h"
 #import "VTContentView.h"
 #import "VTMagicController.h"
-#import "UIColor+Magic.h"
+#import "UIColor+VTMagic.h"
 #import <objc/runtime.h>
 
 typedef struct {

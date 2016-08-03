@@ -1,5 +1,5 @@
 //
-//  UIColor+Magic.h
+//  UIColor+VTMagic.h
 //  VTMagic
 //
 //  Created by tianzhuo on 15/7/23.
@@ -77,7 +77,7 @@ VTColorIsZero(VTColor aColor) {
     return VTColorIsEqual(VTColorZero, aColor);
 }
 
-@interface UIColor (Magic)
+@interface UIColor (VTMagic)
 
 /**
  *  将UIColor转成对应的RGBA色值

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIViewController+Magic.h"
+#import "UIViewController+VTMagic.h"
 #import "VTMagicView.h"
 #import "VTCommon.h"
 
