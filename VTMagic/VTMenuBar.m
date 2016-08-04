@@ -171,12 +171,17 @@ static NSInteger const kVTMenuBarTag = 1000;
 
 - (void)resetFramesForDefault {
     CGFloat itemWidth = 0;
+    NSString *title = nil;
     CGRect frame = CGRectZero;
     CGFloat itemX = _menuInset.left;
     CGFloat height = self.frame.size.height;
     height -= _menuInset.top + _menuInset.bottom;
-    for (NSString *title in _menuTitles) {
-        itemWidth = _itemWidth ?: ([self sizeWithTitle:title].width + _itemSpacing);
+    for (int index = 0; index < _menuTitles.count; index++) {
+        itemWidth = [self itemWidthAtIndex:index];
+        if (!itemWidth) {
+            title = [_menuTitles objectAtIndex:index];
+            itemWidth = _itemWidth ?: ([self sizeWithTitle:title].width + _itemSpacing);
+        }
         frame = CGRectMake(itemX, _menuInset.top, itemWidth, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
@@ -218,10 +223,14 @@ static NSInteger const kVTMenuBarTag = 1000;
     }
 }
 
+- (CGFloat)itemWidthAtIndex:(NSUInteger)itemIndex {
+    return [self.delegate menuBar:self itemWidthAtIndex:itemIndex];
+}
+
 #pragma mark reset slider frames
 - (void)resetSliderFrames {
     [_sliderList removeAllObjects];
-    
+
     if (!_menuTitles.count) {
         return;
     }
@@ -243,13 +252,16 @@ static NSInteger const kVTMenuBarTag = 1000;
     CGRect frame = CGRectMake(0, sliderY, 0, _sliderHeight);
     for (NSString *title in _menuTitles) {
         itemFrame = [self itemFrameAtIndex:index];
-        if (_sliderWidth) {
-            frame.size.width = _sliderWidth;
-        } else if (CGFLOAT_MAX != _sliderExtension) {
-            frame.size.width = [self sizeWithTitle:title].width;
-            frame.size.width += _sliderExtension * 2;
-        } else {
-            frame.size.width = itemFrame.size.width;
+        frame.size.width = [self sliderWidthAtIndex:index];
+        if (!CGRectGetWidth(frame)) {
+            if (_sliderWidth) {
+                frame.size.width = _sliderWidth;
+            } else if (CGFLOAT_MAX != _sliderExtension) {
+                frame.size.width = [self sizeWithTitle:title].width;
+                frame.size.width += _sliderExtension * 2;
+            } else {
+                frame.size.width = itemFrame.size.width;
+            }
         }
         frame.origin.x = CGRectGetMidX(itemFrame) - frame.size.width/2;
         [_sliderList addObject:[NSValue valueWithCGRect:frame]];
@@ -274,6 +286,10 @@ static NSInteger const kVTMenuBarTag = 1000;
         [_sliderList addObject:[NSValue valueWithCGRect:frame]];
         index++;
     }
+}
+
+- (CGFloat)sliderWidthAtIndex:(NSUInteger)itemIndex {
+    return [self.delegate menuBar:self sliderWidthAtIndex:itemIndex];
 }
 
 - (CGSize)sizeWithTitle:(NSString *)title {

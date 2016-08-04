@@ -645,6 +645,20 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     }
 }
 
+- (CGFloat)menuBar:(VTMenuBar *)menuBar itemWidthAtIndex:(NSUInteger)itemIndex {
+    if ([_delegate respondsToSelector:@selector(magicView:itemWidthAtIndex:)]) {
+        return [_delegate magicView:self itemWidthAtIndex:itemIndex];
+    }
+    return 0;
+}
+
+- (CGFloat)menuBar:(VTMenuBar *)menuBar sliderWidthAtIndex:(NSUInteger)itemIndex {
+    if ([_delegate respondsToSelector:@selector(magicView:sliderWidthAtIndex:)]) {
+        return [_delegate magicView:self sliderWidthAtIndex:itemIndex];
+    }
+    return 0;
+}
+
 #pragma mark - VTContentViewDataSource
 - (UIViewController *)contentView:(VTContentView *)contentView viewControllerAtPage:(NSUInteger)pageIndex {
     if (!_magicFlags.dataSourceViewController) {

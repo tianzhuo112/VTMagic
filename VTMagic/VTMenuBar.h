@@ -36,6 +36,26 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)menuBar:(VTMenuBar *)menuBar didSelectItemAtIndex:(NSUInteger)itemIndex;
 
+/**
+ *  根据itemIndex获取对应menuItem的宽度，若返回结果为0，内部将自动计算其宽度
+ *
+ *  @param magicView self
+ *  @param itemIndex menuItem对应的索引
+ *
+ *  @return menuItem的宽度
+ */
+- (CGFloat)menuBar:(VTMenuBar *)menuBar itemWidthAtIndex:(NSUInteger)itemIndex;
+
+/**
+ *  根据itemIndex获取对应slider的宽度，若返回结果为0，内部将自动计算其宽度
+ *
+ *  @param magicView self
+ *  @param itemIndex slider对应的索引
+ *
+ *  @return slider的宽度
+ */
+- (CGFloat)menuBar:(VTMenuBar *)menuBar sliderWidthAtIndex:(NSUInteger)itemIndex;
+
 @end
 
 @interface VTMenuBar : UIScrollView

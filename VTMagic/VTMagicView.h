@@ -26,22 +26,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<__kindof NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView;
 
 /**
- *  根据index获取对应索引的menuItem
+ *  根据itemIndex加载对应的menuItem
  *
  *  @param magicView self
- *  @param index     当前索引
+ *  @param itemIndex 需要加载的菜单索引
  *
- *  @return 当前索引对应的按钮
+ *  @return 当前索引对应的菜单按钮
  */
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex;
 
 /**
- *  当前索引对应的控制器
+ *  根据pageIndex加载对应的页面控制器
  *
  *  @param magicView self
- *  @param index     当前索引
+ *  @param pageIndex 需要加载的页面索引
  *
- *  @return 控制器
+ *  @return 页面控制器
  */
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageIndex;
 
@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param magicView      self
  *  @param viewController 当前页面展示的控制器
- *  @param index          当前控控制器对应的索引
+ *  @param pageIndex      当前控控制器对应的索引
  */
 - (void)magicView:(VTMagicView *)magicView viewDidAppear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param magicView      self
  *  @param viewController 消失的视图控制器
- *  @param index          当前控制器对应的索引
+ *  @param pageIndex      消失的控制器对应的索引
  */
 - (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
@@ -73,9 +73,29 @@ NS_ASSUME_NONNULL_BEGIN
  *  选中导航菜单item时触发
  *
  *  @param magicView self
- *  @param itemIndex menuItem索引
+ *  @param itemIndex menuItem对应的索引
  */
 - (void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex;
+
+/**
+ *  根据itemIndex获取对应menuItem的宽度，若返回结果为0，内部将自动计算其宽度
+ *
+ *  @param magicView self
+ *  @param itemIndex menuItem对应的索引
+ *
+ *  @return menuItem的宽度
+ */
+- (CGFloat)magicView:(VTMagicView *)magicView itemWidthAtIndex:(NSUInteger)itemIndex;
+
+/**
+ *  根据itemIndex获取对应slider的宽度，若返回结果为0，内部将自动计算其宽度
+ *
+ *  @param magicView self
+ *  @param itemIndex slider对应的索引
+ *
+ *  @return slider的宽度
+ */
+- (CGFloat)magicView:(VTMagicView *)magicView sliderWidthAtIndex:(NSUInteger)itemIndex;
 
 @end
 
