@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VTMagic/VTMenuBar.h"
-            timestampString = "491500316.782307"
+            timestampString = "492012510.550363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "@interface VTMenuBar"
             landmarkType = "2">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VTMagicDemo/Classes/Home/VTHomeViewController.m"
-            timestampString = "491501375.892706"
+            timestampString = "492018427.966198"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,12 +90,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VTMagic/VTMagicView.m"
-            timestampString = "491502144.018079"
+            timestampString = "492012510.550363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "809"
-            endingLineNumber = "809"
-            landmarkName = "-viewControllerWillAppear:"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
+            landmarkName = "-viewControllerDidAppear:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -112,22 +112,6 @@
             startingLineNumber = "239"
             endingLineNumber = "239"
             landmarkName = "-reloadDataWithDisIndex:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "VTMagicDemo/Classes/Home/VTHomeViewController.m"
-            timestampString = "491923502.959306"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "-magicView:itemWidthAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

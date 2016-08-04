@@ -605,13 +605,13 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 }
 
 #pragma mark - VTMenuBarDatasource & VTMenuBarDelegate
-- (UIButton *)menuBar:(VTMenuBar *)menuBar menuItemAtIndex:(NSUInteger)index {
+- (UIButton *)menuBar:(VTMenuBar *)menuBar menuItemAtIndex:(NSUInteger)itemIndex {
     if (!_magicFlags.dataSourceMenuItem) {
         return nil;
     }
     
-    UIButton *menuItem = [_dataSource magicView:self menuItemAtIndex:index];
-    [menuItem setTitle:_menuTitles[index] forState:UIControlStateNormal];
+    UIButton *menuItem = [_dataSource magicView:self menuItemAtIndex:itemIndex];
+    [menuItem setTitle:_menuTitles[itemIndex] forState:UIControlStateNormal];
     if (VTColorIsZero(_normalVTColor)) {
         _normalColor = [menuItem titleColorForState:UIControlStateNormal];
         _normalVTColor = [_normalColor vtm_changeToVTColor];

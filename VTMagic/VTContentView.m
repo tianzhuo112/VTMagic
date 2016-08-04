@@ -146,9 +146,9 @@
     return NSNotFound;
 }
 
-- (CGRect)frameOfViewControllerAtPage:(NSInteger)pageIndex
+- (CGRect)frameOfViewControllerAtPage:(NSUInteger)pageIndex
 {
-    if (pageIndex < 0 || _frameList.count <= pageIndex) {
+    if (_frameList.count <= pageIndex) {
         return CGRectZero;
     }
     return [_frameList[pageIndex] CGRectValue];

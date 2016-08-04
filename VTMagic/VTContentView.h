@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 页面索引
  */
-- (CGRect)frameOfViewControllerAtPage:(NSInteger)pageIndex;
+- (CGRect)frameOfViewControllerAtPage:(NSUInteger)pageIndex;
 
 /**
  *  获取索引对应的ViewController

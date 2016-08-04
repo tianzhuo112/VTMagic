@@ -154,9 +154,6 @@ static NSInteger const kVTMenuBarTag = 1000;
         case VTLayoutStyleCenter:
             [self resetFramesForCenter];
             break;
-        case VTLayoutStyleCustom:
-            [self resetFramesForCustom];
-            break;
         default:
             [self resetFramesForDefault];
             break;
@@ -173,14 +170,14 @@ static NSInteger const kVTMenuBarTag = 1000;
 }
 
 - (void)resetFramesForDefault {
-    CGSize size = CGSizeZero;
+    CGFloat itemWidth = 0;
     CGRect frame = CGRectZero;
     CGFloat itemX = _menuInset.left;
     CGFloat height = self.frame.size.height;
     height -= _menuInset.top + _menuInset.bottom;
     for (NSString *title in _menuTitles) {
-        size = [self sizeWithTitle:title];
-        frame = CGRectMake(itemX, _menuInset.top, size.width + _itemSpacing, height);
+        itemWidth = _itemWidth ?: ([self sizeWithTitle:title].width + _itemSpacing);
+        frame = CGRectMake(itemX, _menuInset.top, itemWidth, height);
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
         itemX += frame.size.width;
     }
@@ -207,7 +204,6 @@ static NSInteger const kVTMenuBarTag = 1000;
     CGRect lastFame = [[_frameList lastObject] CGRectValue];
     CGFloat contentWidth = menuWidth - _menuInset.right;
     CGFloat itemOffset = (contentWidth - CGRectGetMaxX(lastFame))/2;
-
     if (itemOffset <= 0) {
         return;
     }
@@ -219,19 +215,6 @@ static NSInteger const kVTMenuBarTag = 1000;
         frame = [value CGRectValue];
         frame.origin.x += itemOffset;
         [_frameList addObject:[NSValue valueWithCGRect:frame]];
-    }
-}
-
-- (void)resetFramesForCustom {
-    CGRect frame = CGRectZero;
-    NSInteger count = _menuTitles.count;
-    CGFloat height = self.frame.size.height;
-    height -= _menuInset.top + _menuInset.bottom;
-    frame.origin = CGPointMake(_menuInset.left, _menuInset.top);
-    frame.size = CGSizeMake(_itemWidth, height);
-    for (int index = 0; index < count; index++) {
-        [_frameList addObject:[NSValue valueWithCGRect:frame]];
-        frame.origin.x += _itemWidth;
     }
 }
 
@@ -368,8 +351,8 @@ static NSInteger const kVTMenuBarTag = 1000;
 }
 
 #pragma mark - item 点击事件
-- (void)menuItemClick:(id)sender {
-    NSInteger itemIndex = [(UIButton *)sender tag] - kVTMenuBarTag;
+- (void)menuItemClick:(UIButton *)sender {
+    NSInteger itemIndex = sender.tag - kVTMenuBarTag;
     if ([self.delegate respondsToSelector:@selector(menuBar:didSelectItemAtIndex:)]) {
         [self.delegate menuBar:self didSelectItemAtIndex:itemIndex];
     }

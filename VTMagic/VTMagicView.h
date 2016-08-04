@@ -324,10 +324,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat headerHeight;
 
 /**
- *  两个导航菜单item文本之间的间距，默认是25
+ *  两个导航菜单item文本之间的间距，默认是25，其优先级低于itemWidth
  *  如果菜单item包含图片，则实际间距可能会更小
  *
- *  @warning 该属性仅VTLayoutStyleDefault和VTLayoutStyleCenter样式下有效！
+ *  @warning 该属性在VTLayoutStyleDivide样式下无效
  */
 @property (nonatomic, assign) CGFloat itemSpacing;
 
@@ -338,9 +338,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat itemScale;
 
 /**
- *  自定义item宽度
+ *  自定义item宽度，默认0，当设置改属性时，itemSpacing的设置无效
  *
- *  @warning 仅VTLayoutStyleCustom样式下有效
+ *  @warning 该属性在VTLayoutStyleDivide样式下无效
  */
 @property (nonatomic, assign) CGFloat itemWidth;
 
