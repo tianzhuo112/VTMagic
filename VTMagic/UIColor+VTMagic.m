@@ -7,7 +7,7 @@
 //
 
 #import "UIColor+VTMagic.h"
-#import "VTCommon.h"
+#import "VTMagicMacros.h"
 
 @implementation UIColor (VTMagic)
 

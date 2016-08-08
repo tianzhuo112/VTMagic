@@ -9,7 +9,7 @@
 #ifndef VTMagicView_VTMagicView_Prefix_pch
 #define VTMagicView_VTMagicView_Prefix_pch
 
-#import "VTCommon.h"
+#import <VTMagic/VTMagic.h>
 #import "MenuInfo.h"
 
 #endif

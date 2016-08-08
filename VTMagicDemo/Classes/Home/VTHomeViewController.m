@@ -9,7 +9,6 @@
 #import "VTHomeViewController.h"
 #import "VTRecomViewController.h"
 #import "VTGridViewController.h"
-#import "VTCommon.h"
 
 @interface VTHomeViewController ()
 

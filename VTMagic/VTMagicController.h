@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "UIViewController+VTMagic.h"
+#import "VTMagicMacros.h"
 #import "VTMagicView.h"
-#import "VTCommon.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VTMagicProtocol.h"
+#import "VTMagicMacros.h"
 #import "VTEnumType.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -260,7 +261,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  底部是否需要扩展一个tabbar的高度，设置毛玻璃效果时或许有用，默认NO
  */
-@property (nonatomic, assign) BOOL needExtendBottom;
+@property (nonatomic, assign) BOOL needExtendBottom VT_DEPRECATED_IN("1.2.5");
 
 
 #pragma mark - color & size configurations
@@ -460,7 +461,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  取消菜单item的选中状态，可通过属性deselected获取当前状态
- *  取消选中后须调用方法reSelectMenuItem以恢复
+ *  取消选中后须调用方法reselectMenuItem以恢复
  */
 - (void)deselectMenuItem;
 

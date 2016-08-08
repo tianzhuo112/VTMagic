@@ -18,7 +18,7 @@ VTMagic is a page container library for iOS, you can custom every page controlle
 ### CocoaPods
 
 VTMagic is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+it, simply add the following line to your Podfile, and then import <VTMagic/VTMagic.h>:
 
 ```ruby
 pod "VTMagic"
@@ -26,7 +26,7 @@ pod "VTMagic"
 
 ### Manually
 
-1. Download the project and drop folder `VTMagic` into your project.
+1. Download the project and drop `VTMagic` folder into your project.
 2. Import file `VTMagic.h`.
 
 ```objective-c
@@ -34,7 +34,8 @@ pod "VTMagic"
 ```
 
 ## Requirements
-- iOS 6.0
+
+This library requires iOS 6.0+ and Xcode 7.0+.
 
 ## Usage
 

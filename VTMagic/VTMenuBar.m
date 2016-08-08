@@ -8,7 +8,7 @@
 
 #import "VTMenuBar.h"
 #import "UIScrollView+VTMagic.h"
-#import "VTCommon.h"
+#import "VTMagicMacros.h"
 
 static NSInteger const kVTMenuBarTag = 1000;
 

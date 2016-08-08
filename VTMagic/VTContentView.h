@@ -7,7 +7,7 @@
 //  内容页
 
 #import <UIKit/UIKit.h>
-#import "VTCommon.h"
+#import "VTMagicMacros.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
