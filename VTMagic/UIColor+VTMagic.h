@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  VTColor结构体对象，用来存放颜色的RGBA值
+ */
 typedef struct {
     CGFloat red;
     CGFloat green;
@@ -15,67 +18,26 @@ typedef struct {
     CGFloat alph;
 } VTColor;
 
-static const VTColor VTColorZero;
+/** 各项值为0的VTColor对象 */
+CG_EXTERN const VTColor VTColorZero;
 
-CG_INLINE VTColor
-VTColorMake(CGFloat red, CGFloat green, CGFloat blue, CGFloat alph) {
-    VTColor color;
-    color.red = red; color.green = green;
-    color.blue = blue; color.alph = alph;
-    return color;
-}
+/** 等比放大VTColor对象的各项值 */
+CG_EXTERN VTColor VTColorScale(VTColor color, CGFloat scale);
 
-CG_INLINE VTColor
-VTColorScale(VTColor color, CGFloat scale) {
-    VTColor scaleColor;
-    scaleColor.red = color.red * scale;
-    scaleColor.green = color.green * scale;
-    scaleColor.blue = color.blue * scale;
-    scaleColor.alph = color.alph * scale;
-    return scaleColor;
-}
+/** 将两个VTColor对象的各项值相加，计算其和 */
+CG_EXTERN VTColor VTColorAdd(VTColor aColor1, VTColor aColor2);
 
-CG_INLINE VTColor
-VTColorAdd(VTColor aColor1, VTColor aColor2) {
-    VTColor finalColor;
-    finalColor.red = aColor1.red + aColor2.red;
-    finalColor.green = aColor1.green + aColor2.green;
-    finalColor.blue = aColor1.blue + aColor2.blue;
-    finalColor.alph = aColor1.alph + aColor2.alph;
-    return finalColor;
-}
+/** 将两个VTColor的各项值相减，计算其差值 */
+CG_EXTERN VTColor VTColorReduce(VTColor aColor, VTColor reductionColor);
 
-CG_INLINE VTColor
-VTColorReduce(VTColor aColor, VTColor reductionColor) {
-    VTColor finalColor;
-    finalColor.red = aColor.red - reductionColor.red;
-    finalColor.green = aColor.green - reductionColor.green;
-    finalColor.blue = aColor.blue - reductionColor.blue;
-    finalColor.alph = aColor.alph - reductionColor.alph;
-    return finalColor;
-}
+/** 判断两个VTColor对象是否相等 */
+CG_EXTERN BOOL VTColorIsEqual(VTColor aColor1, VTColor aColor2);
 
-CG_INLINE BOOL
-VTColorIsEqual(VTColor aColor1, VTColor aColor2) {
-    if (aColor1.red != aColor2.red) {
-        return NO;
-    }
-    if (aColor1.green != aColor2.green) {
-        return NO;
-    }
-    if (aColor1.blue != aColor2.blue) {
-        return NO;
-    }
-    if (aColor1.alph != aColor2.alph) {
-        return NO;
-    }
-    return YES;
-}
+/** 判断VTColor对象的各项值是否为0 */
+CG_EXTERN BOOL VTColorIsZero(VTColor aColor);
 
-CG_INLINE BOOL
-VTColorIsZero(VTColor aColor) {
-    return VTColorIsEqual(VTColorZero, aColor);
-}
+/** 初始化一个VTColor结构体对象 */
+CG_EXTERN VTColor VTColorMake(CGFloat red, CGFloat green, CGFloat blue, CGFloat alph);
 
 @interface UIColor (VTMagic)
 
