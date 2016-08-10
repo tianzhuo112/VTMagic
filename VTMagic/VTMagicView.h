@@ -3,7 +3,8 @@
 //  VTMagicView
 //
 //  Created by tianzhuo on 14-11-11.
-//  Copyright (c) 2014年 tianzhuo. All rights reserved.
+//  Copyright (c) 2014-2016 tianzhuo. All rights reserved.
+//  https://github.com/tianzhuo112/VTMagic.git
 //
 
 #import <UIKit/UIKit.h>

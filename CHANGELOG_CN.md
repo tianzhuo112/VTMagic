@@ -3,6 +3,23 @@
 
 --- 
 
+## [1.2.4](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.4)
+发布于2016年八月10日，周三
+
+### 更新
+- 完善生命周期逻辑，修复在`viewWillAppear:`方法中调用`reloadData`、`reloadDataToPage:`和`switchToPage:animated:`方法时，生命周期异常的问题；
+- 删除枚举样式`VTLayoutStyleCustom`，自定义`menuItem`宽度时，直接设置`itemWidth`即可；
+- 新增代理方法`itemWidthAtIndex:`和`sliderWidthAtIndex:`，以便自定义任意itemIndex对应的`menuItem`和`sliderView`的宽度；
+- 废弃属性needExtendBottom，若想实现半透明效果，请将`edgesForExtendedLayout`设为`UIRectEdgeAll`，具体可参见demo；
+- 修复初次调用`viewDidAppear:`方法时，页面frame不正确的问题；
+- 修复某种特殊情况下点击边缘菜单项，导航菜单没有自动显示下一项的问题；
+- 完善demo工程，新增页面复用时的数据处理逻辑；
+- 修复有重名菜单项时，导航菜单聚焦错误的问题；
+- 当导航菜单为空时，自动隐藏`sliderView`；
+- 重命名内部文件；
+- 其它逻辑优化；
+
+
 ## [1.2.3](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.3)
 发布于2016年七月6日，周三
 

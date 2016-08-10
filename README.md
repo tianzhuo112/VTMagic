@@ -166,7 +166,7 @@ This method will be called when page is reused, you should clear old data or res
 
 #### Appearance methods
 
-VTMagic will automatically calls the appearance methods when user switches the page, maybe you should do something in here, e.g. refresh page info.
+VTMagic will automatically calls the appearance callbacks when user switches the page, maybe you should do something in here, e.g. refresh page info.
 
 ```objective-c
 - (void)viewDidAppear:(BOOL)animated {

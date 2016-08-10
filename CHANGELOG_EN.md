@@ -3,6 +3,22 @@ All notable changes to this project will be documented in this file.
 
 --- 
 
+## [1.2.4](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.4) (08/10/2016)
+Released on Wednesday, August 10, 2016.
+
+### changed
+- Optimize appearance callbacks, fix unbalance error when call `reloadData`、`reloadDataToPage:`and `switchToPage:animated:` in `viewWillAppear:` method;
+- Delete `VTLayoutStyleCustom`, you can set the width of `menuItem` by `itemWidth` directly, it does not work when the value of `layoutStyle` is `VTLayoutStyleDivide`;
+- Add `magicView:itemWidthAtIndex:` and `magicView:sliderWidthAtIndex:` delegate methods, you can custom the width of `menuItem` or `sliderView` at `itemIndex`;
+- Deprecate property `needExtendBottom`, if you want realize translucent effect, you should set value `UIRectEdgeAll` to `edgesForExtendedLayout`;
+- Update the frame of page view before appearance callbacks be called;
+- Fix menu bar cannot auto scroll in some special conditions;
+- Improved the demo project, to show how to cache and read the page data;
+- Auto hide `sliderView` when menu titles are empty;
+- Rename internal files;
+- Other optimization;
+
+
 ## [1.2.3](https://github.com/tianzhuo112/VTMagic/releases/tag/1.2.3) (07/06/2016)
 Released on Wednesday, July 6, 2016.
 
