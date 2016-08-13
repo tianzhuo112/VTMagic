@@ -47,7 +47,8 @@ static NSInteger const kVTMenuBarTag = 1000;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    if (_needSkipLayout && !self.isDecelerating) {
+    BOOL mandatory = _menuTitles.count && !_visibleDict.count;
+    if (!mandatory && _needSkipLayout && !self.isDecelerating) {
         return;
     }
     
