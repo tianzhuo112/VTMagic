@@ -37,7 +37,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    _appearanceState = VTAppearanceStateWillAppear;
+    self.appearanceState = VTAppearanceStateWillAppear;
     if (!_magicView.isSwitching) {
         [_currentViewController beginAppearanceTransition:YES animated:animated];
     }
@@ -46,7 +46,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    _appearanceState = VTAppearanceStateDidAppear;
+    self.appearanceState = VTAppearanceStateDidAppear;
     if (!_magicView.isSwitching) {
         [_currentViewController endAppearanceTransition];
     }
@@ -55,7 +55,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    _appearanceState = VTAppearanceStateWillDisappear;
+    self.appearanceState = VTAppearanceStateWillDisappear;
     if (!_magicView.isSwitching) {
         [_currentViewController beginAppearanceTransition:NO animated:animated];
     }
@@ -64,7 +64,7 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    _appearanceState = VTAppearanceStateDidDisappear;
+    self.appearanceState = VTAppearanceStateDidDisappear;
     if (!_magicView.isSwitching) {
         [_currentViewController endAppearanceTransition];
     }

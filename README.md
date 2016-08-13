@@ -164,7 +164,7 @@ This method will be called when page is reused, you should clear old data or res
 
 ## Features
 
-#### Appearance methods
+#### Appearance callbacks
 
 VTMagic will automatically calls the appearance callbacks when user switches the page, maybe you should do something in here, e.g. refresh page info.
 

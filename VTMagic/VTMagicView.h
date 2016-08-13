@@ -81,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  根据itemIndex获取对应menuItem的宽度，若返回结果为0，内部将自动计算其宽度
+ *  通常情况下只需设置itemSpacing或itemWidth即可
  *
  *  @param magicView self
  *  @param itemIndex menuItem对应的索引
@@ -91,6 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  根据itemIndex获取对应slider的宽度，若返回结果为0，内部将自动计算其宽度
+ *  通常情况下只需设置sliderWidth、sliderExtension或bubbleInset即可
  *
  *  @param magicView self
  *  @param itemIndex slider对应的索引
@@ -113,8 +115,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  代理
- *  若delegate为UIViewController并且实现了VTMagicProtocol协议，
- *  则主控制器(mainViewController)默认与其相同
  */
 @property (nonatomic, weak, nullable) id<VTMagicViewDelegate> delegate;
 
@@ -454,7 +454,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)switchToPage:(NSUInteger)pageIndex animated:(BOOL)animated;
 
 /**
- *  处理UIPanGestureRecognizer手势，用于解决页面内嵌UIWebView时无法响应手势问题
+ *  处理UIPanGestureRecognizer手势，用于解决页面内嵌webView时无法响应手势问题
  *
  *  @param recognizer 手势
  */

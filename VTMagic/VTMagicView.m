@@ -276,6 +276,12 @@ static const void *kVTMagicView = &kVTMagicView;
     if ([viewController respondsToSelector:@selector(vtm_prepareForReuse)]) {
         [(id<VTMagicReuseProtocol>)viewController vtm_prepareForReuse];
     }
+    
+    for (UIViewController *childViewController in viewController.childViewControllers) {
+        if ([childViewController respondsToSelector:@selector(vtm_prepareForReuse)]) {
+            [(id<VTMagicReuseProtocol>)childViewController vtm_prepareForReuse];
+        }
+    }
     return viewController;
 }
 
