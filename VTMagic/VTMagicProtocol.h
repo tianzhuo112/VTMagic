@@ -48,3 +48,18 @@
 - (VTMagicView *)magicView;
 
 @end
+
+
+/**
+ *  magic重用协议
+ */
+@protocol VTMagicReuseProtocol <NSObject>
+
+@optional
+/**
+ *  控制器或menuItem即将被重用时触发，
+ *  由magicController的子页面控制器或自定义的menuItem实现
+ */
+- (void)vtm_prepareForReuse;
+
+@end

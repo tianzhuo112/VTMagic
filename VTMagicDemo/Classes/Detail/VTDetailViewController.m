@@ -117,7 +117,7 @@
         _magicController.view.translatesAutoresizingMaskIntoConstraints = NO;
         _magicController.magicView.navigationColor = [UIColor whiteColor];
         _magicController.magicView.sliderColor = RGBCOLOR(169, 37, 37);
-        _magicController.magicView.switchStyle = VTSwitchStyleDefault;
+        _magicController.magicView.switchStyle = VTSwitchStyleStiff;
         _magicController.magicView.layoutStyle = VTLayoutStyleDivide;
         _magicController.magicView.navigationHeight = 40.f;
         _magicController.magicView.sliderExtension = 10.f;

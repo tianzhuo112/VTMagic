@@ -8,6 +8,7 @@
 
 #import "VTBubbleViewController.h"
 #import "VTGridViewController.h"
+#import "VTMenuItem.h"
 
 @interface VTBubbleViewController ()
 
@@ -77,9 +78,9 @@
 
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
     static NSString *itemIdentifier = @"itemIdentifier";
-    UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
+    VTMenuItem *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
     if (!menuItem) {
-        menuItem = [UIButton buttonWithType:UIButtonTypeCustom];
+        menuItem = [VTMenuItem buttonWithType:UIButtonTypeCustom];
         [menuItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
         [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
         menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];

@@ -7,6 +7,7 @@
 //
 
 #import "VTMenuItem.h"
+#import <VTMagic/VTMagic.h>
 
 @interface VTMenuItem()
 
@@ -25,6 +26,7 @@
         _dotView.backgroundColor = [UIColor redColor];
         _dotView.layer.masksToBounds = YES;
         _dotView.layer.cornerRadius = 4.f;
+        _dotView.hidden = _dotHidden;
         [self addSubview:_dotView];
         
         [self setNeedsUpdateConstraints];
@@ -43,6 +45,10 @@
                                                                         views:NSDictionaryOfVariableBindings(_dotView)]];
     
     [super updateConstraints];
+}
+
+- (void)vtm_prepareForReuse {
+    NSLog(@"menuItem will be reused: %@", self);
 }
 
 #pragma mark - accessor methods

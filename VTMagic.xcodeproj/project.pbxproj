@@ -337,7 +337,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AEA0D5161A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagic" */;
 			buildPhases = (
-				4BF3D889948E630DEC9D7D24 /* 📦 Check Pods Manifest.lock */,
+				4BF3D889948E630DEC9D7D24 /* [CP] Check Pods Manifest.lock */,
 				66BF1575B7B15449532CCDAD /* [CP] Check Pods Manifest.lock */,
 				AEA0D4EF1A11E4AB00229B72 /* Sources */,
 				AEA0D4F01A11E4AB00229B72 /* Frameworks */,
@@ -360,7 +360,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AEA0D5191A11E4AB00229B72 /* Build configuration list for PBXNativeTarget "VTMagicTests" */;
 			buildPhases = (
-				CEF6F3DC154699AEFCE10272 /* 📦 Check Pods Manifest.lock */,
+				CEF6F3DC154699AEFCE10272 /* [CP] Check Pods Manifest.lock */,
 				4DAE3C363202CC25F0AA762B /* [CP] Check Pods Manifest.lock */,
 				AEA0D5081A11E4AB00229B72 /* Sources */,
 				AEA0D5091A11E4AB00229B72 /* Frameworks */,
@@ -453,14 +453,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4BF3D889948E630DEC9D7D24 /* 📦 Check Pods Manifest.lock */ = {
+		4BF3D889948E630DEC9D7D24 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -588,14 +588,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VTMagicTests/Pods-VTMagicTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CEF6F3DC154699AEFCE10272 /* 📦 Check Pods Manifest.lock */ = {
+		CEF6F3DC154699AEFCE10272 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
