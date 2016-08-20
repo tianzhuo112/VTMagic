@@ -76,10 +76,7 @@
         [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
         menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];
     }
-    menuItem.dotHidden = YES;
-    if (_menuList.count - 1 == itemIndex) {
-        menuItem.dotHidden = _dotHidden;
-    }
+    menuItem.dotHidden = (_menuList.count - 1 == itemIndex) ? _dotHidden : YES;
     return menuItem;
 }
 

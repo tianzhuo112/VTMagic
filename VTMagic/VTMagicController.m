@@ -70,7 +70,7 @@
     }
 }
 
-#pragma mark - 禁止自动触发appearance methods
+#pragma mark - forward appearance methods
 - (BOOL)shouldAutomaticallyForwardAppearanceMethods {
     return NO;
 }

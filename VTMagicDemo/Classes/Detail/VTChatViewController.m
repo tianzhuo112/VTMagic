@@ -28,7 +28,6 @@
     if (_chatTimer) {
         return;
     }
-    
     _chatTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(notifyReciveMessages) userInfo:nil repeats:YES];
 }
 

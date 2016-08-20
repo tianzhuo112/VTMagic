@@ -68,8 +68,8 @@ static const void *kVTMagicView = &kVTMagicView;
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self addMagicSubviews];
         [self configDefaultValues];
+        [self addMagicSubviews];
         [self addNotification];
     }
     return self;

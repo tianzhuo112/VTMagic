@@ -393,8 +393,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  更新菜单标题，但不重新加载页面
- *  仅限于菜单顺序和页数不改变的情况下
- *  一般情况下建议使用reloadData方法
+ *
+ *  @warning 仅限于菜单顺序和页数不改变的情况下，一般情况下建议使用reloadData方法
  */
 - (void)reloadMenuTitles;
 

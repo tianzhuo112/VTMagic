@@ -27,6 +27,7 @@ static NSInteger const kVTMenuBarTag = 1000;
 @implementation VTMenuBar
 @dynamic delegate;
 
+#pragma mark - Lifecycle
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {

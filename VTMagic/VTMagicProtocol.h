@@ -41,7 +41,6 @@
  */
 - (VTAppearanceState)appearanceState;
 
-@optional
 /**
  *  任何magicController默认都会有对应的magicView
  */

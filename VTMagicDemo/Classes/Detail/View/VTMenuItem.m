@@ -48,7 +48,7 @@
 }
 
 - (void)vtm_prepareForReuse {
-    NSLog(@"menuItem will be reused: %@", self);
+    VTLog(@"menuItem will be reused: %@", self);
 }
 
 #pragma mark - accessor methods
