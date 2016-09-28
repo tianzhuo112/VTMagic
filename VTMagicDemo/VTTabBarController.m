@@ -26,7 +26,7 @@
     
     VTBubbleViewController *bubbleVC = [[VTBubbleViewController alloc] init];
     UINavigationController *bubbleNav = [[UINavigationController alloc]initWithRootViewController:bubbleVC];
-    bubbleNav.navigationBarHidden = YES;
+//    bubbleNav.navigationBarHidden = YES;
     UITabBarItem *bubbleItem = [self creatTabBarItemWithTitle:@"气泡"];
     bubbleNav.tabBarItem = bubbleItem;
     

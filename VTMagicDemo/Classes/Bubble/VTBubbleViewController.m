@@ -23,8 +23,8 @@
     [super viewDidLoad];
     
     self.magicView.navigationHeight = 44;
-    self.magicView.againstStatusBar = YES;
-    self.edgesForExtendedLayout = UIRectEdgeAll;
+//    self.magicView.againstStatusBar = YES;
+//    self.edgesForExtendedLayout = UIRectEdgeAll;
     self.view.backgroundColor = [UIColor whiteColor];
     self.magicView.headerView.backgroundColor = RGBCOLOR(243, 40, 47);
     self.magicView.layoutStyle = VTLayoutStyleDefault;
@@ -43,7 +43,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)dealloc {
