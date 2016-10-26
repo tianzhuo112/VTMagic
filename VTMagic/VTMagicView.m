@@ -450,6 +450,17 @@ static const void *kVTMagicView = &kVTMagicView;
             offsetX = _menuBar.contentSize.width - CGRectGetWidth(_menuBar.frame);
         }
     }
+    
+    if (_displayCentered) {
+        CGRect currentFrme = [_menuBar itemFrameAtIndex:_currentPage];
+        CGFloat itemPoint = CGRectGetMidX(currentFrme);
+        offsetX = itemPoint - CGRectGetWidth(self.bounds)/2;
+        CGFloat menuWidth = CGRectGetWidth(_menuBar.frame);
+        CGFloat maxOffset = _menuBar.contentSize.width - menuWidth;
+        offsetX = maxOffset < offsetX ? maxOffset : offsetX;
+        offsetX = offsetX < 0 ? 0 : offsetX;
+    }
+    
     _menuBar.contentOffset = CGPointMake(offsetX, 0);
 }
 

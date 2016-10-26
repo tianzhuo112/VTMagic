@@ -255,6 +255,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly, getter=isSwitching) BOOL switching;
 
 /**
+ *  被选中的menuItem是否居中显示，默认NO
+ */
+@property (nonatomic, assign) BOOL displayCentered;
+
+/**
  *  页面滑到两侧边缘时是否需要反弹效果，默认NO
  */
 @property (nonatomic, assign) BOOL bounces;

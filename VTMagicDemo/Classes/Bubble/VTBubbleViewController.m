@@ -23,6 +23,7 @@
     [super viewDidLoad];
     
     self.magicView.navigationHeight = 44;
+    self.magicView.displayCentered = YES;
 //    self.magicView.againstStatusBar = YES;
 //    self.edgesForExtendedLayout = UIRectEdgeAll;
     self.view.backgroundColor = [UIColor whiteColor];
