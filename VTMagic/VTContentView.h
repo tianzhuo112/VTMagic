@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 当前索引对应的控制器
  */
-- (UIViewController *)contentView:(VTContentView *)contentView viewControllerAtPage:(NSUInteger)pageIndex;
+- (nullable UIViewController *)contentView:(VTContentView *)contentView viewControllerAtPage:(NSUInteger)pageIndex;
 
 @end
 

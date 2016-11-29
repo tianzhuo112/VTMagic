@@ -86,15 +86,28 @@
 
 #pragma mark - VTMagicViewDataSource
 - (NSArray<NSString *> *)menuTitlesForMagicView:(VTMagicView *)magicView {
-    return nil;
+    return @[];
 }
 
 - (UIButton *)magicView:(VTMagicView *)magicView menuItemAtIndex:(NSUInteger)itemIndex {
-    return nil;
+    static NSString *itemIdentifier = @"itemIdentifier";
+    UIButton *menuItem = [magicView dequeueReusableItemWithIdentifier:itemIdentifier];
+    if (!menuItem) {
+        menuItem = [UIButton buttonWithType:UIButtonTypeCustom];
+        [menuItem setTitleColor:RGBCOLOR(50, 50, 50) forState:UIControlStateNormal];
+        [menuItem setTitleColor:RGBCOLOR(169, 37, 37) forState:UIControlStateSelected];
+        menuItem.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:15.f];
+    }
+    return menuItem;
 }
 
 - (UIViewController *)magicView:(VTMagicView *)magicView viewControllerAtPage:(NSUInteger)pageInde {
-    return nil;
+    static NSString *pageId = @"page.identifier";
+    UIViewController *viewController = [magicView dequeueReusablePageWithIdentifier:pageId];
+    if (!viewController) {
+        viewController = [[UIViewController alloc] init];
+    }
+    return viewController;
 }
 
 #pragma mark - VTMagicViewDelegate

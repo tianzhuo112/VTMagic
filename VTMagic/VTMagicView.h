@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /****************************************data source****************************************/
 @protocol VTMagicViewDataSource <NSObject>
+
+@required
 /**
  *  获取所有菜单名，数组中存放字符串类型对象
  *
@@ -142,6 +144,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  *  导航菜单item的预览数，默认为1
+ *
+ *  @warning displayCentered为YES时，该属性无效
  */
 @property (nonatomic, assign) NSUInteger previewItems;
 

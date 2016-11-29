@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 当前索引对应的按钮
  */
-- (UIButton *)menuBar:(VTMenuBar *)menuBar menuItemAtIndex:(NSUInteger)itemIndex;
+- (nullable UIButton *)menuBar:(VTMenuBar *)menuBar menuItemAtIndex:(NSUInteger)itemIndex;
 
 @end
 
@@ -235,7 +235,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 缓存池中取出的category item
  */
-- (__kindof UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
+- (nullable __kindof UIButton *)dequeueReusableItemWithIdentifier:(NSString *)identifier;
 
 @end
 
