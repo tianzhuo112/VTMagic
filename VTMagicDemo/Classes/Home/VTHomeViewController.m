@@ -28,6 +28,7 @@
 //    self.magicView.itemSpacing = 20.f;
 //    self.magicView.switchEnabled = YES;
 //    self.magicView.separatorHidden = NO;
+//    self.magicView.acturalSpacing = 10;
     self.magicView.itemScale = 1.2;
     self.magicView.headerHeight = 40;
     self.magicView.navigationHeight = 44;

@@ -106,6 +106,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL needSkipLayout;
 
 /**
+ *  item之间的实际间距
+ */
+@property (nonatomic, assign) CGFloat acturalSpacing;
+
+/**
  *  自定义item宽度，默认0，当设置改属性时，itemSpacing的设置无效
  *
  *  @warning 该属性在VTLayoutStyleDivide样式下无效

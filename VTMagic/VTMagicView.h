@@ -355,6 +355,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat headerHeight;
 
 /**
+ *  item之间的实际间距
+ */
+@property (nonatomic, assign) CGFloat acturalSpacing;
+
+/**
  *  两个导航菜单item文本之间的间距，默认是25，其优先级低于itemWidth
  *  如果菜单item包含图片，则实际间距可能会更小
  *

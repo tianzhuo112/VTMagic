@@ -1169,6 +1169,11 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
     self.sliderView.layer.masksToBounds = YES;
 }
 
+- (void)setActuralSpacing:(CGFloat)acturalSpacing {
+    _acturalSpacing = _acturalSpacing;
+    _menuBar.acturalSpacing = acturalSpacing;
+}
+
 - (void)setItemSpacing:(CGFloat)itemSpacing {
     _itemSpacing = itemSpacing;
     _menuBar.itemSpacing = itemSpacing;
