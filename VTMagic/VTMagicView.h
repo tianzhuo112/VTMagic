@@ -401,7 +401,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  重新加载所有数据，同时定位到指定页面，若page越界，则自动修正为0
  *
- *  @param page 被定位的页面
+ *  @param pageIndex 被定位的页面
  */
 - (void)reloadDataToPage:(NSUInteger)pageIndex;
 
