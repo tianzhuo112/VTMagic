@@ -214,6 +214,7 @@ static const void *kVTMagicView = &kVTMagicView;
 - (void)reloadDataToPage:(NSUInteger)pageIndex {
     _previousIndex = _currentPage;
     _currentPage = pageIndex;
+    _nextPageIndex = pageIndex;
     _menuBar.currentIndex = pageIndex;
     _contentView.currentPage = pageIndex;
     [self reloadDataWithDisIndex:_previousIndex];
