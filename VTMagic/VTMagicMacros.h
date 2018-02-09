@@ -23,7 +23,7 @@
 
 // weakSelf
 #define __DEFINE_WEAK_SELF__ __weak __typeof(&*self) weakSelf = self;
-#define __DEFINE_STRONG_SELF__ __strong __typeof(&*self) strongSelf = self;
+#define __DEFINE_STRONG_SELF__ __strong __typeof(&*weakSelf) strongSelf = weakSelf;
 
 // 打印当前方法名
 #define VTPRINT_METHOD VTLog(@"==%@:%p running method '%@'==", self.class, self, NSStringFromSelector(_cmd));
@@ -43,10 +43,12 @@ blue:((float)(hexValue & 0xFF))/255.0 alpha:1.0]
 
 // 判断设备是否是iPhone
 #define kiPhoneDevice ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+#define KiPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+
 
 // tabbar高度
 #define VTTABBAR_HEIGHT (49)
 // 状态栏高度
-#define VTSTATUSBAR_HEIGHT (20)
+#define VTSTATUSBAR_HEIGHT (KiPhoneX ? 44 : 20)
 
 #endif
