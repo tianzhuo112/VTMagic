@@ -71,4 +71,11 @@ typedef NS_ENUM(NSUInteger, VTAppearanceState) {
     VTAppearanceStateDidAppear,
 };
 
+typedef NS_ENUM(NSUInteger, VTMenuPosition) {
+    /** 菜单栏展示在顶部 */
+    VTMenuPositionDefault,
+    /** 菜单栏展示在底部 */
+    VTMenuPositionBottom,
+};
+
 #endif /* VTEnumType_h */

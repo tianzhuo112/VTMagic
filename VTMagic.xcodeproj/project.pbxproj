@@ -391,7 +391,7 @@
 				TargetAttributes = {
 					AEA0D4F21A11E4AB00229B72 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = 2Y55XFEVRS;
+						DevelopmentTeam = 244BMGPJKY;
 					};
 					AEA0D50B1A11E4AB00229B72 = {
 						CreatedOnToolsVersion = 6.1;
@@ -404,6 +404,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -762,6 +763,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 244BMGPJKY;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicDemo/VTMagic-Prefix.pch";
 				INFOPLIST_FILE = VTMagicDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -779,6 +781,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 244BMGPJKY;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/VTMagicDemo/VTMagic-Prefix.pch";
 				INFOPLIST_FILE = VTMagicDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;

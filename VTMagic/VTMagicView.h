@@ -143,6 +143,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) VTSliderStyle sliderStyle;
 
 /**
+ 导航菜单展示位置
+ */
+@property (nonatomic, assign) VTMenuPosition menuPosition;
+
+/**
  *  导航菜单item的预览数，默认为1
  *
  *  @warning displayCentered为YES时，该属性无效

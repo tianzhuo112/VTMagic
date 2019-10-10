@@ -72,6 +72,7 @@ BOOL VTColorIsZero(VTColor aColor) {
     if ([self respondsToSelector:@selector(getRed:green:blue:alpha:)]) {
         [self getRed:&color.red green:&color.green blue:&color.blue alpha:&color.alph];
     } else {
+        color = VTColorMake(0, 0, 0, 1);
         VTLog(@"change UIColor to VTColor error");
     }
     return color;

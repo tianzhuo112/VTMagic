@@ -116,6 +116,17 @@ static const void *kVTMagicView = &kVTMagicView;
 }
 
 - (void)updateFrameForSubviews {
+    switch (self.menuPosition) {
+        case VTMenuPositionBottom:
+            [self layoutSubviewsForBottomPosition];
+            break;
+        default:
+            [self layoutSubviewsForDefaultPosition];
+            break;
+    }
+}
+
+- (void)layoutSubviewsForDefaultPosition {
     CGSize size = self.frame.size;
     CGFloat topY = _againstStatusBar ? VTSTATUSBAR_HEIGHT : 0;
     CGFloat headerY = _headerHidden ? -_headerHeight : topY;
@@ -151,6 +162,47 @@ static const void *kVTMagicView = &kVTMagicView;
         [_contentView resetPageFrames];
     }
     self.needSkipUpdate = NO;
+    
+    [self updateFrameForLeftNavigationItem];
+    [self updateFrameForRightNavigationItem];
+}
+
+- (void)layoutSubviewsForBottomPosition {
+    self.needSkipUpdate = YES;
+    CGSize size = self.frame.size;
+    CGRect originalContentFrame = _contentView.frame;
+    CGFloat contentY = _againstStatusBar ? VTSTATUSBAR_HEIGHT : 0;
+    CGFloat offset = (_headerHidden ? 0 : _headerHeight) + _navigationHeight;
+    CGFloat contentH = size.height - contentY - (_needExtendBottom ? VTTABBAR_HEIGHT : 0) - offset;
+    _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
+    if (!CGRectEqualToRect(_contentView.frame, originalContentFrame)) {
+        [_contentView resetPageFrames];
+    }
+    self.needSkipUpdate = NO;
+    
+    CGFloat navigationY = CGRectGetMaxY(_contentView.frame) - VTBOTTOMBAR_HEIGHT;
+    _navigationView.frame = CGRectMake(0, navigationY, size.width, _navigationHeight);
+    
+    CGFloat topY = _againstStatusBar ? VTSTATUSBAR_HEIGHT : 0;
+    CGFloat headerY = _headerHidden ? -_headerHeight : topY;
+    _headerView.frame = CGRectMake(0, headerY, size.width, _headerHeight);
+    
+    CGFloat separatorY = CGRectGetHeight(_navigationView.frame) - _separatorHeight;
+    _separatorView.frame = CGRectMake(0, separatorY, size.width, _separatorHeight);
+    
+    CGFloat menuBarY = 0;
+    CGRect originalMenuFrame = _menuBar.frame;
+    CGFloat leftItemWidth = CGRectGetWidth(_leftNavigatoinItem.frame);
+    CGFloat rightItemWidth = CGRectGetWidth(_rightNavigatoinItem.frame);
+    CGFloat catWidth = size.width - leftItemWidth - rightItemWidth;
+    _menuBar.frame = CGRectMake(leftItemWidth, menuBarY, catWidth, _navigationHeight);
+    if (!CGRectEqualToRect(_menuBar.frame, originalMenuFrame)) {
+        [_menuBar resetItemFrames];
+        [self updateMenuBarState];
+    }
+    
+    CGRect sliderFrame = [_menuBar sliderFrameAtIndex:_currentPage];
+    _sliderView.frame = sliderFrame;
     
     [self updateFrameForLeftNavigationItem];
     [self updateFrameForRightNavigationItem];
