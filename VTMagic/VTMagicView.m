@@ -128,7 +128,8 @@ static const void *kVTMagicView = &kVTMagicView;
 
 - (void)layoutSubviewsForDefaultPosition {
     CGSize size = self.frame.size;
-    CGFloat topY = _againstStatusBar ? VTSTATUSBAR_HEIGHT : 0;
+    UIEdgeInsets safeAreaInsets = [self vt_safeAreaInsets];
+    CGFloat topY = _againstStatusBar ? safeAreaInsets.top : 0;
     CGFloat headerY = _headerHidden ? -_headerHeight : topY;
     _headerView.frame = CGRectMake(0, headerY, size.width, _headerHeight);
     
@@ -156,7 +157,7 @@ static const void *kVTMagicView = &kVTMagicView;
     self.needSkipUpdate = YES;
     CGRect originalContentFrame = _contentView.frame;
     CGFloat contentY = CGRectGetMaxY(_navigationView.frame);
-    CGFloat contentH = size.height - contentY + (_needExtendBottom ? VTTABBAR_HEIGHT : 0);
+    CGFloat contentH = size.height - contentY + (_needExtendBottom ? safeAreaInsets.bottom : 0);
     _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
     if (!CGRectEqualToRect(_contentView.frame, originalContentFrame)) {
         [_contentView resetPageFrames];
@@ -171,19 +172,20 @@ static const void *kVTMagicView = &kVTMagicView;
     self.needSkipUpdate = YES;
     CGSize size = self.frame.size;
     CGRect originalContentFrame = _contentView.frame;
-    CGFloat contentY = _againstStatusBar ? VTSTATUSBAR_HEIGHT : 0;
+    UIEdgeInsets safeAreaInsets = [self vt_safeAreaInsets];
+    CGFloat contentY = _againstStatusBar ? safeAreaInsets.top : 0;
     CGFloat offset = (_headerHidden ? 0 : _headerHeight) + _navigationHeight;
-    CGFloat contentH = size.height - contentY - (_needExtendBottom ? VTTABBAR_HEIGHT : 0) - offset;
+    CGFloat contentH = size.height - contentY - (_needExtendBottom ? safeAreaInsets.bottom : 0) - offset;
     _contentView.frame = CGRectMake(0, contentY, size.width, contentH);
     if (!CGRectEqualToRect(_contentView.frame, originalContentFrame)) {
         [_contentView resetPageFrames];
     }
     self.needSkipUpdate = NO;
     
-    CGFloat navigationY = CGRectGetMaxY(_contentView.frame) - VTBOTTOMBAR_HEIGHT;
+    CGFloat navigationY = CGRectGetMaxY(_contentView.frame) - safeAreaInsets.bottom;
     _navigationView.frame = CGRectMake(0, navigationY, size.width, _navigationHeight);
     
-    CGFloat topY = _againstStatusBar ? VTSTATUSBAR_HEIGHT : 0;
+    CGFloat topY = _againstStatusBar ? safeAreaInsets.top : 0;
     CGFloat headerY = _headerHidden ? -_headerHeight : topY;
     _headerView.frame = CGRectMake(0, headerY, size.width, _headerHeight);
     
@@ -363,6 +365,17 @@ static const void *kVTMagicView = &kVTMagicView;
 
 - (void)clearMemoryCache {
     [_contentView clearMemoryCache];
+}
+
+-(UIEdgeInsets)vt_safeAreaInsets {
+    UIEdgeInsets safeAreaInsets;
+    if (@available(iOS 11, *)) {
+        safeAreaInsets = [[[[UIApplication sharedApplication] delegate] window] safeAreaInsets];
+        safeAreaInsets =  self.shouldIgnoreSafeArea ? UIEdgeInsetsZero : safeAreaInsets;
+    } else {
+        safeAreaInsets = UIEdgeInsetsZero;
+    }
+    return safeAreaInsets;
 }
 
 #pragma mark - switch to specified page

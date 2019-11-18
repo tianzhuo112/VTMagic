@@ -243,6 +243,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  是否隐藏头部组件，默认YES
  */
 @property (nonatomic, assign, getter=isHeaderHidden) BOOL headerHidden;
+
+
+/**
+ *  是否忽略safeArea配置，默认NO
+ */
+@property (nonatomic, assign) BOOL shouldIgnoreSafeArea;
 /**
  *  显示或隐藏头部组件
  *
