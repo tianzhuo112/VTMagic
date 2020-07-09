@@ -74,6 +74,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)magicView:(VTMagicView *)magicView viewDidDisappear:(__kindof UIViewController *)viewController atPage:(NSUInteger)pageIndex;
 
 /**
+ *  是否允许选中itemIndex对应的item
+ *
+ *  @param magicView self
+ *  @param itemIndex menuItem对应的索引
+*/
+- (BOOL)magicView:(VTMagicView *)magicView shouldSelectItemAtIndex:(NSUInteger)itemIndex;
+
+/**
  *  选中导航菜单item时触发
  *
  *  @param magicView self

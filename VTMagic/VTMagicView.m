@@ -710,7 +710,7 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
 }
 
 - (void)menuBar:(VTMenuBar *)menuBar didSelectItemAtIndex:(NSUInteger)itemIndex {
-    if (!_switchEnabled) {
+    if (!_switchEnabled || ![self shouldSelectItemAtIndex:itemIndex]) {
         return;
     }
     
@@ -743,6 +743,13 @@ static VTPanRecognizerDirection direction = VTPanRecognizerDirectionUndefined;
         return [_delegate magicView:self sliderWidthAtIndex:itemIndex];
     }
     return 0;
+}
+
+- (BOOL)shouldSelectItemAtIndex:(NSUInteger)itemIndex {
+    if ([_delegate respondsToSelector:@selector(magicView:shouldSelectItemAtIndex:)]) {
+        return [_delegate magicView:self shouldSelectItemAtIndex:itemIndex];
+    }
+    return YES;
 }
 
 #pragma mark - VTContentViewDataSource
